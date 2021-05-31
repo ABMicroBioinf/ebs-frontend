@@ -1,0 +1,12 @@
+.ebs-top-navbar-shadow {
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1) !important;
+}
+.ebs-workspaces-grid-full-height {
+    height: calc(100vh - 57px);
+}
+.ebs-workspaces-toolbar-borderless {
+    border: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
