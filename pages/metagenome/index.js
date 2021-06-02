@@ -1,9 +1,11 @@
 import TopNav from "../../components/TopNav";
 
-export default function Explore() {
+export default function Metagenome() {
+
     return (
         <>
             <TopNav />
         </>
     )
+
 }

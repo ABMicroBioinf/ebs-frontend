@@ -19,7 +19,19 @@
     ],
     "rules": {
         "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off"
+        "react/prop-types": "off",
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "jsx-quotes": [
+            "error",
+            "prefer-double"
+        ],
+        "semi": [
+            "error",
+            "never"
+        ]
     },
     "globals": {
         "React": "writable"

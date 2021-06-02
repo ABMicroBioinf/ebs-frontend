@@ -1,5 +1,5 @@
 import { Grid } from "semantic-ui-react"
-import TopNav from "../../components/TopNav"
+import TopNav from "../../../components/TopNav"
 import OpenAnalysis from "../../components/OpenAnalysis"
 import WorkspaceMenu from "../../components/WorkspaceMenu"
 import { useEffect, useState } from "react"
