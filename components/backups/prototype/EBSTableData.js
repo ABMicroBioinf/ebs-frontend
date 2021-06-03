@@ -2,8 +2,25 @@ import { Grid, Table } from "semantic-ui-react";
 import EBSCellRow from "./EBSCellRow";
 import EBSTableHeader from "./EBSTableHeader";
 import EBSTablePagination from "./EBSTablePagination";
+import EBSTableToolbar from "./EBSTableToolbar";
 
-export default function EBSTableData({ columnData, rowData }) {
+
+/**
+ * A top level table component layouts entire structure of data table
+ * @param {*} columData, rowData 
+ * @returns An entire layout of a table
+ */
+export default function EBSTableData(props) {
+
+    const {
+        dataCount,
+        columnData,
+        rowData,
+        pageSize,
+        page,
+        dispatchRowData,
+    } = props
+    const { rows, filters, filteredRows } = rowData
 
     return (
         <Grid padded>
@@ -13,6 +30,15 @@ export default function EBSTableData({ columnData, rowData }) {
                         <h2>Sequences</h2>
                     </Grid.Row>
                     <Grid.Row>
+                        <EBSTableToolbar
+                            dataCount={dataCount}
+                            rowData={rowData}
+                            pageSize={pageSize}
+                            page={page}
+                            dispatchRowData={dispatchRowData}
+                        />
+                    </Grid.Row>
+                    <Grid.Row>
                         <Table celled>
 
                             {/* for Flexible table, it needs to be fixed in the future */}
@@ -20,9 +46,11 @@ export default function EBSTableData({ columnData, rowData }) {
 
                             <Table.Body>
                                 {/* for Flexible table, it needs to be fixed in the future */}
-                                {rowData && rowData.map(row =>
-                                    <EBSCellRow row={row} />
-                                )}
+                                {
+                                    filteredRows.length > 0
+                                        ? filteredRows.map((row, index) => <EBSCellRow row={row} key={index} />)
+                                        : rows.map((row, index) => <EBSCellRow row={row} key={index} />)
+                                }
                             </Table.Body>
 
                             <Table.Footer>

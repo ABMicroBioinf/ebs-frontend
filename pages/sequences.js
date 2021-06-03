@@ -1,6 +1,7 @@
 import EBSDatatable from "../components/backups/prototype/EBSDataTable"
 import TopNav from "../components/TopNav"
 
+// Temporary
 import { promises as fs } from "fs"
 import path from "path"
 import { csv_to_json } from "../fakebackend/dbaccess"
@@ -18,13 +19,12 @@ export default function Sequences({data}) {
 }
 
 // Temporary
-// fake users DB =  "../../../fakebackend/db/users.json"
-// nullabor DB = "../../../fakebackend/db/seqdata.csv"
-// GCA DB = "../../../fakebackend/db/GCA_000534695.1.json"
 export async function getStaticProps() {
 
     /**
+     * *****************************************************
      * DO NOT FORGET to delete 'browser' from packages.json
+     * *****************************************************
      */
     const dbDir = path.join(process.cwd(), 'fakebackend/db')
     const dbPath = path.join(dbDir, 'seqdata.csv')
