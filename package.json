@@ -23,5 +23,6 @@
     "eslint-plugin-react": "^7.24.0",
     "jest": "^27.0.3",
     "prettier": "^2.3.0"
-  }
+  },
+  "browser": { "fs": false, "path": false, "os": false}
 }
