@@ -10,6 +10,7 @@ import EBSTableData from "./EBSTableData"
 export default function EBSDatatable({ data }) {
 
     /**
+     * Temporary
      * Data search and filter need to be implemented in backend
      * This state management is implemented for development
      */
@@ -44,8 +45,6 @@ export default function EBSDatatable({ data }) {
             : (Math.floor(dataCount / pageSize))
     )
     const [page, setPage] = useState(dataCount > 0 ? 1 : 0)
-    const [hitMin, setHitMin] = useState(true)
-    const [hitMax, setHitMax] = useState(false)
     const [sortedOn, setSortedOn] = useState('')
     const [sortedOrder, setSortedOrder] = useState('ASC') // ASC or DSC
     const [enabledColumns, SetEnabledColumns] = useState(
@@ -60,8 +59,10 @@ export default function EBSDatatable({ data }) {
         columnData={columnData}
         rowData={rowData}
         pageSize={pageSize}
+        pageCount={pageCount}
         page={page}
         dispatchRowData={dispatchRowData}
+        setPage={setPage}
     />)
 
 }

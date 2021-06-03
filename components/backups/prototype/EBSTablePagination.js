@@ -1,18 +1,39 @@
-import { Icon, Menu } from "semantic-ui-react";
+import { Dropdown, Grid, Pagination } from "semantic-ui-react";
 
-export default function EBSTablePagination() {
+
+export default function EBSTablePagination(props) {
+
+    const {
+        pageCount,
+        setPage,
+    } = props
+
+    const handlePageChange = (e, data) => {
+        setPage(data.activePage)
+    }
+
     return (
-        <Menu floated='right' pagination>
-            <Menu.Item as='a' icon>
-                <Icon name='chevron left' />
-            </Menu.Item>
-            <Menu.Item as='a'>1</Menu.Item>
-            <Menu.Item as='a'>2</Menu.Item>
-            <Menu.Item as='a'>3</Menu.Item>
-            <Menu.Item as='a'>4</Menu.Item>
-            <Menu.Item as='a' icon>
-                <Icon name='chevron right' />
-            </Menu.Item>
-        </Menu>
+        <Grid padded columns='equal'>
+            <Grid.Column textAlign='left'>
+                <label>Show </label>
+                <Dropdown text={20 + ""}>
+                    <Dropdown.Menu>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <label> rows</label>
+            </Grid.Column>
+            <Grid.Column textAlign='right'>
+                <Pagination
+                    boundaryRange={0}
+                    defaultActivePage={1}
+                    ellipsisItem={null}
+                    firstItem={null}
+                    lastItem={null}
+                    siblingRange={1}
+                    totalPages={pageCount}
+                    onPageChange={handlePageChange}
+                />
+            </Grid.Column>
+        </Grid>
     )
 }

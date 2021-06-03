@@ -17,8 +17,10 @@ export default function EBSTableData(props) {
         columnData,
         rowData,
         pageSize,
+        pageCount,
         page,
         dispatchRowData,
+        setPage,
     } = props
     const { rows, filters, filteredRows } = rowData
 
@@ -32,6 +34,7 @@ export default function EBSTableData(props) {
                     <Grid.Row>
                         <EBSTableToolbar
                             dataCount={dataCount}
+                            columnData={columnData}
                             rowData={rowData}
                             pageSize={pageSize}
                             page={page}
@@ -48,16 +51,21 @@ export default function EBSTableData(props) {
                                 {/* for Flexible table, it needs to be fixed in the future */}
                                 {
                                     filteredRows.length > 0
-                                        ? filteredRows.map((row, index) => <EBSCellRow row={row} key={index} />)
-                                        : rows.map((row, index) => <EBSCellRow row={row} key={index} />)
+                                        ? filteredRows.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
+                                            .map((row, index) => <EBSCellRow row={row} key={index} />)
+                                        : rows.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
+                                            .map((row, index) => <EBSCellRow row={row} key={index} />)
                                 }
                             </Table.Body>
 
                             <Table.Footer>
                                 <Table.Row>
-                                    <Table.HeaderCell colSpan='3'>
+                                    <Table.HeaderCell colSpan={columnData.length}>
 
-                                        <EBSTablePagination />
+                                        <EBSTablePagination
+                                            pageCount={pageCount}
+                                            setPage={setPage}
+                                        />
 
                                     </Table.HeaderCell>
                                 </Table.Row>

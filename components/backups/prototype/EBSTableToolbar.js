@@ -56,6 +56,7 @@ export default function EBSTableToolbar(props) {
 
     const {
         dataCount,
+        columnData,
         rowData,
         pageSize,
         page,
@@ -75,7 +76,9 @@ export default function EBSTableToolbar(props) {
             }
             dispatchSearch({
                 searchType: 'FINISH_SEARCH',
-                searchResults: rows.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
+                searchResults: filteredRows.length > 0
+                    ? filteredRows.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
+                    : rows.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
             })
         }, 300)
     }, [])
@@ -103,7 +106,7 @@ export default function EBSTableToolbar(props) {
                 <Grid.Column textAlign="right">
                     <Dropdown text='columns'>
                         <Dropdown.Menu>
-                            <Dropdown.Item>test!</Dropdown.Item>
+                            {columnData.map((column, index) => <Dropdown.Item key={index}>{column}</Dropdown.Item>)}
                         </Dropdown.Menu>
                     </Dropdown>
                 </Grid.Column>
