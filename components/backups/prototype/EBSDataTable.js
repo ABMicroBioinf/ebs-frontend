@@ -63,6 +63,8 @@ export default function EBSDatatable({ data }) {
         page={page}
         dispatchRowData={dispatchRowData}
         setPage={setPage}
+        setPageCount={setPageCount}
+        setPageSize={setPageSize}
     />)
 
 }

@@ -21,6 +21,8 @@ export default function EBSTableData(props) {
         page,
         dispatchRowData,
         setPage,
+        setPageCount,
+        setPageSize
     } = props
     const { rows, filters, filteredRows } = rowData
 
@@ -39,6 +41,8 @@ export default function EBSTableData(props) {
                             pageSize={pageSize}
                             page={page}
                             dispatchRowData={dispatchRowData}
+                            setPage={setPage}
+                            setPageCount={setPageCount}
                         />
                     </Grid.Row>
                     <Grid.Row>
@@ -63,8 +67,12 @@ export default function EBSTableData(props) {
                                     <Table.HeaderCell colSpan={columnData.length}>
 
                                         <EBSTablePagination
+                                            rowData={rowData}
+                                            pageSize={pageSize}
                                             pageCount={pageCount}
                                             setPage={setPage}
+                                            setPageSize={setPageSize}
+                                            setPageCount={setPageCount}
                                         />
 
                                     </Table.HeaderCell>

@@ -61,6 +61,8 @@ export default function EBSTableToolbar(props) {
         pageSize,
         page,
         dispatchRowData,
+        setPage,
+        setPageCount,
     } = props
     const { rows, filters, filteredRows } = rowData
     const { loading, searchResults, searchValue } = searchState
@@ -74,12 +76,25 @@ export default function EBSTableToolbar(props) {
                 dispatchSearch({ searchType: 'CLEAN_QUERY' })
                 return
             }
+
+            const results = filteredRows.length > 0
+                ? filteredRows.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
+                : rows.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
+
             dispatchSearch({
                 searchType: 'FINISH_SEARCH',
-                searchResults: filteredRows.length > 0
-                    ? filteredRows.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
-                    : rows.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
+                searchResults: results
             })
+
+            if (results.length > pageSize) {
+                setPageCount(results.length % pageSize > 0
+                    ? (Math.floor(results.length/ pageSize)) + 1
+                    : (Math.floor(results.length/ pageSize))
+                )
+            } else {
+                setPageCount(1)
+            }
+
         }, 300)
     }, [])
 
