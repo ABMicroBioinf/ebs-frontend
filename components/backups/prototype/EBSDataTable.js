@@ -51,7 +51,7 @@ export default function EBSDatatable({ data }) {
             case 'LOAD_DATA':
                 return { ...state, origin: action.origin }
             case 'FILTER_DATA':
-                return { ...state, filters: action.filters, filtered: action.filtered }
+                return { ...state, filters: action.filters, filtered: action.filtered, paginated: action.paginated }
             case 'PAGINATE_DATA':
                 return { ...state, page: action.page, pageSize: action.pageSize, pageCount: action.pageCount, paginated: action.paginated }
 

@@ -59,11 +59,10 @@ export default function EBSTablePagination(props) {
         results = filtered.length > 0
             ? filtered.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
             : origin.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
-
+        
         setRowData({
             ...rowData,
             type: 'PAGINATE_DATA',
-            page: 1,
             pageSize: pageSize,
             pageCount: pageCount,
             paginated: results

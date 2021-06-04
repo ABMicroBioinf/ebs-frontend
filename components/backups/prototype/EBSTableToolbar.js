@@ -26,51 +26,10 @@ function searchReducer(state, action) {
 
 const Search = props => {
 
-    const { searchState, onSearchChange, rowData, setRowData } = props
-    const { filters } = rowData
-    const { searchValue, searchResults } = searchState
-
-    useEffect(() => {
-        setRowData({
-            ...rowData,
-            type: 'FILTER_DATA',
-            filters: filters.indexOf('search') === -1 ? [...filters, 'search'] : [...filters],
-            filtered: searchResults,
-        })
-    }, [searchState])
-
-    return (
-        <Input
-            onChange={onSearchChange}
-            value={searchValue}
-            icon="search"
-            placeholder="Search..."
-            type="text"
-        />
-    )
-
-}
-
-
-export default function EBSTableToolbar(props) {
-
     const [searchState, dispatchSearch] = useReducer(searchReducer, initialSearchState)
-
-    const {
-        columnData,
-        rowData,
-        setRowData,
-    } = props
-
-    const {
-        origin,
-        filters,
-        filtered,
-        page,
-        pageSize,
-        pageCount,
-        paginated
-    } = rowData
+    const { rowData, setRowData } = props
+    const { searchValue, searchResults } = searchState
+    const { origin, filters, filtered, page, pageSize } = rowData
 
     const timeoutRef = useRef()
 
@@ -90,16 +49,6 @@ export default function EBSTableToolbar(props) {
                 searchType: 'FINISH_SEARCH',
                 searchResults: results
             })
-
-            // if (results.length > pageSize) {
-            //     setPageCount(results.length % pageSize > 0
-            //         ? (Math.floor(results.length / pageSize)) + 1
-            //         : (Math.floor(results.length / pageSize))
-            //     )
-            // } else {
-            //     setPageCount(1)
-            // }
-
         }, 300)
     }, [])
 
@@ -109,20 +58,70 @@ export default function EBSTableToolbar(props) {
         }
     }, [])
 
+    useEffect(() => {
+        let dataset = filtered.length > 0 ? filtered : origin
+        let results = searchResults.length > 0 ? searchResults : dataset
+        setRowData({
+            ...rowData,
+            type: 'FILTER_DATA',
+            filters: filters.indexOf('search') === 0 ? [...filters, 'search'] : [...filters],
+            filtered: results,
+            paginated: results.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
+
+        })
+    }, [searchState])
+
+    return (
+        <Input
+            onChange={handleSearchChange}
+            value={searchValue}
+            icon="search"
+            placeholder="Search..."
+            type="text"
+        />
+    )
+
+}
+
+
+export default function EBSTableToolbar(props) {
+
+    const {
+        columnData,
+        rowData,
+        setRowData,
+    } = props
+
+    const {
+        origin,
+        filters,
+        filtered,
+        page,
+        pageSize,
+        pageCount,
+        paginated
+    } = rowData
+
     return (
         <Grid container columns='equal'>
             <Grid.Row>
                 <Grid.Column textAlign="left">
-                    Showing {(Number(page) - 1) * Number(pageSize) + (paginated.length > 0 ? 1 : 0)} - {(Number(page) * Number(pageSize)) > paginated.length ? paginated.length : (Number(page) * Number(pageSize))} of {paginated.length}
+                    {(() => {
+                        let dataset = filtered.length > 0 ? filtered : origin
+                        return (
+                            'Showing ' +
+                            ((Number(page) - 1) * Number(pageSize) + (dataset.length > 0 ? 1 : 0)).toString() +
+                            ' - ' +
+                            ((Number(page) * Number(pageSize)) > dataset.length ? dataset.length : (Number(page) * Number(pageSize))).toString() +
+                            ' of ' +
+                            dataset.length
+                        )
+                    })()}
                 </Grid.Column>
                 <Grid.Column textAlign="right">
                     <Search
                         rowData={rowData}
                         setRowData={setRowData}
-
-                        searchState={searchState}
-
-                        onSearchChange={handleSearchChange}
                     />
                 </Grid.Column>
                 <Grid.Column textAlign="right">
