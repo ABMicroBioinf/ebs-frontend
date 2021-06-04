@@ -1,4 +1,4 @@
-import { Dropdown, Grid, List, Menu, Pagination } from "semantic-ui-react";
+import { Dropdown, Grid, Menu, Pagination } from "semantic-ui-react";
 
 
 const pageSizeOptions = [
@@ -14,29 +14,60 @@ export default function EBSTablePagination(props) {
 
     const {
         rowData,
+        setRowData,
+    } = props
+
+    const {
+        origin,
+        filters,
+        filtered,
+        page,
         pageSize,
         pageCount,
-        setPage,
-        setPageSize,
-        setPageCount,
-    } = props
-    const { rows, filters, filteredRows } = rowData
+        paginated,
+    } = rowData
 
     const handlePageChange = (e, data) => {
-        setPage(data.activePage)
+        let page = data.activePage
+        let results = []
+        results = filtered.length > 0
+            ? filtered.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
+            : origin.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
+        setRowData({
+            ...rowData,
+            type: 'PAGINATE_DATA',
+            page: page,
+            paginated: results
+        })
     }
 
     const handlePageSizeChange = (e, data) => {
-        setPageSize(data.value)
+        let pageSize = data.value
 
-        const records = filteredRows.length > 0 ? filteredRows : rows
-        setPageCount(
-            (records.length % data.value) > 0
-                ? (Math.floor(records.length / data.value)) + 1
-                : (Math.floor(records.length / data.value))
-        )
+        let pageCount = 0
+        if (filtered.length > 0) {
+            pageCount = filtered.length % pageSize > 0
+                ? (Math.floor(filtered.length / pageSize)) + 1
+                : (Math.floor(filtered.length / pageSize))
+        } else {
+            pageCount = origin.length % pageSize > 0
+                ? (Math.floor(origin.length / pageSize)) + 1
+                : (Math.floor(origin.length / pageSize))
+        }
 
-        setPage(1)
+        let results = []
+        results = filtered.length > 0
+            ? filtered.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
+            : origin.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
+
+        setRowData({
+            ...rowData,
+            type: 'PAGINATE_DATA',
+            page: 1,
+            pageSize: pageSize,
+            pageCount: pageCount,
+            paginated: results
+        })
     }
 
     return (
@@ -46,7 +77,8 @@ export default function EBSTablePagination(props) {
                 <Menu compact>
                     <Dropdown
                         onChange={handlePageSizeChange}
-                        text={pageSize + ""}
+
+                        text={pageSize.toString()}
                         options={pageSizeOptions}
                         compact
                         selection
@@ -56,14 +88,15 @@ export default function EBSTablePagination(props) {
             </Grid.Column>
             <Grid.Column textAlign='right'>
                 <Pagination
+                    totalPages={pageCount}
+                    onPageChange={handlePageChange}
+
                     boundaryRange={0}
                     defaultActivePage={1}
                     ellipsisItem={null}
                     firstItem={null}
                     lastItem={null}
                     siblingRange={1}
-                    totalPages={pageCount}
-                    onPageChange={handlePageChange}
                 />
             </Grid.Column>
         </Grid>

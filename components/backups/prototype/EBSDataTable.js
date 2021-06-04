@@ -14,18 +14,46 @@ export default function EBSDatatable({ data }) {
      * Data search and filter need to be implemented in backend
      * This state management is implemented for development
      */
-    const initialRowDataState = {
-        rows: data.rows,
-        filters: [],
-        filteredRows: [],
-    }
+    const initialDataState = (() => {
+        /**
+         * Order is important
+         * 1. apply filters
+         * 2. apply sort
+         * 3. apply pagination
+         */
+        let origin = data.rows
+        let filters = []
+        let filtered = []
+        let page = 1
+        let pageSize = 20
+        let pageCount = (() => (
+            origin.length % pageSize > 0
+                ? (Math.floor(origin.length / pageSize)) + 1
+                : (Math.floor(origin.length / pageSize))
+        ))()
+        let paginated = (() => (
+            origin.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
+        ))()
 
-    const rowDataReducer = (state, action) => {
+        return {
+            origin: origin,
+            filters: filters,
+            filtered: filtered,
+            page: page,
+            pageSize: pageSize,
+            pageCount: pageCount,
+            paginated: paginated,
+        }
+    })()
+
+    const dataReducer = (state, action) => {
         switch (action.type) {
             case 'LOAD_DATA':
-                return { ...state, rows: action.rows }
+                return { ...state, origin: action.origin }
             case 'FILTER_DATA':
-                return { ...state, filters: action.filters, filteredRows: action.filteredRows }
+                return { ...state, filters: action.filters, filtered: action.filtered }
+            case 'PAGINATE_DATA':
+                return { ...state, page: action.page, pageSize: action.pageSize, pageCount: action.pageCount, paginated: action.paginated }
 
             default:
                 throw new Error()
@@ -35,36 +63,15 @@ export default function EBSDatatable({ data }) {
      * Above codes are Temporary
      */
 
-    const [dataCount, setDataCount] = useState(data.rows.length)
-    const [columnData, setColumnData] = useState(data.headers)
-    const [rowData, dispatchRowData] = useReducer(rowDataReducer, initialRowDataState)
-    const [pageSize, setPageSize] = useState(20)
-    const [pageCount, setPageCount] = useState(
-        (dataCount % pageSize) > 0
-            ? (Math.floor(dataCount / pageSize)) + 1
-            : (Math.floor(dataCount / pageSize))
-    )
-    const [page, setPage] = useState(dataCount > 0 ? 1 : 0)
-    const [sortedOn, setSortedOn] = useState('')
-    const [sortedOrder, setSortedOrder] = useState('ASC') // ASC or DSC
-    const [enabledColumns, SetEnabledColumns] = useState(
-        columnData.map(header => ({
-            name: header,
-            enabled: true
-        }))
-    )
 
-    return (data && <EBSTableData
-        dataCount={dataCount}
+
+    const [columnData, setColumnData] = useState(data.headers)
+    const [rowData, setRowData] = useReducer(dataReducer, initialDataState)
+
+    return (columnData && rowData && <EBSTableData
         columnData={columnData}
         rowData={rowData}
-        pageSize={pageSize}
-        pageCount={pageCount}
-        page={page}
-        dispatchRowData={dispatchRowData}
-        setPage={setPage}
-        setPageCount={setPageCount}
-        setPageSize={setPageSize}
+        setRowData={setRowData}
     />)
 
 }

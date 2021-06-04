@@ -13,18 +13,14 @@ import EBSTableToolbar from "./EBSTableToolbar";
 export default function EBSTableData(props) {
 
     const {
-        dataCount,
         columnData,
         rowData,
-        pageSize,
-        pageCount,
-        page,
-        dispatchRowData,
-        setPage,
-        setPageCount,
-        setPageSize
+        setRowData,
     } = props
-    const { rows, filters, filteredRows } = rowData
+
+    const {
+        paginated
+    } = rowData
 
     return (
         <Grid padded>
@@ -35,14 +31,9 @@ export default function EBSTableData(props) {
                     </Grid.Row>
                     <Grid.Row>
                         <EBSTableToolbar
-                            dataCount={dataCount}
                             columnData={columnData}
                             rowData={rowData}
-                            pageSize={pageSize}
-                            page={page}
-                            dispatchRowData={dispatchRowData}
-                            setPage={setPage}
-                            setPageCount={setPageCount}
+                            setRowData={setRowData}
                         />
                     </Grid.Row>
                     <Grid.Row>
@@ -53,13 +44,7 @@ export default function EBSTableData(props) {
 
                             <Table.Body>
                                 {/* for Flexible table, it needs to be fixed in the future */}
-                                {
-                                    filteredRows.length > 0
-                                        ? filteredRows.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
-                                            .map((row, index) => <EBSCellRow row={row} key={index} />)
-                                        : rows.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
-                                            .map((row, index) => <EBSCellRow row={row} key={index} />)
-                                }
+                                {paginated.map((row, index) => <EBSCellRow row={row} key={index} />)}
                             </Table.Body>
 
                             <Table.Footer>
@@ -68,11 +53,7 @@ export default function EBSTableData(props) {
 
                                         <EBSTablePagination
                                             rowData={rowData}
-                                            pageSize={pageSize}
-                                            pageCount={pageCount}
-                                            setPage={setPage}
-                                            setPageSize={setPageSize}
-                                            setPageCount={setPageCount}
+                                            setRowData={setRowData}
                                         />
 
                                     </Table.HeaderCell>

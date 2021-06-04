@@ -26,14 +26,16 @@ function searchReducer(state, action) {
 
 const Search = props => {
 
-    const { searchState, onSearchChange, filters, dispatchRowData } = props
+    const { searchState, onSearchChange, rowData, setRowData } = props
+    const { filters } = rowData
     const { searchValue, searchResults } = searchState
 
     useEffect(() => {
-        dispatchRowData({
+        setRowData({
+            ...rowData,
             type: 'FILTER_DATA',
             filters: filters.indexOf('search') === -1 ? [...filters, 'search'] : [...filters],
-            filteredRows: searchResults,
+            filtered: searchResults,
         })
     }, [searchState])
 
@@ -55,17 +57,20 @@ export default function EBSTableToolbar(props) {
     const [searchState, dispatchSearch] = useReducer(searchReducer, initialSearchState)
 
     const {
-        dataCount,
         columnData,
         rowData,
-        pageSize,
-        page,
-        dispatchRowData,
-        setPage,
-        setPageCount,
+        setRowData,
     } = props
-    const { rows, filters, filteredRows } = rowData
-    const { loading, searchResults, searchValue } = searchState
+
+    const {
+        origin,
+        filters,
+        filtered,
+        page,
+        pageSize,
+        pageCount,
+        paginated
+    } = rowData
 
     const timeoutRef = useRef()
 
@@ -77,23 +82,23 @@ export default function EBSTableToolbar(props) {
                 return
             }
 
-            const results = filteredRows.length > 0
-                ? filteredRows.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
-                : rows.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
+            const results = filtered.length > 0
+                ? filtered.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
+                : origin.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
 
             dispatchSearch({
                 searchType: 'FINISH_SEARCH',
                 searchResults: results
             })
 
-            if (results.length > pageSize) {
-                setPageCount(results.length % pageSize > 0
-                    ? (Math.floor(results.length/ pageSize)) + 1
-                    : (Math.floor(results.length/ pageSize))
-                )
-            } else {
-                setPageCount(1)
-            }
+            // if (results.length > pageSize) {
+            //     setPageCount(results.length % pageSize > 0
+            //         ? (Math.floor(results.length / pageSize)) + 1
+            //         : (Math.floor(results.length / pageSize))
+            //     )
+            // } else {
+            //     setPageCount(1)
+            // }
 
         }, 300)
     }, [])
@@ -108,14 +113,16 @@ export default function EBSTableToolbar(props) {
         <Grid container columns='equal'>
             <Grid.Row>
                 <Grid.Column textAlign="left">
-                    Showing {(Number(page) - 1) * Number(pageSize) + (dataCount > 0 ? 1 : 0)} - {(Number(page) * Number(pageSize)) > dataCount ? dataCount : (Number(page) * Number(pageSize))} of {dataCount}
+                    Showing {(Number(page) - 1) * Number(pageSize) + (paginated.length > 0 ? 1 : 0)} - {(Number(page) * Number(pageSize)) > paginated.length ? paginated.length : (Number(page) * Number(pageSize))} of {paginated.length}
                 </Grid.Column>
                 <Grid.Column textAlign="right">
                     <Search
-                        onSearchChange={handleSearchChange}
+                        rowData={rowData}
+                        setRowData={setRowData}
+
                         searchState={searchState}
-                        filters={filters}
-                        dispatchRowData={dispatchRowData}
+
+                        onSearchChange={handleSearchChange}
                     />
                 </Grid.Column>
                 <Grid.Column textAlign="right">
