@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react"
+import { useCallback, useReducer, useState } from "react"
 import EBSTableData from "./EBSTableData"
 
 
@@ -17,9 +17,12 @@ export default function EBSDatatable({ data }) {
     const initialDataState = (() => {
         /**
          * Order is important
-         * 1. apply filters
-         * 2. apply sort
-         * 3. apply pagination
+         * 1. apply enabled columns
+         * 2. apply filters
+         * 3. apply sort
+         * 4. apply pagination
+         * 
+         * 'paginated' is an array of data applied all methods above.
          */
         let origin = data.rows
         let filters = []
@@ -46,19 +49,21 @@ export default function EBSDatatable({ data }) {
         }
     })()
 
-    const dataReducer = (state, action) => {
+    const dataReducer = useCallback((state, action) => {
         switch (action.type) {
             case 'LOAD_DATA':
                 return { ...state, origin: action.origin }
             case 'FILTER_DATA':
                 return { ...state, filters: action.filters, filtered: action.filtered, paginated: action.paginated }
+            case 'SORT_DATA':
+                return { ...state, origin: action.origin, filtered: action.filtered, paginated: action.paginated }
             case 'PAGINATE_DATA':
                 return { ...state, page: action.page, pageSize: action.pageSize, pageCount: action.pageCount, paginated: action.paginated }
 
             default:
                 throw new Error()
         }
-    }
+    }, [])
     /**
      * Above codes are Temporary
      */

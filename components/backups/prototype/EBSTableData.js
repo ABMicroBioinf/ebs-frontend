@@ -37,10 +37,14 @@ export default function EBSTableData(props) {
                         />
                     </Grid.Row>
                     <Grid.Row>
-                        <Table celled>
+                        <Table sortable celled>
 
                             {/* for Flexible table, it needs to be fixed in the future */}
-                            <EBSTableHeader columnData={columnData} />
+                            <EBSTableHeader
+                                columnData={columnData}
+                                rowData={rowData}
+                                setRowData={setRowData}
+                            />
 
                             <Table.Body>
                                 {/* for Flexible table, it needs to be fixed in the future */}

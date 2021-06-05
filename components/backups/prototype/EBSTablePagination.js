@@ -19,12 +19,10 @@ export default function EBSTablePagination(props) {
 
     const {
         origin,
-        filters,
         filtered,
         page,
         pageSize,
         pageCount,
-        paginated,
     } = rowData
 
     const handlePageChange = (e, data) => {

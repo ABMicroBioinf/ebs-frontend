@@ -16,8 +16,10 @@ function searchReducer(state, action) {
             return { ...state, loading: true, searchValue: action.searchQuery }
         case 'FINISH_SEARCH':
             return { ...state, loading: false, searchResults: action.searchResults }
-        case 'UPDATE_SELECTION':
-            return { ...state, value: action.searchSelection }
+        // case 'UPDATE_SELECTION':
+        //     return { ...state, value: action.searchSelection }
+        // case 'NOT_FOUND':
+        //     return { ...state, loading: false }
 
         default:
             throw new Error()
@@ -27,6 +29,7 @@ function searchReducer(state, action) {
 const Search = props => {
 
     const [searchState, dispatchSearch] = useReducer(searchReducer, initialSearchState)
+
     const { rowData, setRowData } = props
     const { searchValue, searchResults } = searchState
     const { origin, filters, filtered, page, pageSize } = rowData
@@ -45,10 +48,12 @@ const Search = props => {
                 ? filtered.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
                 : origin.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
 
-            dispatchSearch({
-                searchType: 'FINISH_SEARCH',
-                searchResults: results
-            })
+            if (results.length > 0) {
+                dispatchSearch({
+                    searchType: 'FINISH_SEARCH',
+                    searchResults: results
+                })
+            }
         }, 300)
     }, [])
 
