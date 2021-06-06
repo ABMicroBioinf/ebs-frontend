@@ -32,7 +32,7 @@ const Search = props => {
 
     const { rowData, setRowData } = props
     const { searchValue, searchResults } = searchState
-    const { origin, filters, filtered, page, pageSize } = rowData
+    const { origin, filtered, page, pageSize } = rowData
 
     const timeoutRef = useRef()
 
@@ -65,14 +65,13 @@ const Search = props => {
 
     useEffect(() => {
         let dataset = filtered.length > 0 ? filtered : origin
-        let results = searchResults.length > 0 ? searchResults : dataset
+        let founds = searchResults.length > 0 ? searchResults : dataset
         setRowData({
             ...rowData,
             type: 'FILTER_DATA',
-            filters: filters.indexOf('search') === 0 ? [...filters, 'search'] : [...filters],
-            filtered: results,
-            paginated: results.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
-
+            founds: founds,
+            currentPage: page,
+            currentPageSize: pageSize,
         })
     }, [searchState])
 
@@ -99,12 +98,9 @@ export default function EBSTableToolbar(props) {
 
     const {
         origin,
-        filters,
         filtered,
         page,
         pageSize,
-        pageCount,
-        paginated
     } = rowData
 
     return (

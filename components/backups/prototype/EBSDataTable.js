@@ -25,7 +25,6 @@ export default function EBSDatatable({ data }) {
          * 'paginated' is an array of data applied all methods above.
          */
         let origin = data.rows
-        let filters = []
         let filtered = []
         let page = 1
         let pageSize = 20
@@ -40,7 +39,6 @@ export default function EBSDatatable({ data }) {
 
         return {
             origin: origin,
-            filters: filters,
             filtered: filtered,
             page: page,
             pageSize: pageSize,
@@ -54,11 +52,62 @@ export default function EBSDatatable({ data }) {
             case 'LOAD_DATA':
                 return { ...state, origin: action.origin }
             case 'FILTER_DATA':
-                return { ...state, filters: action.filters, filtered: action.filtered, paginated: action.paginated }
+                return {
+                    ...state,
+                    filtered: action.founds,
+                    paginated: action.founds
+                        .slice(
+                            (action.currentPage - 1) * action.currentPageSize,
+                            ((action.currentPage - 1) * action.currentPageSize) + action.currentPageSize
+                        )
+                }
             case 'SORT_DATA':
-                return { ...state, origin: action.origin, filtered: action.filtered, paginated: action.paginated }
+                if (action.target === 'filtered') {
+                    return {
+                        ...state,
+                        filtered: action.dataset,
+                        paginated: action.dataset
+                            .slice(
+                                (action.currentPage - 1) * action.currentPageSize,
+                                ((action.currentPage - 1) * action.currentPageSize) + action.currentPageSize
+                            )
+                    }
+                } else if (action.target === 'origin') {
+                    return {
+                        ...state,
+                        origin: action.dataset,
+                        paginated: action.dataset
+                            .slice(
+                                (action.currentPage - 1) * action.currentPageSize,
+                                ((action.currentPage - 1) * action.currentPageSize) + action.currentPageSize
+                            )
+                    }
+                } else {
+                    throw new Error()
+                }
             case 'PAGINATE_DATA':
-                return { ...state, page: action.page, pageSize: action.pageSize, pageCount: action.pageCount, paginated: action.paginated }
+                return {
+                    ...state,
+                    page: action.page,
+                    paginated: action.dataset
+                        .slice(
+                            (action.page - 1) * action.currentPageSize,
+                            ((action.page - 1) * action.currentPageSize) + action.currentPageSize
+                        )
+                }
+            case 'CHANGE_PAGESIZE':
+                return {
+                    ...state,
+                    pageSize: action.pageSize,
+                    pageCount: action.dataset.length % action.pageSize > 0
+                        ? (Math.floor(action.dataset.length / action.pageSize)) + 1
+                        : (Math.floor(action.dataset.length / action.pageSize)),
+                    paginated: action.dataset
+                        .slice(
+                            (action.currentPage - 1) * action.pageSize,
+                            ((action.currentPage - 1) * action.pageSize) + action.pageSize
+                        )
+                }
 
             default:
                 throw new Error()

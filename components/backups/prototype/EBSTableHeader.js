@@ -16,7 +16,7 @@ export default function EBSTableHeader(props) {
 
     const initialSortState = {
         column: null,
-        data: filtered.length > 0 ? filtered : origin,
+        dataset: filtered.length > 0 ? filtered : origin,
         direction: null,
     }
 
@@ -26,7 +26,7 @@ export default function EBSTableHeader(props) {
                 if (state.column === action.column) {
                     return {
                         ...state,
-                        data: state.data.slice().reverse(),
+                        dataset: state.dataset.slice().reverse(),
                         direction:
                             state.direction === 'ascending' ? 'descending' : 'ascending',
                     }
@@ -34,7 +34,7 @@ export default function EBSTableHeader(props) {
 
                 return {
                     column: action.column,
-                    data: _.sortBy(state.data, [action.column]),
+                    dataset: _.orderBy(state.dataset, [action.column]),
                     direction: 'ascending',
                 }
             default:
@@ -43,24 +43,18 @@ export default function EBSTableHeader(props) {
     }, [])
 
     const [sortState, dispatchSort] = useReducer(sortableReducer, initialSortState)
-    const { column, data, direction } = sortState
+    const { column, dataset, direction } = sortState
 
     useEffect(() => {
-        if (filtered.length > 0) {
-            setRowData({
-                ...rowData,
-                type: 'SORT_DATA',
-                filtered: data,
-                paginated: data.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize),
-            })
-        } else {
-            setRowData({
-                ...rowData,
-                type: 'SORT_DATA',
-                origin: data,
-                paginated: data.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize),
-            })
-        }
+        const target = filtered.length > 0 ? 'filtered' : 'origin'
+        setRowData({
+            ...rowData,
+            type: 'SORT_DATA',
+            target: target,
+            dataset: dataset,
+            currentPage: page,
+            currentPageSize: pageSize,
+        })
     }, [sortState])
 
     return (
@@ -74,7 +68,8 @@ export default function EBSTableHeader(props) {
                             key={index}
                         >
                             {title}
-                        </Table.HeaderCell>)
+                        </Table.HeaderCell>
+                    )
                 }
             </Table.Row>
         </Table.Header>

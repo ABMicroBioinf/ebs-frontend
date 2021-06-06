@@ -26,44 +26,26 @@ export default function EBSTablePagination(props) {
     } = rowData
 
     const handlePageChange = (e, data) => {
-        let page = data.activePage
-        let results = []
-        results = filtered.length > 0
-            ? filtered.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
-            : origin.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
+        const page = data.activePage
+        const dataset = filtered.length > 0 ? filtered : origin
         setRowData({
             ...rowData,
             type: 'PAGINATE_DATA',
+            dataset: dataset,
             page: page,
-            paginated: results
+            currentPageSize: pageSize,
         })
     }
 
     const handlePageSizeChange = (e, data) => {
-        let pageSize = data.value
-
-        let pageCount = 0
-        if (filtered.length > 0) {
-            pageCount = filtered.length % pageSize > 0
-                ? (Math.floor(filtered.length / pageSize)) + 1
-                : (Math.floor(filtered.length / pageSize))
-        } else {
-            pageCount = origin.length % pageSize > 0
-                ? (Math.floor(origin.length / pageSize)) + 1
-                : (Math.floor(origin.length / pageSize))
-        }
-
-        let results = []
-        results = filtered.length > 0
-            ? filtered.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
-            : origin.slice((page - 1) * pageSize, ((page - 1) * pageSize) + pageSize)
-        
+        const pageSize = data.value
+        const dataset = filtered.length > 0 ? filtered : origin
         setRowData({
             ...rowData,
-            type: 'PAGINATE_DATA',
+            type: 'CHANGE_PAGESIZE',
+            dataset: dataset,
+            currentPage: page,
             pageSize: pageSize,
-            pageCount: pageCount,
-            paginated: results
         })
     }
 
