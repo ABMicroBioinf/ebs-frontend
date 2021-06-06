@@ -34,7 +34,9 @@ export default function EBSTableHeader(props) {
 
                 return {
                     column: action.column,
-                    dataset: _.orderBy(state.dataset, [action.column]),
+                    dataset: _.sortBy(state.dataset, (obj) => {
+                        return parseFloat(obj[action.column])
+                    }),
                     direction: 'ascending',
                 }
             default:
