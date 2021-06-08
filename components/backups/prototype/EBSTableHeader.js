@@ -18,7 +18,7 @@ export default function EBSTableHeader(props) {
                     columns.filter(colState => colState.display && colState)
                         .map((colState, index) =>
                             <Table.HeaderCell
-                                sorted={sort.column === colState.name 
+                                sorted={sort.column === colState.name
                                     ? sort.direction === 'asc'
                                         ? 'ascending'
                                         : 'descending'
@@ -39,6 +39,9 @@ export default function EBSTableHeader(props) {
                             </Table.HeaderCell>
                         )
                 }
+                <Table.HeaderCell>
+                    Details
+                </Table.HeaderCell>
             </Table.Row>
         </Table.Header>
     )

@@ -17,7 +17,7 @@ import EBSTableToolbar from "./EBSTableToolbar";
 export default function EBSTableData(props) {
 
     const { columnData, rowData, setRowData } = props
-    const { dataset } = rowData
+    const { dataset, primary } = rowData
 
     return (
         <Grid padded>
@@ -43,12 +43,12 @@ export default function EBSTableData(props) {
                             />
 
                             <Table.Body>
-                                {dataset.map((row, index) => <EBSCellRow row={row} key={index} />)}
+                                {dataset.map((row, index) => <EBSCellRow row={row} key={index} primary={primary} />)}
                             </Table.Body>
 
                             <Table.Footer>
                                 <Table.Row>
-                                    <Table.HeaderCell colSpan={columnData.length}>
+                                    <Table.HeaderCell colSpan={columnData.length + 1}>
 
                                         <EBSTablePagination
                                             rowData={rowData}

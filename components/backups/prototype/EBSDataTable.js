@@ -12,10 +12,14 @@ import EBSTableData from "./EBSTableData"
  * @param {data} data
  * @returns <EBSTableData />
  */
-export default function EBSDatatable({ data }) {
+export default function EBSDatatable({ data, primary }) {
 
-    const CUSTOM_COLUMNS = data.headers.map(heading => ({ name: heading, display: true }))
-    const CUSTOM_ROWS = data.rows
+    const CUSTOM_COLUMNS = data.headers.map((heading, index) =>
+        primary === index
+            ? { name: heading, display: true, primary: true }
+            : { name: heading, display: true, primary: false }
+    )
+    const CUSTOM_ROWS = data.rows.slice()
 
     /**
      * Temporary
@@ -54,7 +58,8 @@ export default function EBSDatatable({ data }) {
         return {
             ORIGIN: ORIGIN,
             history: history,
-            dataset: dataset
+            dataset: dataset,
+            primary: primary
         }
     })()
 

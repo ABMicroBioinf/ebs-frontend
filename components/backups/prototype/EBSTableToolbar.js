@@ -21,7 +21,7 @@ function searchReducer(state, action) {
         case 'START_SEARCH':
             return { ...state, loading: true, searchValue: action.searchQuery }
         case 'FINISH_SEARCH':
-            return { ...state, loading: true, searchValue: action.searchQuery }
+            return { ...state, loading: false, searchValue: action.searchQuery }
         case 'NOT_FOUND':
             return { ...state, loading: false }
 
@@ -117,7 +117,7 @@ function ColumnSelector(props) {
             <Dropdown.Menu>
                 {columnData &&
                     columnData.map((column, index) => (
-                        <Dropdown.Item key={index}>
+                        <Dropdown.Item key={index} disabled={column.primary}>
                             <input
                                 onChange={handleCheck}
                                 onBlur={handleBlur}

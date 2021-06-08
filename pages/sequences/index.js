@@ -2,21 +2,21 @@
  * Author: Jongil Yoon
  */
 
-import EBSDatatable from "../components/backups/prototype/EBSDataTable"
-import TopNav from "../components/TopNav"
+import EBSDatatable from "../../components/backups/prototype/EBSDataTable"
+import TopNav from "../../components/TopNav"
 
 // Temporary
 import { promises as fs } from "fs"
 import path from "path"
-import { csv_to_json } from "../fakebackend/dbaccess"
+import { csv_to_json } from "../../fakebackend/dbaccess"
 
 
-export default function Sequences({data}) {
+export default function Sequences({ data, primary }) {
 
     return (
         <>
             <TopNav />
-            <EBSDatatable data={data}/>
+            <EBSDatatable data={data} primary={primary} />
         </>
     )
 
@@ -39,6 +39,7 @@ export async function getStaticProps() {
     return {
         props: {
             data: await Promise.resolve(nullabor),
+            primary: 0,
         },
     } // Javascript Object
 
