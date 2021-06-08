@@ -1,3 +1,7 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { useRouter } from "next/router"
 import { Dropdown, Icon, Menu } from "semantic-ui-react"
 
@@ -41,8 +45,9 @@ export default function TopNav() {
     return (
         <Menu secondary className='ebs-top-navbar-shadow'>
             <Menu.Item
+                link
                 name='Branding'
-                to='/'
+                href='/'
             >
                 <Icon name='dna' />
                 EBS

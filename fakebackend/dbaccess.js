@@ -1,3 +1,7 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 export const csv_to_json = csv => {
     let lines = csv.split('\n')
     let data = []

@@ -1,10 +1,16 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { useCallback, useEffect, useReducer, useRef } from "react";
 import { Dropdown, Grid, Input } from "semantic-ui-react";
 
 
+/**
+ * Search Tool
+ */
 const initialSearchState = {
     loading: false,
-    searchResults: [],
     searchValue: '',
 }
 
@@ -15,24 +21,21 @@ function searchReducer(state, action) {
         case 'START_SEARCH':
             return { ...state, loading: true, searchValue: action.searchQuery }
         case 'FINISH_SEARCH':
-            return { ...state, loading: false, searchResults: action.searchResults }
-        // case 'UPDATE_SELECTION':
-        //     return { ...state, value: action.searchSelection }
-        // case 'NOT_FOUND':
-        //     return { ...state, loading: false }
+            return { ...state, loading: true, searchValue: action.searchQuery }
+        case 'NOT_FOUND':
+            return { ...state, loading: false }
 
         default:
             throw new Error()
     }
 }
 
-const Search = props => {
+function Search(props) {
 
     const [searchState, dispatchSearch] = useReducer(searchReducer, initialSearchState)
 
     const { rowData, setRowData } = props
-    const { searchValue, searchResults } = searchState
-    const { origin, filtered, page, pageSize } = rowData
+    const { searchValue } = searchState
 
     const timeoutRef = useRef()
 
@@ -44,16 +47,10 @@ const Search = props => {
                 return
             }
 
-            const results = filtered.length > 0
-                ? filtered.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
-                : origin.filter(row => JSON.stringify(Object.values(row)).includes(data.value))
-
-            if (results.length > 0) {
-                dispatchSearch({
-                    searchType: 'FINISH_SEARCH',
-                    searchResults: results
-                })
-            }
+            dispatchSearch({
+                searchType: 'FINISH_SEARCH',
+                searchQuery: data.value
+            })
         }, 300)
     }, [])
 
@@ -64,14 +61,13 @@ const Search = props => {
     }, [])
 
     useEffect(() => {
-        let dataset = filtered.length > 0 ? filtered : origin
-        let founds = searchResults.length > 0 ? searchResults : dataset
         setRowData({
-            ...rowData,
-            type: 'FILTER_DATA',
-            founds: founds,
-            currentPage: page,
-            currentPageSize: pageSize,
+            type: 'SET_HISTORY',
+            module: 'search',
+            search: searchState.searchValue
+        })
+        setRowData({
+            type: 'APPLY_HISTORY',
         })
     }, [searchState])
 
@@ -88,49 +84,101 @@ const Search = props => {
 }
 
 
+/**
+ * Column Selector
+ */
+function ColumnSelector(props) {
+
+    const { columnData, rowData, setRowData } = props
+    const { ORIGIN, history, dataset } = rowData
+    const { order, search, columns, sort, pagination } = history
+    const { page, pageSize, pageCount } = pagination
+
+    const handleCheck = useCallback(e => {
+        setRowData({
+            type: 'SET_HISTORY',
+            module: 'columns',
+            column: e.currentTarget.value
+        })
+        setRowData({
+            type: 'APPLY_HISTORY',
+        })
+    }, [])
+
+    const handleBlur = useCallback(e => {
+        if (e && e.relatedTarget === null) {
+            // setToggleParent(false)
+            // console.log('relatedtarget exist')
+        }
+    }, [])
+
+    return (
+        <Dropdown text='columns'>
+            <Dropdown.Menu>
+                {columnData &&
+                    columnData.map((column, index) => (
+                        <Dropdown.Item key={index}>
+                            <input
+                                onChange={handleCheck}
+                                onBlur={handleBlur}
+                                value={column.name}
+                                defaultChecked={column.display}
+                                type="checkbox"
+                            />
+                            <label>{column.name}</label>
+                        </Dropdown.Item>
+                    ))
+                }
+            </Dropdown.Menu>
+        </Dropdown>
+    )
+
+}
+
+
+/**
+ * Toolbar Component
+ * @param {*} props 
+ * @returns 
+ */
 export default function EBSTableToolbar(props) {
 
-    const {
-        columnData,
-        rowData,
-        setRowData,
-    } = props
-
-    const {
-        origin,
-        filtered,
-        page,
-        pageSize,
-    } = rowData
+    const { columnData, rowData, setRowData } = props
+    const { ORIGIN, history, dataset } = rowData
+    const { order, search, columns, pagination } = history
+    const { page, pageSize, pageCount } = pagination
 
     return (
         <Grid container columns='equal'>
             <Grid.Row>
                 <Grid.Column textAlign="left">
                     {(() => {
-                        let dataset = filtered.length > 0 ? filtered : origin
                         return (
                             'Showing ' +
                             ((Number(page) - 1) * Number(pageSize) + (dataset.length > 0 ? 1 : 0)).toString() +
                             ' - ' +
-                            ((Number(page) * Number(pageSize)) > dataset.length ? dataset.length : (Number(page) * Number(pageSize))).toString() +
+                            (Number(pageSize) > dataset.length ? ORIGIN.length : (Number(page) * Number(pageSize))).toString() +
                             ' of ' +
-                            dataset.length
+                            ORIGIN.length
                         )
                     })()}
                 </Grid.Column>
                 <Grid.Column textAlign="right">
+
                     <Search
                         rowData={rowData}
                         setRowData={setRowData}
                     />
+
                 </Grid.Column>
                 <Grid.Column textAlign="right">
-                    <Dropdown text='columns'>
-                        <Dropdown.Menu>
-                            {columnData.map((column, index) => <Dropdown.Item key={index}>{column}</Dropdown.Item>)}
-                        </Dropdown.Menu>
-                    </Dropdown>
+
+                    <ColumnSelector
+                        columnData={columnData}
+                        rowData={rowData}
+                        setRowData={setRowData}
+                    />
+
                 </Grid.Column>
             </Grid.Row>
         </Grid>

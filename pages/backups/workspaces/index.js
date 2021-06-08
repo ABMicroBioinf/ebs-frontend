@@ -1,3 +1,7 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { Grid } from "semantic-ui-react"
 import TopNav from "../../../components/TopNav"
 import OpenAnalysis from "../../components/OpenAnalysis"

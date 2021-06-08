@@ -1,5 +1,10 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { Container, Form, Grid, Input, Segment } from "semantic-ui-react";
 import TopNav from "../components/TopNav";
+
 
 export default function Account() {
 

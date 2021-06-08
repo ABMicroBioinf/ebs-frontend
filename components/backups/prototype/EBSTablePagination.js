@@ -1,3 +1,7 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { Dropdown, Grid, Menu, Pagination } from "semantic-ui-react";
 
 
@@ -12,40 +16,29 @@ const pageSizeOptions = [
 
 export default function EBSTablePagination(props) {
 
-    const {
-        rowData,
-        setRowData,
-    } = props
-
-    const {
-        origin,
-        filtered,
-        page,
-        pageSize,
-        pageCount,
-    } = rowData
+    const { rowData, setRowData } = props
+    const { ORIGIN, history, dataset } = rowData
+    const { order, search, columns, pagination } = history
+    const { page, pageSize, pageCount } = pagination
 
     const handlePageChange = (e, data) => {
-        const page = data.activePage
-        const dataset = filtered.length > 0 ? filtered : origin
         setRowData({
-            ...rowData,
-            type: 'PAGINATE_DATA',
-            dataset: dataset,
-            page: page,
-            currentPageSize: pageSize,
+            type: 'SET_HISTORY',
+            page: data.activePage,
+        })
+        setRowData({
+            type: 'APPLY_HISTORY',
         })
     }
 
     const handlePageSizeChange = (e, data) => {
-        const pageSize = data.value
-        const dataset = filtered.length > 0 ? filtered : origin
         setRowData({
-            ...rowData,
-            type: 'CHANGE_PAGESIZE',
-            dataset: dataset,
-            currentPage: page,
-            pageSize: pageSize,
+            type: 'SET_HISTORY',
+            page: 1,
+            pageSize: data.value,
+        })
+        setRowData({
+            type: 'APPLY_HISTORY',
         })
     }
 

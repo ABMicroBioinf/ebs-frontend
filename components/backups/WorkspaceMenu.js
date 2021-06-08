@@ -1,4 +1,9 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { Grid, Icon, List, Menu } from "semantic-ui-react";
+
 
 export default function WorkspaceMenu({ activeWork, analyses, sequences, setActiveWork }) {
 

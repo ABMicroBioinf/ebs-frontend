@@ -1,3 +1,7 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import axios from 'axios'
 import { useState } from 'react'
 import { Button, Dropdown, Form, Grid, Icon, Input, List, Menu, Segment, TextArea } from 'semantic-ui-react'

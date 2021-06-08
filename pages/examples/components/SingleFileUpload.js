@@ -1,6 +1,11 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import axios from 'axios'
 import { useState } from 'react'
 import { Button, Card, CardContent, Form } from 'semantic-ui-react'
+
 
 export default function SingleFileUpload() {
 

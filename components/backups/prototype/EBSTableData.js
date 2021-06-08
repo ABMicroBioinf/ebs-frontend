@@ -1,3 +1,7 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { Grid, Table } from "semantic-ui-react";
 import EBSCellRow from "./EBSCellRow";
 import EBSTableHeader from "./EBSTableHeader";
@@ -12,15 +16,8 @@ import EBSTableToolbar from "./EBSTableToolbar";
  */
 export default function EBSTableData(props) {
 
-    const {
-        columnData,
-        rowData,
-        setRowData,
-    } = props
-
-    const {
-        paginated
-    } = rowData
+    const { columnData, rowData, setRowData } = props
+    const { dataset } = rowData
 
     return (
         <Grid padded>
@@ -39,7 +36,6 @@ export default function EBSTableData(props) {
                     <Grid.Row>
                         <Table sortable celled>
 
-                            {/* for Flexible table, it needs to be fixed in the future */}
                             <EBSTableHeader
                                 columnData={columnData}
                                 rowData={rowData}
@@ -47,8 +43,7 @@ export default function EBSTableData(props) {
                             />
 
                             <Table.Body>
-                                {/* for Flexible table, it needs to be fixed in the future */}
-                                {paginated.map((row, index) => <EBSCellRow row={row} key={index} />)}
+                                {dataset.map((row, index) => <EBSCellRow row={row} key={index} />)}
                             </Table.Body>
 
                             <Table.Footer>

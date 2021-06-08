@@ -1,5 +1,10 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { Grid, List } from "semantic-ui-react";
 import MultipleFileUpload from "./components/MultipleFileUpload";
+
 
 export default function Upload() {
     return (

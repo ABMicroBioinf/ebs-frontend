@@ -1,77 +1,43 @@
-import _ from 'lodash'
-import { useCallback, useEffect, useReducer } from "react";
-import { Table } from "semantic-ui-react";
+/**
+ * Author: Jongil Yoon
+ */
 
+import { Table } from "semantic-ui-react"
 
 export default function EBSTableHeader(props) {
 
     const { columnData, rowData, setRowData } = props
-
-    const {
-        origin,
-        filtered,
-        page,
-        pageSize,
-    } = rowData
-
-    const initialSortState = {
-        column: null,
-        dataset: filtered.length > 0 ? filtered : origin,
-        direction: null,
-    }
-
-    const sortableReducer = useCallback((state, action) => {
-        switch (action.type) {
-            case 'CHANGE_SORT':
-                if (state.column === action.column) {
-                    return {
-                        ...state,
-                        dataset: state.dataset.slice().reverse(),
-                        direction:
-                            state.direction === 'ascending' ? 'descending' : 'ascending',
-                    }
-                }
-
-                return {
-                    column: action.column,
-                    dataset: _.sortBy(state.dataset, (obj) => {
-                        return parseFloat(obj[action.column])
-                    }),
-                    direction: 'ascending',
-                }
-            default:
-                throw new Error()
-        }
-    }, [])
-
-    const [sortState, dispatchSort] = useReducer(sortableReducer, initialSortState)
-    const { column, dataset, direction } = sortState
-
-    useEffect(() => {
-        const target = filtered.length > 0 ? 'filtered' : 'origin'
-        setRowData({
-            ...rowData,
-            type: 'SORT_DATA',
-            target: target,
-            dataset: dataset,
-            currentPage: page,
-            currentPageSize: pageSize,
-        })
-    }, [sortState])
+    const { ORIGIN, history, dataset } = rowData
+    const { order, search, columns, sort, pagination } = history
+    const { page, pageSize, pageCount } = pagination
 
     return (
         <Table.Header>
             <Table.Row>
-                {columnData &&
-                    columnData.map((title, index) =>
-                        <Table.HeaderCell
-                            sorted={column === title ? direction : null}
-                            onClick={() => dispatchSort({ type: 'CHANGE_SORT', column: title })}
-                            key={index}
-                        >
-                            {title}
-                        </Table.HeaderCell>
-                    )
+                {columns &&
+                    columns.filter(colState => colState.display && colState)
+                        .map((colState, index) =>
+                            <Table.HeaderCell
+                                sorted={sort.column === colState.name 
+                                    ? sort.direction === 'asc'
+                                        ? 'ascending'
+                                        : 'descending'
+                                    : null}
+                                onClick={() => {
+                                    setRowData({
+                                        type: 'SET_HISTORY',
+                                        module: 'sort',
+                                        sort: colState.name
+                                    })
+                                    setRowData({
+                                        type: 'APPLY_HISTORY',
+                                    })
+                                }}
+                                key={index}
+                            >
+                                {colState.name}
+                            </Table.HeaderCell>
+                        )
                 }
             </Table.Row>
         </Table.Header>

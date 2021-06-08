@@ -1,4 +1,9 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { Table } from "semantic-ui-react";
+
 
 export default function EBSCellRow({ row }) {
 

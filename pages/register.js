@@ -1,5 +1,10 @@
+/**
+ * Author: Jongil Yoon
+ */
+
 import { Button, Form, Grid, Icon, Input, Segment } from "semantic-ui-react";
 import TopNav from "../components/TopNav";
+
 
 export default function Register() {
 
