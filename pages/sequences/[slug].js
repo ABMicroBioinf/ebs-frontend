@@ -2,8 +2,8 @@ import { useRouter } from "next/router"
 import TopNav from "../../components/TopNav"
 
 
-export async function getServerSideProps(context) {
-}
+// export async function getServerSideProps(context) {
+// }
 
 export default function Sequence() {
 
