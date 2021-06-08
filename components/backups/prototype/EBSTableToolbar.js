@@ -9,67 +9,62 @@ import { Dropdown, Grid, Input } from "semantic-ui-react";
 /**
  * Search Tool
  */
-const initialSearchState = {
-    loading: false,
-    searchValue: '',
-}
-
-function searchReducer(state, action) {
-    switch (action.searchType) {
-        case 'CLEAN_QUERY':
-            return initialSearchState
-        case 'START_SEARCH':
-            return { ...state, loading: true, searchValue: action.searchQuery }
-        case 'FINISH_SEARCH':
-            return { ...state, loading: false, searchValue: action.searchQuery }
-        case 'NOT_FOUND':
-            return { ...state, loading: false }
-
-        default:
-            throw new Error()
-    }
-}
-
 function Search(props) {
 
-    const [searchState, dispatchSearch] = useReducer(searchReducer, initialSearchState)
-
     const { rowData, setRowData } = props
-    const { searchValue } = searchState
 
-    const timeoutRef = useRef()
+    const initialSearchState = {
+        loading: false,
+        searchValue: '',
+    }
+    
+    function searchReducer(state, action) {
+        switch (action.searchType) {
+            case 'CLEAN_QUERY':
+                return initialSearchState
+            case 'START_SEARCH':
+                return { ...state, loading: true, searchValue: action.searchQuery }
+            case 'FINISH_SEARCH':
+                return { ...state, loading: false, searchValue: action.searchQuery }
+            case 'NOT_FOUND':
+                return { ...state, loading: false }
+    
+            default:
+                throw new Error()
+        }
+    }
+
+    const [searchState, dispatchSearch] = useReducer(searchReducer, initialSearchState)
+    const { searchValue } = searchState
 
     const handleSearchChange = useCallback((e, data) => {
         dispatchSearch({ searchType: 'START_SEARCH', searchQuery: data.value })
-        timeoutRef.current = setTimeout(() => {
-            if (data.value.length === 0) {
-                dispatchSearch({ searchType: 'CLEAN_QUERY' })
-                return
-            }
-
-            dispatchSearch({
-                searchType: 'FINISH_SEARCH',
-                searchQuery: data.value
+        if (data.value.length === 0) {
+            dispatchSearch({ searchType: 'CLEAN_QUERY' })
+            setRowData({
+                type: 'SET_HISTORY',
+                module: 'search',
+                search: ''
             })
-        }, 300)
-    }, [])
-
-    useEffect(() => {
-        return () => {
-            clearTimeout(timeoutRef.current)
+            setRowData({
+                type: 'APPLY_HISTORY',
+            })
+            return
         }
-    }, [])
 
-    useEffect(() => {
+        dispatchSearch({
+            searchType: 'FINISH_SEARCH',
+            searchQuery: data.value
+        })
         setRowData({
             type: 'SET_HISTORY',
             module: 'search',
-            search: searchState.searchValue
+            search: data.value
         })
         setRowData({
             type: 'APPLY_HISTORY',
         })
-    }, [searchState])
+    }, [])
 
     return (
         <Input

@@ -3,7 +3,7 @@
  */
 
 import _ from 'lodash'
-import { useCallback, useReducer, useState } from "react"
+import { useCallback, useEffect, useReducer, useState } from "react"
 import EBSTableData from "./EBSTableData"
 
 

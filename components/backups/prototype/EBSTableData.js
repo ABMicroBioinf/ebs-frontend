@@ -43,7 +43,10 @@ export default function EBSTableData(props) {
                             />
 
                             <Table.Body>
-                                {dataset.map((row, index) => <EBSCellRow row={row} key={index} primary={primary} />)}
+                                {dataset.length > 0
+                                    ? dataset.map((row, index) => <EBSCellRow row={row} key={index} primary={primary} />)
+                                    : <Table.Row><Table.Cell colSpan={columnData.length + 1}>not found</Table.Cell></Table.Row>
+                                }
                             </Table.Body>
 
                             <Table.Footer>
