@@ -1,17 +1,1 @@
-[
-    { 
-        "email": "clinician@ahs.ca",
-        "password": "Iamyourfather",
-        "role": "clinician"
-    },
-    {
-        "email": "bioinformatician@ahs.ca",
-        "password": "Maytheforcebewithyou",
-        "role": "bioinformatician"
-    },
-    {
-        "email": "jiysait@gmail.com",
-        "password": "123",
-        "role": "admin"
-    }
-]
+[{"email":"test@test.ca","username":"tester","password":"$2b$10$tvBCLWWumR.vHtdTEmOvnOTLiLaqsTBxvvE/t9BoxMp6OzUs6YC2a"}]

@@ -2,12 +2,13 @@
  * Author: Jongil Yoon
  */
 
-import Link from 'next/link'
-import { Container } from "semantic-ui-react";
-import TopNav from "../components/TopNav";
+import Link from "next/link"
+import { Container } from "semantic-ui-react"
+import TopNav from "../components/TopNav"
 
 
 export default function Home() {
+
   return (
     <>
       <TopNav />
