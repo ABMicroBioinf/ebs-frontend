@@ -1,10 +1,12 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "node": true
     },
     "extends": [
         "eslint:recommended",
+        "plugin:prettier/recommended",
         "plugin:react/recommended"
     ],
     "parserOptions": {
@@ -17,23 +19,10 @@
     "plugins": [
         "react"
     ],
-    "rules": {
-        "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off",
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "jsx-quotes": [
-            "error",
-            "prefer-double"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ]
-    },
     "globals": {
         "React": "writable"
+    },
+    "rules": {
+        "react/prop-types": "off" // temporary; recommend to use typescript
     }
 }

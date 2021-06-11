@@ -35,5 +35,3 @@ yarn-error.log*
 
 # A map of EBS backend API
 apimap.json
-
-# next.js
