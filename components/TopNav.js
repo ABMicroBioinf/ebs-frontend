@@ -4,13 +4,14 @@
 
 import axios from "axios"
 import { useRouter } from "next/router"
-import { useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Dropdown, Icon, Menu } from "semantic-ui-react"
 
 
 export default function TopNav() {
 
     const router = useRouter()
+    const [isLogin, setLogin] = useState(false)
 
     const goLink = (e, data) => {
         router.push(data.to)
@@ -30,6 +31,22 @@ export default function TopNav() {
                 console.log(err)
             })
     })
+
+    const checkLogIn = useCallback((e) => {
+        const url = '/api/verify'
+        axios.get(
+            url,
+        )
+            .then(res => {
+                if (res.status === 200) {
+                    setLogin(res.data.available)
+                } else {
+                    setLogin(false)
+                }
+            }).catch(err => {
+                setLogin(false)
+            })
+    }, [])
 
     /**
      * link is for external URL
@@ -53,7 +70,12 @@ export default function TopNav() {
         { key: 5, text: 'Logout', as: 'button', to: '/', handler: handleLogOut, depth: 1, has_children: false, parent: 0, need_account: true, value: 5 },
     ]
 
+    useEffect(() => {
+        checkLogIn()
+    }, [])
+
     return (
+        console.log(isLogin),
         <Menu secondary className='ebs-top-navbar-shadow'>
             <Menu.Item
                 link
@@ -117,36 +139,47 @@ export default function TopNav() {
                 {basic_menu.map(menu => {
                     if (menu.depth == 1 && !menu.has_children) {
                         if (menu.as === 'link') {
-                            return <Menu.Item
-                                link
-                                key={menu.key}
-                                name={menu.text}
-                                href={menu.to}
-                            />
-                            // return menu.need_account
-                            //     ? isLogin
-                            //         ? <Menu.Item
-                            //             link
-                            //             key={menu.key}
-                            //             name={menu.text}
-                            //             href={menu.to}
-                            //         />
-                            //         : null
-                            //     : isLogin
-                            //         ? null
-                            //         : <Menu.Item
-                            //             link
-                            //             key={menu.key}
-                            //             name={menu.text}
-                            //             href={menu.to}
-                            //         />
+                            // return <Menu.Item
+                            //     link
+                            //     key={menu.key}
+                            //     name={menu.text}
+                            //     href={menu.to}
+                            // />
+                            return menu.need_account
+                                ? isLogin
+                                    ? <Menu.Item
+                                        link
+                                        key={menu.key}
+                                        name={menu.text}
+                                        href={menu.to}
+                                    />
+                                    : null
+                                : isLogin
+                                    ? null
+                                    : <Menu.Item
+                                        link
+                                        key={menu.key}
+                                        name={menu.text}
+                                        href={menu.to}
+                                    />
                         } else if (menu.as === 'button') {
-                            return <Menu.Item
-                                key={menu.key}
-                                name={menu.text}
-                                to={menu.to}
-                                onClick={menu.handler && menu.handler}
-                            />
+                            return menu.need_account
+                                ? isLogin
+                                    ? <Menu.Item
+                                        key={menu.key}
+                                        name={menu.text}
+                                        to={menu.to}
+                                        onClick={menu.handler && menu.handler}
+                                    />
+                                    : null
+                                : isLogin
+                                    ? null
+                                    : <Menu.Item
+                                        key={menu.key}
+                                        name={menu.text}
+                                        to={menu.to}
+                                        onClick={menu.handler && menu.handler}
+                                    />
                         }
                     } else if (menu.depth == 1 && menu.has_children) {
                         return <Menu.Item key={menu.key}>
@@ -156,21 +189,59 @@ export default function TopNav() {
                                         basic_menu.filter(child => child.parent === menu.value)
                                             .map(child => {
                                                 if (child.as === 'link') {
-                                                    return <Dropdown.Item
-                                                        link
-                                                        key={child.key}
-                                                        href={child.to}
-                                                    >
-                                                        {child.text}
-                                                    </Dropdown.Item>
+                                                    // return <Dropdown.Item
+                                                    //     link
+                                                    //     key={child.key}
+                                                    //     href={child.to}
+                                                    // >
+                                                    //     {child.text}
+                                                    // </Dropdown.Item>
+                                                    return child.need_account
+                                                        ? isLogin
+                                                            ? <Dropdown.Item
+                                                                link
+                                                                key={child.key}
+                                                                href={child.to}
+                                                            >
+                                                                {child.text}
+                                                            </Dropdown.Item>
+                                                            : null
+                                                        : isLogin
+                                                            ? null
+                                                            : <Dropdown.Item
+                                                                link
+                                                                key={child.key}
+                                                                href={child.to}
+                                                            >
+                                                                {child.text}
+                                                            </Dropdown.Item>
                                                 } else if (child.as === 'button') {
-                                                    return <Dropdown.Item
-                                                        key={child.key}
-                                                        to={child.to}
-                                                        onClick={child.handler && child.handler}
-                                                    >
-                                                        {child.text}
-                                                    </Dropdown.Item>
+                                                    // return <Dropdown.Item
+                                                    //     key={child.key}
+                                                    //     to={child.to}
+                                                    //     onClick={child.handler && child.handler}
+                                                    // >
+                                                    //     {child.text}
+                                                    // </Dropdown.Item>
+                                                    return child.need_account
+                                                        ? isLogin
+                                                            ? <Dropdown.Item
+                                                                key={child.key}
+                                                                to={child.to}
+                                                                onClick={child.handler && child.handler}
+                                                            >
+                                                                {child.text}
+                                                            </Dropdown.Item>
+                                                            : null
+                                                        : isLogin
+                                                            ? null
+                                                            : <Dropdown.Item
+                                                                key={child.key}
+                                                                to={child.to}
+                                                                onClick={child.handler && child.handler}
+                                                            >
+                                                                {child.text}
+                                                            </Dropdown.Item>
                                                 }
                                             })
                                     }

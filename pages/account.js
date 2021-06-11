@@ -2,11 +2,21 @@
  * Author: Jongil Yoon
  */
 
+import { useCallback } from "react";
 import { Container, Form, Grid, Input, Segment } from "semantic-ui-react";
 import TopNav from "../components/TopNav";
 
 
 export default function Account() {
+
+    const handleUsernameChange = useCallback(e => {
+    }, [])
+
+    const handlePasswordChange = useCallback(e => {
+    }, [])
+
+    const handleAccountDelete = useCallback(e => {
+    }, [])
 
     return (
         <>
@@ -20,7 +30,7 @@ export default function Account() {
                             </Segment>
                             <Segment vertical padded className="ebs-account-segment-spacing middle aligned">
                                 <h2>Username</h2>
-                                <Form>
+                                <Form onSubmit={handleUsernameChange}>
                                     <Form.Field width={5}>
                                         <Input name="username" type="text" icon="user" iconPosition="left" placeholder="Username" required />
                                     </Form.Field>
@@ -32,7 +42,7 @@ export default function Account() {
                             </Segment>
                             <Segment vertical padded className="ebs-account-segment-spacing middle aligned">
                                 <h2>Password</h2>
-                                <Form>
+                                <Form onSubmit={handlePasswordChange}>
                                     <Form.Field width={5}>
                                         <Input name="password" type="password" icon="lock" iconPosition="left" placeholder="Password" required />
                                     </Form.Field>
@@ -44,7 +54,7 @@ export default function Account() {
                             </Segment>
                             <Segment vertical padded className="ebs-account-segment-spacing middle aligned">
                                 <h2>Danger</h2>
-                                <Form.Button color="red" content="Delete Account" />
+                                <Form.Button onClick={handleAccountDelete} color="red" content="Delete Account" />
                             </Segment>
                         </Grid.Column>
                     </Grid>
