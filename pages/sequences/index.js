@@ -51,7 +51,8 @@ export async function getServerSideProps(context) {
 
     const cookie = _.isEmpty(context.req.cookies) ? '' : context.req.cookies.auth
 
-    const url = 'http://localhost:3000/api/sequences'
+    const url = 'http://front.ebs.ideapot.net:3000/api/sequences'
+    // const url = 'http://localhost:3000/api/sequences'
     const config = {
         headers: {
             cookies: cookie.toString()
