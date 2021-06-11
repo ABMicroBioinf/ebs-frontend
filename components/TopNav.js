@@ -85,7 +85,7 @@ export default function TopNav() {
                 <Icon name='dna' />
                 EBS
             </Menu.Item>
-            {
+            {isLogin &&
                 ebs_menu.map(menu => {
                     if (menu.depth == 1 && !menu.has_children) {
                         if (menu.as === 'link') {

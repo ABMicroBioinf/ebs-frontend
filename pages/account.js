@@ -10,6 +10,24 @@ import TopNav from "../components/TopNav";
 export default function Account() {
 
     const handleUsernameChange = useCallback(e => {
+        e.preventDefault()
+        // const url = '/api/account/'
+        // const form_data = new FormData()
+        // form_data.append('username', e.target.elements.username.value)
+
+        // axios({
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     url: url,
+        //     data: form_data
+        // }).then(res => {
+        //     console.log(res.status)
+        //     if (res.status === 200) {
+        //         router.push('/login')
+        //     }
+        // }).catch(err => {
+        //     console.log(err)
+        // })
     }, [])
 
     const handlePasswordChange = useCallback(e => {
