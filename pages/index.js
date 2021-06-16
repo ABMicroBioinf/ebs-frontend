@@ -15,9 +15,8 @@ export default function Home() {
   const router = useRouter();
 
   const checkLogIn = useCallback(() => {
-    const url = "/api/verify";
     axios
-      .get(url)
+      .get("/api/verify")
       .then((res) => {
         if (res.status === 200) {
           router.push("/sequences");

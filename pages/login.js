@@ -23,17 +23,19 @@ export default function Login() {
 
   const login = useCallback((e) => {
     e.preventDefault();
-    const url = "/api/login";
+
     const form_data = new FormData();
     form_data.append("email", e.target.elements.email.value);
     form_data.append("password", e.target.elements.password.value);
 
-    axios({
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      url: url,
-      data: form_data,
-    })
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    axios
+      .post("/api/login", form_data, config)
       .then((res) => {
         if (res.status === 200) {
           router.push("/");

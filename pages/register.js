@@ -13,18 +13,20 @@ export default function Register() {
 
   const register = useCallback((e) => {
     e.preventDefault();
-    const url = "/api/register";
+
     const form_data = new FormData();
     form_data.append("email", e.target.elements.email.value);
     form_data.append("username", e.target.elements.username.value);
     form_data.append("password", e.target.elements.password.value);
 
-    axios({
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      url: url,
-      data: form_data,
-    })
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    axios
+      .post("/api/register", form_data, config)
       .then((res) => {
         if (res.status === 200) {
           router.push("/login");

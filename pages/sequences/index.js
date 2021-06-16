@@ -43,17 +43,17 @@ export default function Sequences({ data, primary }) {
 
 // CSR
 export async function getServerSideProps(context) {
-  const cookie = _.isEmpty(context.req.cookies) ? "" : context.req.cookies.auth;
+  const cookie = "auth" in context.req.cookies ? context.req.cookies.auth : "";
 
-  // const url = 'http://front.ebs.ideapot.net/api/sequences'
-  const url = "http://localhost:3000/api/sequences";
   const config = {
     headers: {
       cookies: cookie.toString(),
     },
   };
+
   const res = await axios
-    .get(url, config)
+    .get("http://localhost:3000/api/sequences", config)
+    // .get("http://front.ebs.ideapot.net/api/sequences", config)
     .then((res) => res)
     .catch((err) => err.response);
 
