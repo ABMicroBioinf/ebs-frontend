@@ -35,7 +35,8 @@ export default function Login() {
     };
 
     axios
-      .post("/api/login", form_data, config)
+      // .post("/api/login", form_data, config)
+      .post("http://localhost:8000/api/account/login", form_data, config)
       .then((res) => {
         if (res.status === 200) {
           router.push("/");

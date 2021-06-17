@@ -19,7 +19,7 @@ export default function Home() {
       .get("/api/verify")
       .then((res) => {
         if (res.status === 200) {
-          router.push("/sequences");
+          router.push("/run");
         } else {
           router.push("/login");
         }

@@ -26,9 +26,10 @@ export default function Register() {
     };
 
     axios
-      .post("/api/register", form_data, config)
+      // .post("/api/register", form_data, config)
+      .post("http://localhost:8000/api/account/register", form_data, config)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 201) {
           router.push("/login");
         }
       })

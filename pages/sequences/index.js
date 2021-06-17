@@ -52,8 +52,8 @@ export async function getServerSideProps(context) {
   };
 
   const res = await axios
-    .get("http://localhost:3000/api/sequences", config)
-    // .get("http://front.ebs.ideapot.net/api/sequences", config)
+    // .get("http://localhost:8000/api/sequences", config)
+    .get("http://front.ebs.ideapot.net/api/sequences", config)
     .then((res) => res)
     .catch((err) => err.response);
 
