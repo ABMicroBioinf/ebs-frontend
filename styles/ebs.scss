@@ -1,8 +1,8 @@
 .ebs-full-height {
-    // 57px is for deduction of top navbar
-    height: calc(100vh - 57px);
+    // 40px is for deduction of top navbar
+    height: calc(100vh - 40px);
 }
-.ebs-top-navbar-shadow {
+.ebs-top-navbar {
     -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1) !important;
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1) !important;
 }
@@ -12,4 +12,35 @@
 .ebs-account-segment-spacing {
     padding-top: 2em !important;
     padding-bottom: 4em !important;
+}
+.ebs-table-temporary {
+    // max-width: 1024px !important;
+    overflow-x: scroll !important;
+}
+.ebs-pagination-temporary {
+    // width: 100vh !important;
+}
+.ebs-side-section-left {
+    // 40px is for deduction of top navbar
+    position:fixed;
+    display:flex;
+    flex-direction:column;
+    top:40px;
+    bottom:0;
+    left:0;
+    width:250px;
+    background:#1B1C1D;
+    color:antiquewhite;
+    overflow-x:hidden;
+    flex:1;
+}
+.ebs-scrollable-inner {
+    flex:1;
+    overflow-y:scroll
+}
+.ebs-section-main {
+    // 250px is for deduction of side bar
+    margin-left:250px;
+    min-width:550px;
+    max-width:1150px
 }

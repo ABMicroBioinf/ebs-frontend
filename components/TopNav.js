@@ -2,49 +2,50 @@
  * Author: Jongil Yoon
  */
 
-import axios from "axios";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "../middleware/AuthProvider";
+
 import { Dropdown, Icon, Menu } from "semantic-ui-react";
 
 export default function TopNav() {
   const router = useRouter();
-  const [isLogin, setLogin] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   const goLink = (e, data) => {
     router.push(data.to);
   };
 
-  const handleLogOut = useCallback((e, data) => {
-    // nullify user state and redirect the user to login page (main page)
-    const url = "/api/logout";
-    axios
-      .get(url)
-      .then((res) => {
-        if (res.status === 200) {
-          router.push(data.to);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
+  // const handleLogOut = useCallback((e, data) => {
+  // let accessToken = "";
+  // // let refreshToken = "";
 
-  const checkLogIn = useCallback(() => {
-    const url = "/api/verify";
-    axios
-      .get(url)
-      .then((res) => {
-        if (res.status === 200) {
-          setLogin(res.data.available);
-        } else {
-          setLogin(false);
-        }
-      })
-      .catch(() => {
-        setLogin(false);
-      });
-  }, []);
+  // if ("auth_token" in context.req.cookies) {
+  //   const raw = context.req.cookies.auth_token;
+  //   const sanitized = raw.replace(/'/g, '"').replace(/\\054/g, ",");
+  //   const tokenObj = JSON.parse(sanitized);
+  //   accessToken = tokenObj.access;
+  //   // refreshToken = tokenObj.refresh;
+  // }
+
+  // const config = {
+  //   headers: {
+  //     Authorization: "Bearer " + token.toString(),
+  //   },
+  //   withCredentials: true,
+  // };
+
+  // axios
+  //   .get("http://localhost:8000/api/account/logout", config)
+  //   .then((res) => {
+  //     if (res.status === 200) {
+  //       setLogin(false);
+  //       router.push(data.to);
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  // });
 
   /**
    * link is for external URL
@@ -190,8 +191,8 @@ export default function TopNav() {
       key: 5,
       text: "Logout",
       as: "button",
-      to: "/",
-      handler: handleLogOut,
+      to: "/logout",
+      handler: goLink,
       depth: 1,
       has_children: false,
       parent: 0,
@@ -200,17 +201,13 @@ export default function TopNav() {
     },
   ];
 
-  useEffect(() => {
-    checkLogIn();
-  }, []);
-
   return (
-    <Menu secondary className="ebs-top-navbar-shadow">
+    <Menu secondary className="ebs-top-navbar">
       <Menu.Item link name="Branding" href="/">
         <Icon name="dna" />
         EBS
       </Menu.Item>
-      {isLogin &&
+      {isAuthenticated &&
         ebs_menu.map((menu) => {
           if (menu.depth == 1 && !menu.has_children) {
             if (menu.as === "link") {
@@ -275,7 +272,7 @@ export default function TopNav() {
               //     href={menu.to}
               // />
               return menu.need_account ? (
-                isLogin ? (
+                isAuthenticated ? (
                   <Menu.Item
                     link
                     key={menu.key}
@@ -283,7 +280,7 @@ export default function TopNav() {
                     href={menu.to}
                   />
                 ) : null
-              ) : isLogin ? null : (
+              ) : isAuthenticated ? null : (
                 <Menu.Item
                   link
                   key={menu.key}
@@ -293,7 +290,7 @@ export default function TopNav() {
               );
             } else if (menu.as === "button") {
               return menu.need_account ? (
-                isLogin ? (
+                isAuthenticated ? (
                   <Menu.Item
                     key={menu.key}
                     name={menu.text}
@@ -301,7 +298,7 @@ export default function TopNav() {
                     onClick={menu.handler && menu.handler}
                   />
                 ) : null
-              ) : isLogin ? null : (
+              ) : isAuthenticated ? null : (
                 <Menu.Item
                   key={menu.key}
                   name={menu.text}
@@ -327,7 +324,7 @@ export default function TopNav() {
                           //     {child.text}
                           // </Dropdown.Item>
                           return child.need_account ? (
-                            isLogin ? (
+                            isAuthenticated ? (
                               <Dropdown.Item
                                 link
                                 key={child.key}
@@ -336,7 +333,7 @@ export default function TopNav() {
                                 {child.text}
                               </Dropdown.Item>
                             ) : null
-                          ) : isLogin ? null : (
+                          ) : isAuthenticated ? null : (
                             <Dropdown.Item link key={child.key} href={child.to}>
                               {child.text}
                             </Dropdown.Item>
@@ -350,7 +347,7 @@ export default function TopNav() {
                           //     {child.text}
                           // </Dropdown.Item>
                           return child.need_account ? (
-                            isLogin ? (
+                            isAuthenticated ? (
                               <Dropdown.Item
                                 key={child.key}
                                 to={child.to}
@@ -359,7 +356,7 @@ export default function TopNav() {
                                 {child.text}
                               </Dropdown.Item>
                             ) : null
-                          ) : isLogin ? null : (
+                          ) : isAuthenticated ? null : (
                             <Dropdown.Item
                               key={child.key}
                               to={child.to}

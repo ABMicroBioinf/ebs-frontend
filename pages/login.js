@@ -1,11 +1,13 @@
 /**
- * Author: Jongil Yoon
+ * Author: Jongil Yoon <jiysait@gmail.com>
  */
-
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useCallback } from "react";
+import { useAuth } from "../middleware/AuthProvider";
+import withoutAuth from "../middleware/withoutAuth";
+
+import TopNav from "../components/TopNav";
 import {
   Button,
   Form,
@@ -16,36 +18,32 @@ import {
   Segment,
 } from "semantic-ui-react";
 
-import TopNav from "../components/TopNav";
+function Login() {
+  const { setAuthenticated } = useAuth();
 
-export default function Login() {
-  const router = useRouter();
-
-  const login = useCallback((e) => {
+  const login = useCallback(async (e) => {
     e.preventDefault();
 
-    const form_data = new FormData();
-    form_data.append("email", e.target.elements.email.value);
-    form_data.append("password", e.target.elements.password.value);
-
     const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
       withCredentials: true,
     };
 
-    axios
-      // .post("/api/login", form_data, config)
-      .post("http://localhost:8000/api/account/login", form_data, config)
-      .then((res) => {
-        if (res.status === 200) {
-          router.push("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const data = {
+      email: e.target.elements.email.value,
+      password: e.target.elements.password.value,
+    };
+
+    const res = await axios.post(
+      "http://localhost:8000/api/account/login",
+      data,
+      config
+    );
+
+    if (res.status === 200) {
+      setAuthenticated(true);
+    } else {
+      console.err("login error", res);
+    }
   }, []);
 
   return (
@@ -91,3 +89,5 @@ export default function Login() {
     </>
   );
 }
+
+export default withoutAuth(Login);

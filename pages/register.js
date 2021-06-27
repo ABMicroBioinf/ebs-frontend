@@ -1,17 +1,18 @@
 /**
- * Author: Jongil Yoon
+ * Author: Jongil Yoon <jiysait@gmail.com>
  */
-
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
-import { Button, Form, Grid, Icon, Input, Segment } from "semantic-ui-react";
-import TopNav from "../components/TopNav";
+import withoutAuth from "../middleware/withoutAuth";
 
-export default function Register() {
+import TopNav from "../components/TopNav";
+import { Button, Form, Grid, Icon, Input, Segment } from "semantic-ui-react";
+
+function Register() {
   const router = useRouter();
 
-  const register = useCallback((e) => {
+  const register = useCallback(async (e) => {
     e.preventDefault();
 
     const form_data = new FormData();
@@ -25,8 +26,7 @@ export default function Register() {
       },
     };
 
-    axios
-      // .post("/api/register", form_data, config)
+    await axios
       .post("http://localhost:8000/api/account/register", form_data, config)
       .then((res) => {
         if (res.status === 201) {
@@ -97,3 +97,5 @@ export default function Register() {
     </>
   );
 }
+
+export default withoutAuth(Register);
