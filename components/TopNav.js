@@ -1,7 +1,6 @@
 /**
- * Author: Jongil Yoon
+ * Author: Jongil Yoon <jiysait@gmail.com>
  */
-
 import { useRouter } from "next/router";
 import { useAuth } from "../middleware/AuthProvider";
 
@@ -14,38 +13,6 @@ export default function TopNav() {
   const goLink = (e, data) => {
     router.push(data.to);
   };
-
-  // const handleLogOut = useCallback((e, data) => {
-  // let accessToken = "";
-  // // let refreshToken = "";
-
-  // if ("auth_token" in context.req.cookies) {
-  //   const raw = context.req.cookies.auth_token;
-  //   const sanitized = raw.replace(/'/g, '"').replace(/\\054/g, ",");
-  //   const tokenObj = JSON.parse(sanitized);
-  //   accessToken = tokenObj.access;
-  //   // refreshToken = tokenObj.refresh;
-  // }
-
-  // const config = {
-  //   headers: {
-  //     Authorization: "Bearer " + token.toString(),
-  //   },
-  //   withCredentials: true,
-  // };
-
-  // axios
-  //   .get("http://localhost:8000/api/account/logout", config)
-  //   .then((res) => {
-  //     if (res.status === 200) {
-  //       setLogin(false);
-  //       router.push(data.to);
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-  // });
 
   /**
    * link is for external URL
@@ -202,7 +169,13 @@ export default function TopNav() {
   ];
 
   return (
-    <Menu secondary className="ebs-top-navbar">
+    <Menu
+      fixed="top"
+      color="blue"
+      inverted
+      secondary
+      className="ebs-top-navbar"
+    >
       <Menu.Item link name="Branding" href="/">
         <Icon name="dna" />
         EBS

@@ -13,7 +13,7 @@ import TopNav from "../../components/TopNav";
 function Sequences() {
   const { accessToken } = useAuth();
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
 
   const primary = useState(0);
 
@@ -21,16 +21,64 @@ function Sequences() {
     const config = {
       headers: {
         Authorization: "Bearer " + accessToken,
-        // "Content-Type": "application/json",
-        // accept: "application/json",
-        withCredentials: true,
       },
     };
 
     await axios
-      .get("http://localhost:8000/api/seq/run/", config)
+      .get("http://localhost:8000/api/seq/run", config)
       .then((res) => {
-        setData(res.data);
+        const result = res.data.map(
+          ({ run_name, study, sample, experiment, stats_qc, stats_raw }) => {
+            const { sampleName, organism, strain } = sample;
+            const {
+              reads: qcReads,
+              total_bp: qcTotal_bp,
+              avgLen: qcAvgLen,
+              avgQual: qcAvgQual,
+              geecee: qcGeecee,
+            } = stats_qc;
+            const {
+              reads: rawReads,
+              total_bp: rawTotal_bp,
+              avgLen: rawAvgLen,
+              avgQual: rawAvgQual,
+              geecee: rawGeecee,
+            } = stats_raw;
+            const {
+              libraryName,
+              platform,
+              instrument,
+              librarySource,
+              libraryLayout,
+              librarySelection,
+            } = experiment;
+
+            return {
+              run_name,
+              study,
+              sampleName,
+              organism,
+              strain,
+              libraryName,
+              platform,
+              instrument,
+              librarySource,
+              libraryLayout,
+              librarySelection,
+              qcReads,
+              qcTotal_bp,
+              qcAvgLen,
+              qcAvgQual,
+              qcGeecee,
+              rawReads,
+              rawTotal_bp,
+              rawAvgLen,
+              rawAvgQual,
+              rawGeecee,
+            };
+          }
+        );
+        setData(result);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -53,8 +101,7 @@ function Sequences() {
         </div>
       </div>
       <div className="ebs-section-main">
-        {data.length !== 0 && getEBSDatatable()}
-        table placeholder
+        {data ? getEBSDatatable() : <p>table placeholder</p>}
       </div>
     </>
   );

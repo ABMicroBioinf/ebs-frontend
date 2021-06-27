@@ -39,7 +39,9 @@
     overflow-y:scroll
 }
 .ebs-section-main {
+    // 40px is for deduction of top navbar
     // 250px is for deduction of side bar
+    margin-top:40px;
     margin-left:250px;
     min-width:550px;
     max-width:1150px
