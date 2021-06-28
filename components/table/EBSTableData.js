@@ -1,12 +1,13 @@
 /**
- * Author: Jongil Yoon
+ * Author: Jongil Yoon <jiysait@gmail.com>
  */
-
-import { Grid, Table } from "semantic-ui-react";
 import EBSCellRow from "./EBSCellRow";
 import EBSTableHeader from "./EBSTableHeader";
 import EBSTablePagination from "./EBSTablePagination";
 import EBSTableToolbar from "./EBSTableToolbar";
+
+import { Grid, Table } from "semantic-ui-react";
+import { useEffect } from "react";
 
 /**
  * A top level table component layouts entire structure of data table
@@ -16,6 +17,12 @@ import EBSTableToolbar from "./EBSTableToolbar";
 export default function EBSTableData(props) {
   const { columnData, rowData, setRowData } = props;
   const { dataset, primary } = rowData;
+
+  useEffect(() => {
+    setRowData({
+      type: "APPLY_HISTORY",
+    });
+  }, []);
 
   return (
     <Grid padded>

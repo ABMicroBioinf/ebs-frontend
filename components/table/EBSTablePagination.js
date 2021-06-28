@@ -1,7 +1,6 @@
 /**
- * Author: Jongil Yoon
+ * Author: Jongil Yoon <jiysait@gmail.com>
  */
-
 import { Dropdown, Grid, Menu, Pagination } from "semantic-ui-react";
 
 const pageSizeOptions = [

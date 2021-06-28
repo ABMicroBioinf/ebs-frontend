@@ -1,7 +1,6 @@
 /**
- * Author: Jongil Yoon
+ * Author: Jongil Yoon <jiysait@gmail.com>
  */
-
 import { useCallback, useReducer } from "react";
 import { Dropdown, Grid, Input } from "semantic-ui-react";
 

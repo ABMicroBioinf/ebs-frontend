@@ -1,7 +1,6 @@
 /**
- * Author: Jongil Yoon
+ * Author: Jongil Yoon <jiysait@gmail.com>
  */
-
 import Link from "next/link";
 import { Table } from "semantic-ui-react";
 

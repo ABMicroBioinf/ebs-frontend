@@ -1,3 +1,7 @@
+body {
+    // 40px is for deduction of top navbar
+    margin-top:40px !important;
+}
 .ebs-full-height {
     // 40px is for deduction of top navbar
     height: calc(100vh - 40px);

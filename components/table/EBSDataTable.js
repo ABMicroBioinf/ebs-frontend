@@ -1,7 +1,6 @@
 /**
- * Author: Jongil Yoon
+ * Author: Jongil Yoon <jiysait@gmail.com>
  */
-
 import _ from "lodash";
 import { useCallback, useReducer, useState } from "react";
 import EBSTableData from "./EBSTableData";
@@ -17,7 +16,7 @@ export default function EBSDatatable({ data, primary }) {
       ? { name: heading, display: true, primary: true }
       : { name: heading, display: true, primary: false }
   );
-  const CUSTOM_ROWS = data.rows.slice();
+  const CUSTOM_ROWS = data.rows.slice(); // make an shallow copy
 
   /**
    * Temporary
@@ -27,7 +26,7 @@ export default function EBSDatatable({ data, primary }) {
   const initialDatasetState = (() => {
     const DEFAULT_DATASET = CUSTOM_ROWS;
     const DEFAULT_PAGE = 1;
-    const DEFAULT_PAGE_SIZE = 20;
+    const DEFAULT_PAGE_SIZE = 5;
     const DEFAULT_SEARCH_KEYWORD = "";
     const DEFAULT_SORT = { column: null, direction: null };
     const DEFALUT_COLUMNS = CUSTOM_COLUMNS;

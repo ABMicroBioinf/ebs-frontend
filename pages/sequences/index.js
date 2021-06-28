@@ -7,15 +7,16 @@ import { useAuth } from "../../middleware/AuthProvider";
 import withAuth from "../../middleware/withAuth";
 
 import EBSDatatable from "../../components/table/EBSDataTable";
-import Filters from "../../components/Filters";
+import EBSFilters from "../../components/table/EBSFilters";
 import TopNav from "../../components/TopNav";
+import { Dimmer, Loader } from "semantic-ui-react";
 
 function Sequences() {
   const { accessToken } = useAuth();
 
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
 
-  const primary = useState(0);
+  const [primary] = useState(0);
 
   const fetchData = useCallback(async () => {
     const config = {
@@ -28,7 +29,17 @@ function Sequences() {
       .get("http://localhost:8000/api/seq/run", config)
       .then((res) => {
         const result = res.data.map(
-          ({ run_name, study, sample, experiment, stats_qc, stats_raw }) => {
+          ({
+            run_name,
+            study,
+            sample,
+            experiment,
+            stats_qc,
+            stats_raw,
+            date_created,
+            last_update,
+            owner_id,
+          }) => {
             const { sampleName, organism, strain } = sample;
             const {
               reads: qcReads,
@@ -75,6 +86,9 @@ function Sequences() {
               rawAvgLen,
               rawAvgQual,
               rawGeecee,
+              date_created,
+              last_update,
+              owner_id,
             };
           }
         );
@@ -83,8 +97,13 @@ function Sequences() {
       .catch((err) => console.log(err));
   }, []);
 
+  const getEBSFilters = () => {
+    let dataset = { headers: Object.keys(data[0]), rows: data };
+    return <EBSFilters data={dataset} />;
+  };
+
   const getEBSDatatable = () => {
-    const dataset = { headers: Object.keys(data[0]), rows: data };
+    let dataset = { headers: Object.keys(data[0]), rows: data };
     return <EBSDatatable data={dataset} primary={primary} />;
   };
 
@@ -97,11 +116,23 @@ function Sequences() {
       <TopNav />
       <div className="ebs-side-section-left">
         <div className="ebs-scrollable-inner">
-          <Filters />
+          {data.length > 0 ? (
+            getEBSFilters()
+          ) : (
+            <Dimmer active>
+              <Loader>Loading</Loader>
+            </Dimmer>
+          )}
         </div>
       </div>
       <div className="ebs-section-main">
-        {data ? getEBSDatatable() : <p>table placeholder</p>}
+        {data.length > 0 ? (
+          getEBSDatatable()
+        ) : (
+          <Dimmer active inverted>
+            <Loader inverted>Loading</Loader>
+          </Dimmer>
+        )}
       </div>
     </>
   );

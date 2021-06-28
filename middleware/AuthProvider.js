@@ -4,19 +4,21 @@
 import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext({
-  accessToken: "",
+  token: "",
   isAuthenticated: false,
   setAuthenticated: () => {},
 });
 
-export const AuthProvider = ({ children, authenticated, accessToken }) => {
+export const AuthProvider = ({ children, authenticated, token }) => {
   const [isAuthenticated, setAuthenticated] = useState(authenticated);
+  const [accessToken, setAccessToken] = useState(token);
   return (
     <AuthContext.Provider
       value={{
-        accessToken,
         isAuthenticated,
+        accessToken,
         setAuthenticated,
+        setAccessToken,
       }}
     >
       {children}

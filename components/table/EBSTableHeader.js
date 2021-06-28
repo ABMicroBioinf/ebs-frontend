@@ -1,7 +1,6 @@
 /**
- * Author: Jongil Yoon
+ * Author: Jongil Yoon <jiysait@gmail.com>
  */
-
 import { Table } from "semantic-ui-react";
 
 export default function EBSTableHeader(props) {

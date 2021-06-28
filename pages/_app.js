@@ -9,16 +9,16 @@ import App from "next/app";
 import { AuthProvider } from "../middleware/AuthProvider";
 import cookie from "cookie";
 
-function EBSApp({ Component, pageProps, authenticated, accessToken }) {
+function EBSApp({ Component, pageProps, authenticated, token }) {
   return (
-    <AuthProvider authenticated={authenticated} accessToken={accessToken}>
+    <AuthProvider authenticated={authenticated} token={token}>
       <Component {...pageProps} />
     </AuthProvider>
   );
 }
 
 EBSApp.getInitialProps = async (appContext) => {
-  let accessToken = "";
+  let token = "";
   let authenticated = false;
   const request = appContext.ctx.req;
   if (request) {
@@ -27,14 +27,14 @@ EBSApp.getInitialProps = async (appContext) => {
     if (auth_token) {
       const sanitized = auth_token.replace(/\\054/g, ",").replace(/'/g, '"');
       const tokenObj = JSON.parse(sanitized);
-      accessToken = tokenObj.access;
+      token = tokenObj.access;
     }
     authenticated = !!auth_token;
   }
 
   const appProps = await App.getInitialProps(appContext);
 
-  return { ...appProps, authenticated, accessToken };
+  return { ...appProps, authenticated, token };
 };
 
 export default EBSApp;
