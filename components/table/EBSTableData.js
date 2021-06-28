@@ -5,6 +5,7 @@ import EBSCellRow from "./EBSCellRow";
 import EBSTableHeader from "./EBSTableHeader";
 import EBSTablePagination from "./EBSTablePagination";
 import EBSTableToolbar from "./EBSTableToolbar";
+import EBSTableTools from "./EBSTableTools";
 
 import { Grid, Table } from "semantic-ui-react";
 import { useEffect } from "react";
@@ -31,8 +32,15 @@ export default function EBSTableData(props) {
           <Grid.Row>
             <h2>Sequences</h2>
           </Grid.Row>
-          <Grid.Row>
+          {/* <Grid.Row>
             <EBSTableToolbar
+              columnData={columnData}
+              rowData={rowData}
+              setRowData={setRowData}
+            />
+          </Grid.Row> */}
+          <Grid.Row>
+            <EBSTableTools
               columnData={columnData}
               rowData={rowData}
               setRowData={setRowData}
@@ -59,22 +67,11 @@ export default function EBSTableData(props) {
                   </Table.Row>
                 )}
               </Table.Body>
-
-              {/* <Table.Footer>
-                <Table.Row>
-                  <Table.HeaderCell colSpan={columnData.length + 1}>
-                    <EBSTablePagination
-                      rowData={rowData}
-                      setRowData={setRowData}
-                    />
-                  </Table.HeaderCell>
-                </Table.Row>
-              </Table.Footer> */}
             </Table>
           </Grid.Row>
-          <Grid.Row>
+          {/* <Grid.Row>
             <EBSTablePagination rowData={rowData} setRowData={setRowData} />
-          </Grid.Row>
+          </Grid.Row> */}
         </Grid>
       </Grid.Column>
     </Grid>

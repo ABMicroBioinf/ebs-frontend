@@ -27,7 +27,7 @@ function Home() {
         <Grid.Column>
           <Container>
             <Header as="h2" icon textAlign="center">
-              <Icon name="dna" textAlign="center" />
+              <Icon name="dna" textalign="center" />
               <Header.Content>Landing Page</Header.Content>
             </Header>
             <Segment vertical>Available end points</Segment>
@@ -86,7 +86,7 @@ function Home() {
                             </Link>
                           </List.Header>
                           <List.Description>
-                            Single Sample Analysis for Isloate
+                            Single Sample Analysis for Isolate
                           </List.Description>
                         </List.Content>
                       </List.Item>
@@ -97,7 +97,7 @@ function Home() {
                             <Link href="/isolate/da">Dataset Analysis</Link>
                           </List.Header>
                           <List.Description>
-                            Dataset Analysis for Isloate
+                            Dataset Analysis for Isolate
                           </List.Description>
                         </List.Content>
                       </List.Item>

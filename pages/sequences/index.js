@@ -38,7 +38,7 @@ function Sequences() {
             stats_raw,
             date_created,
             last_update,
-            owner_id,
+            owner,
           }) => {
             const { sampleName, organism, strain } = sample;
             const {
@@ -88,7 +88,7 @@ function Sequences() {
               rawGeecee,
               date_created,
               last_update,
-              owner_id,
+              owner,
             };
           }
         );
