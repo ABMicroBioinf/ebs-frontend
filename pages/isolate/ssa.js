@@ -2,17 +2,18 @@
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
 import withAuth from "../../middleware/withAuth";
+
 import TopNav from "../../components/TopNav";
 
-function Metagenome() {
+function IsolateSSA() {
   return (
     <>
       <TopNav />
       <br />
       <br />
-      <div>Metagenome Main</div>
+      <div>Isolate Single Sample Analysis</div>
     </>
   );
 }
 
-export default withAuth(Metagenome);
+export default withAuth(IsolateSSA);

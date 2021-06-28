@@ -9,6 +9,9 @@ function Isolate() {
   return (
     <>
       <TopNav />
+      <br />
+      <br />
+      <div>Isolate Main</div>
     </>
   );
 }
