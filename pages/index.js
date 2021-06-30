@@ -37,30 +37,6 @@ function Home() {
                   <List.Icon name="file" />
                   <List.Content>
                     <List.Header>
-                      <Link href="/">Overview</Link>
-                    </List.Header>
-                    <List.Description>
-                      A Landing page shows overview
-                    </List.Description>
-                  </List.Content>
-                </List.Item>
-
-                <List.Item>
-                  <List.Icon name="file" />
-                  <List.Content>
-                    <List.Header>
-                      <Link href="/account">Account</Link>
-                    </List.Header>
-                    <List.Description>
-                      A dashboard for each user
-                    </List.Description>
-                  </List.Content>
-                </List.Item>
-
-                <List.Item>
-                  <List.Icon name="file" />
-                  <List.Content>
-                    <List.Header>
                       <Link href="/sequences">Sequences</Link>
                     </List.Header>
                     <List.Description>
@@ -73,20 +49,20 @@ function Home() {
                   <List.Icon name="folder" />
                   <List.Content>
                     <List.Header>
-                      <Link href="/isolate">Isolate</Link>
+                      <Link href="/analysis/cpo">CPO-Analysis</Link>
                     </List.Header>
-                    <List.Description>Isolate</List.Description>
+                    <List.Description></List.Description>
                     <List.List>
                       <List.Item>
                         <List.Icon name="file" />
                         <List.Content>
                           <List.Header>
-                            <Link href="/isolate/ssa">
+                            <Link href="/analysis/cpo/ssa">
                               Single Sample Analysis
                             </Link>
                           </List.Header>
                           <List.Description>
-                            Single Sample Analysis for Isolate
+                            CPO Single Sample Analysis
                           </List.Description>
                         </List.Content>
                       </List.Item>
@@ -94,10 +70,12 @@ function Home() {
                         <List.Icon name="file" />
                         <List.Content>
                           <List.Header>
-                            <Link href="/isolate/da">Dataset Analysis</Link>
+                            <Link href="/analysis/cpo/da">
+                              Dataset Analysis
+                            </Link>
                           </List.Header>
                           <List.Description>
-                            Dataset Analysis for Isolate
+                            CPO Dataset Analysis
                           </List.Description>
                         </List.Content>
                       </List.Item>
@@ -109,20 +87,22 @@ function Home() {
                   <List.Icon name="folder" />
                   <List.Content>
                     <List.Header>
-                      <Link href="/metagenome">Metagenome</Link>
+                      <Link href="/analysis/metagenome">
+                        Metagenome-Analysis
+                      </Link>
                     </List.Header>
-                    <List.Description>Metagenome</List.Description>
+                    <List.Description></List.Description>
                     <List.List>
                       <List.Item>
                         <List.Icon name="file" />
                         <List.Content>
                           <List.Header>
-                            <Link href="/metagenome/ssa">
+                            <Link href="/analysis/metagenome/ssa">
                               Single Sample Analysis
                             </Link>
                           </List.Header>
                           <List.Description>
-                            Single Sample Analysis for Metagenome
+                            Metagenome Single Sample Analysis
                           </List.Description>
                         </List.Content>
                       </List.Item>
@@ -130,10 +110,48 @@ function Home() {
                         <List.Icon name="file" />
                         <List.Content>
                           <List.Header>
-                            <Link href="/metagenome/da">Dataset Analysis</Link>
+                            <Link href="/analysis/metagenome/da">
+                              Dataset Analysis
+                            </Link>
                           </List.Header>
                           <List.Description>
-                            Dataset Analysis for Metagenome
+                            Metagenome Dataset Analysis
+                          </List.Description>
+                        </List.Content>
+                      </List.Item>
+                    </List.List>
+                  </List.Content>
+                </List.Item>
+
+                <List.Item>
+                  <List.Icon name="folder" />
+                  <List.Content>
+                    <List.Header>
+                      <Link href="/analysis/tb">TB-Analysis</Link>
+                    </List.Header>
+                    <List.Description></List.Description>
+                    <List.List>
+                      <List.Item>
+                        <List.Icon name="file" />
+                        <List.Content>
+                          <List.Header>
+                            <Link href="/analysis/tb/ssa">
+                              Single Sample Analysis
+                            </Link>
+                          </List.Header>
+                          <List.Description>
+                            TB Single Sample Analysis
+                          </List.Description>
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Icon name="file" />
+                        <List.Content>
+                          <List.Header>
+                            <Link href="/analysis/tb/da">Dataset Analysis</Link>
+                          </List.Header>
+                          <List.Description>
+                            TB Dataset Analysis
                           </List.Description>
                         </List.Content>
                       </List.Item>

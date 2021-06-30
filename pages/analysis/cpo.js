@@ -5,15 +5,15 @@ import withAuth from "../../middleware/withAuth";
 
 import TopNav from "../../components/TopNav";
 
-function IsolateDA() {
+function CPOAnalysis() {
   return (
     <>
       <TopNav />
       <br />
       <br />
-      <div>Isolate Dataset Analysis</div>
+      <div>CPO Analysis</div>
     </>
   );
 }
 
-export default withAuth(IsolateDA);
+export default withAuth(CPOAnalysis);

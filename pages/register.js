@@ -3,14 +3,25 @@
  */
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import withoutAuth from "../middleware/withoutAuth";
 
 import TopNav from "../components/TopNav";
-import { Button, Form, Grid, Icon, Input, Segment } from "semantic-ui-react";
+import {
+  Button,
+  Form,
+  Grid,
+  Icon,
+  Input,
+  Segment,
+  Modal,
+  Header,
+} from "semantic-ui-react";
 
 function Register() {
   const router = useRouter();
+
+  const [openAlert, setOpenAlert] = useState(false);
 
   const register = useCallback(async (e) => {
     e.preventDefault();
@@ -94,6 +105,40 @@ function Register() {
           </Segment>
         </Grid.Column>
       </Grid>
+
+      <Modal
+        basic
+        onClose={() => setOpenAlert(false)}
+        onOpen={() => setOpenAlert(true)}
+        open={openAlert}
+        size="small"
+        dimmer="blurring"
+      >
+        <Header icon>
+          <Icon name="lock" />
+          Registration Failed
+        </Header>
+        <Modal.Content>
+          <Grid>
+            <Grid.Column textAlign="center">
+              <p>Please try again</p>
+            </Grid.Column>
+          </Grid>
+        </Modal.Content>
+        <Modal.Actions>
+          <Grid>
+            <Grid.Column textAlign="center">
+              <Button
+                color="green"
+                inverted
+                onClick={() => setOpenAlert(false)}
+              >
+                <Icon name="checkmark" /> Confirm
+              </Button>
+            </Grid.Column>
+          </Grid>
+        </Modal.Actions>
+      </Modal>
     </>
   );
 }

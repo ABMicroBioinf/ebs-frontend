@@ -157,6 +157,7 @@ export default function EBSTableTools(props) {
       <Menu attached="top" tabular fluid>
         <Menu.Item>
           <Pagination
+            secondary
             totalPages={pageCount}
             onPageChange={handlePageChange}
             boundaryRange={0}

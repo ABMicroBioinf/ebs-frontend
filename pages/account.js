@@ -38,10 +38,12 @@ function Account() {
   const submitAccountDelete = useCallback(async (e) => {
     e.preventDefault();
 
+    console.log(accessToken);
+
     const config = {
       headers: {
         Authorization: "Bearer " + accessToken,
-        withCredentials: true,
+        // withCredentials: true,
       },
     };
 

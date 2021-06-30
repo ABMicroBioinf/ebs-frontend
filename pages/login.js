@@ -3,9 +3,10 @@
  */
 import axios from "axios";
 import Link from "next/link";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useAuth } from "../middleware/AuthProvider";
 import withoutAuth from "../middleware/withoutAuth";
+import { useRouter } from "next/router";
 
 import TopNav from "../components/TopNav";
 import {
@@ -16,10 +17,15 @@ import {
   Input,
   Message,
   Segment,
+  Modal,
+  Header,
 } from "semantic-ui-react";
 
 function Login() {
+  const router = useRouter();
+
   const { setAuthenticated } = useAuth();
+  const [openAlert, setOpenAlert] = useState(false);
 
   const login = useCallback(async (e) => {
     e.preventDefault();
@@ -33,17 +39,19 @@ function Login() {
       password: e.target.elements.password.value,
     };
 
-    const res = await axios.post(
-      "http://localhost:8000/api/account/login",
-      data,
-      config
-    );
-
-    if (res.status === 200) {
-      setAuthenticated(true);
-    } else {
-      console.err("login error", res);
-    }
+    await axios
+      .post("http://localhost:8000/api/account/login", data, config)
+      .then((res) => {
+        if (res.status === 200) {
+          setAuthenticated(true);
+          router.push("/");
+        } else {
+          setOpenAlert(true);
+        }
+      })
+      .catch(() => {
+        setOpenAlert(true);
+      });
   }, []);
 
   return (
@@ -86,6 +94,40 @@ function Login() {
           </Segment>
         </Grid.Column>
       </Grid>
+
+      <Modal
+        basic
+        onClose={() => setOpenAlert(false)}
+        onOpen={() => setOpenAlert(true)}
+        open={openAlert}
+        size="small"
+        dimmer="blurring"
+      >
+        <Header icon>
+          <Icon name="lock" />
+          Login Failed
+        </Header>
+        <Modal.Content>
+          <Grid>
+            <Grid.Column textAlign="center">
+              <p>Please try again</p>
+            </Grid.Column>
+          </Grid>
+        </Modal.Content>
+        <Modal.Actions>
+          <Grid>
+            <Grid.Column textAlign="center">
+              <Button
+                color="green"
+                inverted
+                onClick={() => setOpenAlert(false)}
+              >
+                <Icon name="checkmark" /> Confirm
+              </Button>
+            </Grid.Column>
+          </Grid>
+        </Modal.Actions>
+      </Modal>
     </>
   );
 }

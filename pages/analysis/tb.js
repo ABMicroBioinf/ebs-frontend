@@ -5,15 +5,15 @@ import withAuth from "../../middleware/withAuth";
 
 import TopNav from "../../components/TopNav";
 
-function IsolateSSA() {
+function TBAnalysis() {
   return (
     <>
       <TopNav />
       <br />
       <br />
-      <div>Isolate Single Sample Analysis</div>
+      <div>TB Analysis</div>
     </>
   );
 }
 
-export default withAuth(IsolateSSA);
+export default withAuth(TBAnalysis);
