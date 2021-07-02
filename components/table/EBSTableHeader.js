@@ -18,7 +18,7 @@ export default function EBSTableHeader() {
             .map((colState, index) => (
               <Table.HeaderCell
                 sorted={
-                  sort.column === colState.name
+                  sort.column === colState.value
                     ? sort.direction === "asc"
                       ? "ascending"
                       : "descending"
@@ -28,7 +28,8 @@ export default function EBSTableHeader() {
                   setRowData({
                     type: "SET_HISTORY",
                     module: "sort",
-                    sort: colState.name,
+                    sort: colState.value,
+                    dataType: colState.type,
                   });
                   setRowData({
                     type: "APPLY_HISTORY",
@@ -36,7 +37,7 @@ export default function EBSTableHeader() {
                 }}
                 key={index}
               >
-                {colState.name}
+                {colState.alias ? colState.alias : colState.name}
               </Table.HeaderCell>
             ))}
         {/* <Table.HeaderCell>Details</Table.HeaderCell> */}

@@ -54,7 +54,7 @@ const flatRows = (arr) => {
 const EBSDataContext = createContext({
   columnData: [],
   rowData: {},
-  scheme: [],
+  setRowData: () => {},
 });
 
 export default function EBSDataView(props) {
@@ -69,7 +69,7 @@ export default function EBSDataView(props) {
     const DEFAULT_PAGE = 1;
     const DEFAULT_PAGE_SIZE = 5;
     const DEFAULT_SEARCH_KEYWORD = "";
-    const DEFAULT_SORT = { column: null, direction: null };
+    const DEFAULT_SORT = { column: null, direction: null, dataType: "string" };
     const DEFALUT_COLUMNS = CUSTOM_COLUMNS;
     const DEFAULT_PAGE_COUNT = (() =>
       DEFAULT_DATASET.length % DEFAULT_PAGE_SIZE > 0
@@ -136,10 +136,12 @@ export default function EBSDataView(props) {
               ? sort.column === action.sort
                 ? {
                     ...sort,
+                    type: action.dataType,
                     direction: sort.direction === "asc" ? "desc" : "asc",
                   }
                 : {
                     column: action.sort,
+                    type: action.dataType,
                     direction: "asc",
                   }
               : sort,
@@ -173,17 +175,28 @@ export default function EBSDataView(props) {
                 break;
 
               case "sort":
-                results = _.orderBy(
-                  results,
-                  (obj) => {
-                    return parseFloat(obj[sort.column]);
-                  },
-                  [sort.direction]
-                );
+                if (sort.dataType === "number") {
+                  results = _.orderBy(
+                    results,
+                    (obj) => {
+                      return parseFloat(obj[sort.column]);
+                    },
+                    [sort.direction]
+                  );
+                } else {
+                  results =
+                    sort.direction === "asc"
+                      ? _.sortBy(results, (obj) => {
+                          return obj[sort.column];
+                        })
+                      : _.sortBy(results, (obj) => {
+                          return obj[sort.column];
+                        }).reverse();
+                }
                 break;
 
               default:
-                throw new Error();
+                throw new Error("Invalid History Action");
             }
           }
         });
@@ -207,7 +220,7 @@ export default function EBSDataView(props) {
         };
 
       default:
-        throw new Error();
+        throw new Error("Invalid Reducer Action");
     }
   }, []);
 
@@ -225,10 +238,13 @@ export default function EBSDataView(props) {
       <TopNav />
       <div className="ebs-side-section-left">
         <div className="ebs-scrollable-inner">
-          <EBSFilters />
-          {/*  <Dimmer active>
-               <Loader>Loading</Loader>
-             </Dimmer> */}
+          {CUSTOM_COLUMNS.length > 0 && CUSTOM_ROWS.length > 0 ? (
+            <EBSFilters />
+          ) : (
+            <Dimmer active>
+              <Loader>Loading</Loader>
+            </Dimmer>
+          )}
         </div>
       </div>
       <div className="ebs-section-main">

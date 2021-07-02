@@ -28,6 +28,7 @@ const CUSTOM_FIELDS = [
     name: "run_name",
     value: "run_name",
     alias: "RUN",
+    type: "string",
     display: true,
     primary: true,
     children: [],
@@ -36,6 +37,7 @@ const CUSTOM_FIELDS = [
     name: "sample",
     value: "sample",
     alias: null,
+    type: "object",
     display: false,
     primary: false,
     children: [
@@ -43,6 +45,7 @@ const CUSTOM_FIELDS = [
         name: "organism",
         value: "sample.organism",
         alias: "Organism",
+        type: "string",
         display: true,
         primary: false,
         children: [],
@@ -53,6 +56,7 @@ const CUSTOM_FIELDS = [
     name: "experiment",
     value: "experiment",
     alias: null,
+    type: "object",
     display: false,
     primary: false,
     children: [
@@ -60,6 +64,7 @@ const CUSTOM_FIELDS = [
         name: "instrument",
         value: "experiment.instrument",
         alias: "Instrument (EXP)",
+        type: "string",
         display: true,
         primary: false,
         children: [],
@@ -68,6 +73,7 @@ const CUSTOM_FIELDS = [
         name: "platform",
         alias: "Platform (EXP)",
         value: "experiment.platform",
+        type: "string",
         display: true,
         primary: false,
         children: [],
@@ -76,6 +82,7 @@ const CUSTOM_FIELDS = [
         name: "libraryLayout",
         value: "experiment.libraryLayout",
         alias: "Library Layout (EXP)",
+        type: "string",
         display: true,
         primary: false,
         children: [],
@@ -84,6 +91,26 @@ const CUSTOM_FIELDS = [
         name: "librarySource",
         value: "experiment.librarySource",
         alias: "Library Source (EXP)",
+        type: "string",
+        display: true,
+        primary: false,
+        children: [],
+      },
+    ],
+  },
+  {
+    name: "stats_qc",
+    value: "stats_qc",
+    alias: "Stats QC",
+    type: "object",
+    display: false,
+    primary: false,
+    children: [
+      {
+        name: "total_bp",
+        value: "stats_qc.total_bp",
+        alias: "Total BP (QC)",
+        type: "number",
         display: true,
         primary: false,
         children: [],
@@ -109,6 +136,7 @@ const getSchemeDefault = (sample, parent = null) => {
         name: key,
         value: key,
         alias: null,
+        type: "object",
         display: false,
         primary: false,
         children: getSchemeDefault(value, key),
@@ -118,6 +146,7 @@ const getSchemeDefault = (sample, parent = null) => {
         name: key,
         value: parent === null ? key : parent + "." + key,
         alias: null,
+        type: "string",
         display: false,
         primary: false,
         children: [],
@@ -158,7 +187,7 @@ function Sequences() {
   const { accessToken } = useAuth();
 
   const [data, setData] = useState({ headers: [], rows: [] });
-  const [scheme, setScheme] = useState([]);
+  // const [scheme, setScheme] = useState([]);
 
   const fetchData = useCallback(async () => {
     const config = {
@@ -181,7 +210,7 @@ function Sequences() {
           DEFAULT_SCHEME,
           CUSTOM_FIELDS
         );
-        setScheme(CUSTOMIZED_SCHEME);
+        // setScheme(CUSTOMIZED_SCHEME);
 
         if (validateCustomFields(DEFAULT_SCHEME, CUSTOM_FIELDS)) {
           setData({
@@ -198,13 +227,13 @@ function Sequences() {
   }, []);
 
   return (
-    scheme.length > 0 &&
+    // scheme.length > 0 &&
     data.rows.length > 0 && (
       <EBSDataView
         data={data}
-        scheme={scheme}
+        // scheme={scheme}
         setData={setData}
-        setScheme={setScheme}
+        // setScheme={setScheme}
       />
     )
   );
