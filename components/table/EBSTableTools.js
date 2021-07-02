@@ -13,6 +13,7 @@ import {
   Checkbox,
   Grid,
 } from "semantic-ui-react";
+import { useEBSData } from "./EBSDataView";
 
 /**
  * Column Selector
@@ -69,8 +70,8 @@ function ColumnSelector(props) {
   );
 }
 
-export default function EBSTableTools(props) {
-  const { columnData, rowData, setRowData } = props;
+export default function EBSTableTools() {
+  const { columnData, rowData, setRowData } = useEBSData();
   const { ORIGIN, history, dataset } = rowData;
   const { pagination } = history;
   const { page, pageSize, pageCount } = pagination;

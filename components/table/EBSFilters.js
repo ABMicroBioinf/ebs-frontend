@@ -3,6 +3,8 @@
  */
 import _ from "lodash";
 import { useState } from "react";
+import { useEBSData } from "./EBSDataView";
+
 import {
   Accordion,
   Form,
@@ -14,23 +16,23 @@ import {
   Input,
 } from "semantic-ui-react";
 
-export default function Filters({ data }) {
-  const DEFAULT_DATASET = data.rows.slice();
+export default function Filters() {
+  const { columnData, rowData, setRowData } = useEBSData();
+  const { dataset, primary } = rowData;
 
-  const organism = _.countBy(
-    DEFAULT_DATASET.map((data) => data.organism).sort()
-  );
+  // alias names are hardcoded. it needs to be fixed in the future
+  const organism = _.countBy(dataset.map((data) => data["Organism"]).sort());
   const instrument = _.countBy(
-    DEFAULT_DATASET.map((data) => data.instrument).sort()
+    dataset.map((data) => data["Instrument (EXP)"]).sort()
   );
   const platform = _.countBy(
-    DEFAULT_DATASET.map((data) => data.platform).sort()
+    dataset.map((data) => data["Platform (EXP)"]).sort()
   );
   const libraryLayout = _.countBy(
-    DEFAULT_DATASET.map((data) => data.libraryLayout).sort()
+    dataset.map((data) => data["Library Layout (EXP)"]).sort()
   );
   const librarySource = _.countBy(
-    DEFAULT_DATASET.map((data) => data.librarySource).sort()
+    dataset.map((data) => data["Library Source"]).sort()
   );
 
   const OrganismForm = (

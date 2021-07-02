@@ -43,7 +43,7 @@ function Account() {
     const config = {
       headers: {
         Authorization: "Bearer " + accessToken,
-        // withCredentials: true,
+        withCredentials: true,
       },
     };
 

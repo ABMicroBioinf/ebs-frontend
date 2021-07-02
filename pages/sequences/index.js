@@ -3,108 +3,132 @@
  */
 import axios from "axios";
 import withAuth from "../../middleware/withAuth";
-import EBSDatatable from "../../components/table/EBSDataTable";
-import EBSFilters from "../../components/table/EBSFilters";
 import { useAuth } from "../../middleware/AuthProvider";
+import { useCallback, useEffect, useState } from "react";
 
-import TopNav from "../../components/TopNav";
-import {
-  Dimmer,
-  Loader,
-  Grid,
-  Segment,
-  Statistic,
-  Header,
-  Icon,
-  Placeholder,
-} from "semantic-ui-react";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import EBSDataView from "../../components/table/EBSDataView";
 
 /**
+ * #####################################################################
  * Customize your table here
- * *********************************
- * *********************************
- * *********************************
+ *
+ * interface custom_fields {
+ *   name: string,
+ *   value: string,
+ *   alias: string,
+ *   display: boolean,
+ *   children: Object[],
+ * }
+ * #####################################################################
  */
-const PRIMARY_FIELD = "run_name";
+// Add fields you want to display other than that will be disabled by default
+// parent cannot be a primary and displayed n a flatMap
 const CUSTOM_FIELDS = [
-  { name: "run_name", alias: "RUN", children: [] },
+  {
+    name: "run_name",
+    value: "run_name",
+    alias: "RUN",
+    display: true,
+    primary: true,
+    children: [],
+  },
   {
     name: "sample",
+    value: "sample",
     alias: null,
+    display: false,
+    primary: false,
     children: [
       {
         name: "organism",
+        value: "sample.organism",
         alias: "Organism",
+        display: true,
+        primary: false,
         children: [],
       },
     ],
   },
   {
     name: "experiment",
+    value: "experiment",
     alias: null,
+    display: false,
+    primary: false,
     children: [
       {
         name: "instrument",
-        alias: "Instrument",
+        value: "experiment.instrument",
+        alias: "Instrument (EXP)",
+        display: true,
+        primary: false,
         children: [],
       },
       {
         name: "platform",
-        alias: "Platform",
+        alias: "Platform (EXP)",
+        value: "experiment.platform",
+        display: true,
+        primary: false,
         children: [],
       },
       {
         name: "libraryLayout",
-        alias: "Library Layout",
+        value: "experiment.libraryLayout",
+        alias: "Library Layout (EXP)",
+        display: true,
+        primary: false,
         children: [],
       },
       {
         name: "librarySource",
-        alias: "Library Source",
+        value: "experiment.librarySource",
+        alias: "Library Source (EXP)",
+        display: true,
+        primary: false,
         children: [],
       },
     ],
   },
 ];
 /**
- * *********************************
- * *********************************
- * *********************************
+ * #####################################################################
  * - END - Custom table setting
+ * #####################################################################
  */
 
 /**
  * Helper functions
- * *********************************
- * *********************************
- * *********************************
  */
 // expected return array of column objects
-const getSchemeOrigin = (sample) => {
+const getSchemeDefault = (sample, parent = null) => {
   let scheme = [];
   for (const [key, value] of Object.entries(sample)) {
-    if (typeof value === "object" && value !== null && value !== undefined) {
+    if (value === Object(value) && value !== null && value !== undefined) {
       scheme.push({
         name: key,
+        value: key,
         alias: null,
-        children: getSchemeOrigin(value),
+        display: false,
+        primary: false,
+        children: getSchemeDefault(value, key),
       });
     } else {
-      scheme.push({ name: key, alias: null, children: [] });
+      scheme.push({
+        name: key,
+        value: parent === null ? key : parent + "." + key,
+        alias: null,
+        display: false,
+        primary: false,
+        children: [],
+      });
     }
   }
   return scheme;
 };
 
 // expected returns True or false
-const validateCustomFields = (schemeOrigin) => {
+const validateCustomFields = (origin, custom) => {
   const getFieldStructure = (obj) => {
     if (obj.children.length > 0) {
       return obj.children.map((child) => obj.name + "." + child.name);
@@ -113,63 +137,28 @@ const validateCustomFields = (schemeOrigin) => {
     }
   };
   try {
-    return CUSTOM_FIELDS.flatMap(getFieldStructure).every((field) =>
-      schemeOrigin.flatMap(getFieldStructure).includes(field)
-    );
+    return custom
+      .flatMap(getFieldStructure)
+      .every((field) => origin.flatMap(getFieldStructure).includes(field));
   } catch {
     throw Error("Invalid fields are selected");
   }
 };
 
-// expected returns flatten { cols1, cols2, cols3 ... }
-const applyCutomFields = (dataset, scheme) => {
-  const pick = (obj, scheme) => {
-    return scheme
-      .flatMap((field) => {
-        if (field.name in obj) {
-          if (field.children.length >= 1) {
-            return pick(obj[field.name], field.children);
-          } else {
-            // return { [field.name]: obj[field.name] };
-            return { [field.alias]: obj[field.name] };
-          }
-        } else {
-          return {};
-        }
-      })
-      .reduce((res, o) => Object.assign(res, o), {});
-  };
-
-  return dataset.map((data) => {
-    return pick(data, scheme);
-  });
+// // expected returns flatten { cols1, cols2, cols3 ... }
+const applyCutomFields = (origin, custom) => {
+  const base = Object.assign([], origin);
+  return base.map((obj) => custom.find((o) => o.value === obj.value) || obj);
 };
 /**
- * *********************************
- * *********************************
- * *********************************
  * - END - Helper functions
  */
-
-// interface
-const EBSDataContext = createContext({
-  dataset: { headers: [], rows: [] },
-  primary: 0,
-});
-
-export function useEBSData() {
-  const context = useContext(EBSDataContext);
-  if (context === undefined) {
-    throw new Error("useEBSData must be used within an EBSDataProvider");
-  }
-  return context;
-}
 
 function Sequences() {
   const { accessToken } = useAuth();
 
-  const [dataset, setDataset] = useState(null);
-  const [primary, setPrimary] = useState(0);
+  const [data, setData] = useState({ headers: [], rows: [] });
+  const [scheme, setScheme] = useState([]);
 
   const fetchData = useCallback(async () => {
     const config = {
@@ -187,11 +176,18 @@ function Sequences() {
         // we assume that every data fields are ALWAYS consistent.
         // If the above assumption is possible,
         // we can use a scheme of the first data row to represent the rest of data scheme
-        if (validateCustomFields(getSchemeOrigin(res.data[0]))) {
-          const raw = applyCutomFields(res.data, CUSTOM_FIELDS);
-          const formatted = { headers: Object.keys(raw[0]), rows: raw };
-          setDataset(formatted);
-          setPrimary(Object.keys(raw[0]).indexOf(PRIMARY_FIELD));
+        const DEFAULT_SCHEME = getSchemeDefault(res.data[0]);
+        const CUSTOMIZED_SCHEME = applyCutomFields(
+          DEFAULT_SCHEME,
+          CUSTOM_FIELDS
+        );
+        setScheme(CUSTOMIZED_SCHEME);
+
+        if (validateCustomFields(DEFAULT_SCHEME, CUSTOM_FIELDS)) {
+          setData({
+            headers: CUSTOMIZED_SCHEME,
+            rows: res.data,
+          });
         }
       })
       .catch((err) => console.log(err));
@@ -202,98 +198,15 @@ function Sequences() {
   }, []);
 
   return (
-    <EBSDataContext.Provider
-      value={{
-        dataset,
-        primary,
-        setDataset,
-        setPrimary,
-      }}
-    >
-      <TopNav />
-      <div className="ebs-side-section-left">
-        <div className="ebs-scrollable-inner">
-          {dataset ? (
-            <EBSFilters data={dataset} />
-          ) : (
-            <Dimmer active>
-              <Loader>Loading</Loader>
-            </Dimmer>
-          )}
-        </div>
-      </div>
-      <div className="ebs-section-main">
-        <Grid padded>
-          <Grid.Row>
-            <Grid.Column>
-              <Header size="large">Statistic</Header>
-              <Segment>
-                <Statistic.Group widths="4">
-                  <Statistic color="orange">
-                    <Statistic.Value>
-                      <Icon size="small" name="flask" />
-                      83
-                    </Statistic.Value>
-                    <Statistic.Label>Total RUNs</Statistic.Label>
-                  </Statistic>
-                  <Statistic color="yellow">
-                    <Statistic.Value>
-                      <Icon size="small" name="cogs" />1
-                    </Statistic.Value>
-                    <Statistic.Label>Total Platforms</Statistic.Label>
-                  </Statistic>
-                  <Statistic color="green">
-                    <Statistic.Value>
-                      <Icon size="small" name="chain" />5
-                    </Statistic.Value>
-                    <Statistic.Label>Total Organisms</Statistic.Label>
-                  </Statistic>
-                  <Statistic color="blue">
-                    <Statistic.Value>
-                      <Icon size="small" name="retweet" />1
-                    </Statistic.Value>
-                    <Statistic.Label>Total Instruments</Statistic.Label>
-                  </Statistic>
-                </Statistic.Group>
-              </Segment>
-            </Grid.Column>
-          </Grid.Row>
-
-          <Grid.Row>
-            <Grid.Column>
-              {dataset ? (
-                <EBSDatatable data={dataset} primary={primary} />
-              ) : (
-                <>
-                  <Placeholder fluid>
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                    <Grid>
-                      <Grid.Column textAlign="center">
-                        <Header icon>
-                          <Icon name="table" />
-                        </Header>
-                      </Grid.Column>
-                    </Grid>
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                    <Placeholder.Line />
-                  </Placeholder>
-                  <Dimmer active inverted>
-                    <Loader inverted>Loading</Loader>
-                  </Dimmer>
-                </>
-              )}
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
-    </EBSDataContext.Provider>
+    scheme.length > 0 &&
+    data.rows.length > 0 && (
+      <EBSDataView
+        data={data}
+        scheme={scheme}
+        setData={setData}
+        setScheme={setScheme}
+      />
+    )
   );
 }
 

@@ -2,9 +2,10 @@
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
 import { Table } from "semantic-ui-react";
+import { useEBSData } from "./EBSDataView";
 
-export default function EBSTableHeader(props) {
-  const { rowData, setRowData } = props;
+export default function EBSTableHeader() {
+  const { rowData, setRowData } = useEBSData();
   const { history } = rowData;
   const { columns, sort } = history;
 
@@ -38,7 +39,7 @@ export default function EBSTableHeader(props) {
                 {colState.name}
               </Table.HeaderCell>
             ))}
-        <Table.HeaderCell>Details</Table.HeaderCell>
+        {/* <Table.HeaderCell>Details</Table.HeaderCell> */}
       </Table.Row>
     </Table.Header>
   );

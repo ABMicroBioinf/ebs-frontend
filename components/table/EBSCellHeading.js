@@ -1,6 +1,6 @@
 /**
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
-export default function EBSCellHeader() {
+export default function EBSCellHeading() {
   return <></>;
 }
