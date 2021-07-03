@@ -40,7 +40,6 @@ export default function EBSTableHeader() {
                 {colState.alias ? colState.alias : colState.value}
               </Table.HeaderCell>
             ))}
-        {/* <Table.HeaderCell>Details</Table.HeaderCell> */}
       </Table.Row>
     </Table.Header>
   );

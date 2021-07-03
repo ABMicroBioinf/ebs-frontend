@@ -2,19 +2,17 @@
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
 import { useCallback, useState } from "react";
+import { useEBSData } from "./EBSDataView";
+
 import {
   Menu,
   Segment,
   Pagination,
   Button,
   Dropdown,
-  Item,
-  Input,
-  Checkbox,
   Grid,
   Icon,
 } from "semantic-ui-react";
-import { useEBSData } from "./EBSDataView";
 
 /**
  * Column Selector
@@ -33,38 +31,19 @@ function ColumnSelector(props) {
     });
   }, []);
 
-  const handleBlur = useCallback((e) => {
-    if (e && e.relatedTarget === null) {
-      // setToggleParent(false)
-      // console.log('relatedtarget exist')
-    }
-  }, []);
-
   return (
     <Grid columns={5}>
       {columnData &&
         columnData.map((column, index) => (
-          // <Item key={index} disabled={column.primary}>
-          //   <input
-          //     onChange={handleCheck}
-          //     onBlur={handleBlur}
-          //     value={column.name}
-          //     defaultChecked={column.display}
-          //     type="checkbox"
-          //   />
-          //   <label>{column.name}</label>
-          // </Item>
           <Grid.Column key={index}>
             <input
               disabled={column.primary}
               label={column.value}
               value={column.value}
               onChange={handleChange}
-              onBlur={handleBlur}
               defaultChecked={column.display}
               type="checkbox"
             />
-            {/* <label>{column.alias ? column.alias : column.value}</label> */}
             <label>{column.value}</label>
           </Grid.Column>
         ))}
@@ -72,13 +51,11 @@ function ColumnSelector(props) {
   );
 }
 
-export default function EBSTableTools() {
-  const { columnData, rowData, setRowData } = useEBSData();
-  const { ORIGIN, history, dataset } = rowData;
-  const { pagination } = history;
-  const { page, pageSize, pageCount } = pagination;
-
-  const [activeItem, setActiveItem] = useState("");
+/**
+ * Page Selector
+ */
+function PageSizeSelector(props) {
+  const { pageSize, setRowData } = props;
 
   const pageSizeOptions = [
     { key: 1, text: "5", value: 5 },
@@ -88,37 +65,21 @@ export default function EBSTableTools() {
     { key: 5, text: "100", value: 100 },
   ];
 
-  const handleItemClick = useCallback((e, { name }) => {
-    setActiveItem(name);
-  }, []);
+  const handlePageSizeChange = useCallback(
+    (e, data) => {
+      setRowData({
+        type: "SET_HISTORY",
+        page: 1,
+        pageSize: data.value,
+      });
+      setRowData({
+        type: "APPLY_HISTORY",
+      });
+    },
+    [pageSize]
+  );
 
-  const handlePageChange = useCallback((e, data) => {
-    setRowData({
-      type: "SET_HISTORY",
-      page: data.activePage,
-    });
-    setRowData({
-      type: "APPLY_HISTORY",
-    });
-  }, []);
-
-  const handlePageSizeChange = useCallback((e, data) => {
-    setRowData({
-      type: "SET_HISTORY",
-      page: 1,
-      pageSize: data.value,
-    });
-    setRowData({
-      type: "APPLY_HISTORY",
-    });
-  }, []);
-
-  const handleSubmenuClose = useCallback((e) => {
-    e.preventDefault();
-    setActiveItem("");
-  }, []);
-
-  const pageSubmenu = (
+  return (
     <>
       <label>Show </label>
       <Menu compact>
@@ -133,27 +94,69 @@ export default function EBSTableTools() {
       <label> rows</label>
     </>
   );
+}
 
-  const columnsSubmenu = (
-    <ColumnSelector
-      columnData={columnData}
-      rowData={rowData}
-      setRowData={setRowData}
-    />
+export default function EBSTableTools() {
+  const { columnData, rowData, setRowData } = useEBSData();
+  const { ORIGIN, history, dataset } = rowData;
+  const { pagination } = history;
+  const { page, pageSize, pageCount } = pagination;
+
+  const [activeItem, setActiveItem] = useState("");
+
+  const handleItemClick = useCallback(
+    (e, { name }) => {
+      name === activeItem ? setActiveItem("") : setActiveItem(name);
+    },
+    [activeItem]
   );
+
+  const handlePageChange = useCallback(
+    (e, data) => {
+      setRowData({
+        type: "SET_HISTORY",
+        page: data.activePage,
+      });
+      setRowData({
+        type: "APPLY_HISTORY",
+      });
+    },
+    [page]
+  );
+
+  const handleSubmenuClose = useCallback((e) => {
+    e.preventDefault();
+    setActiveItem("");
+  }, []);
+
+  const handleRefresh = useCallback((e) => {
+    e.preventDefault();
+    setRowData({
+      type: "RESET_DATASET",
+    });
+    setRowData({
+      type: "APPLY_HISTORY",
+    });
+  }, []);
 
   const getSubmenu = useCallback(() => {
     switch (activeItem) {
       case "page":
-        return pageSubmenu;
+        return <PageSizeSelector pageSize={pageSize} setRowData={setRowData} />;
 
       case "columns":
-        return columnsSubmenu;
+        return (
+          <ColumnSelector
+            columnData={columnData}
+            rowData={rowData}
+            setRowData={setRowData}
+          />
+        );
 
       default:
         return null;
     }
-  }, [activeItem]);
+  }, [activeItem, pageSize, columnData, rowData]);
 
   return (
     <>
@@ -193,7 +196,9 @@ export default function EBSTableTools() {
           </Menu.Item>
 
           <Menu.Item>
-            <Icon name="refresh" />
+            <Button icon basic onClick={handleRefresh}>
+              <Icon name="refresh" />
+            </Button>
           </Menu.Item>
 
           <Menu.Item
