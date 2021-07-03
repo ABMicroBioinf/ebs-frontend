@@ -2,107 +2,231 @@
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
 import _ from "lodash";
-import { useState } from "react";
+import { useCallback, useReducer, useState } from "react";
 import { useEBSData } from "./EBSDataView";
 
 import {
   Accordion,
-  Form,
   Menu,
   Label,
-  Item,
   Checkbox,
   Segment,
   Input,
+  Grid,
 } from "semantic-ui-react";
 
+/**
+ * Search Tool
+ */
+function Search(props) {
+  const { setRowData } = props;
+
+  const initialSearchState = {
+    loading: false,
+    searchValue: "",
+  };
+
+  function searchReducer(state, action) {
+    switch (action.searchType) {
+      case "CLEAN_QUERY":
+        return initialSearchState;
+      case "START_SEARCH":
+        return { ...state, loading: true, searchValue: action.searchQuery };
+      case "FINISH_SEARCH":
+        return { ...state, loading: false, searchValue: action.searchQuery };
+      case "NOT_FOUND":
+        return { ...state, loading: false };
+
+      default:
+        throw new Error();
+    }
+  }
+
+  const [searchState, dispatchSearch] = useReducer(
+    searchReducer,
+    initialSearchState
+  );
+  const { searchValue } = searchState;
+
+  const handleSearchChange = useCallback((e, data) => {
+    dispatchSearch({ searchType: "START_SEARCH", searchQuery: data.value });
+    if (data.value.length === 0) {
+      dispatchSearch({ searchType: "CLEAN_QUERY" });
+      setRowData({
+        type: "SET_HISTORY",
+        module: "search",
+        search: "",
+      });
+      setRowData({
+        type: "APPLY_HISTORY",
+      });
+      return;
+    }
+
+    dispatchSearch({
+      searchType: "FINISH_SEARCH",
+      searchQuery: data.value,
+    });
+    setRowData({
+      type: "SET_HISTORY",
+      module: "search",
+      search: data.value,
+    });
+    setRowData({
+      type: "APPLY_HISTORY",
+    });
+  }, []);
+
+  return (
+    <Input
+      onChange={handleSearchChange}
+      value={searchValue}
+      icon="search"
+      placeholder="Search..."
+      type="text"
+    />
+  );
+}
+
 export default function Filters() {
-  const { columnData, rowData, setRowData } = useEBSData();
-  const { dataset, primary } = rowData;
+  const { rowData, setRowData } = useEBSData();
+  const { ORIGIN } = rowData;
+
+  const statisticRef = ORIGIN.slice();
 
   // alias names are hardcoded. it needs to be fixed in the future
-  const organism = _.countBy(dataset.map((data) => data["Organism"]).sort());
+  const organism = _.countBy(
+    statisticRef.map((data) => data["sample.organism"]).sort()
+  );
   const instrument = _.countBy(
-    dataset.map((data) => data["Instrument (EXP)"]).sort()
+    statisticRef.map((data) => data["experiment.instrument"]).sort()
   );
   const platform = _.countBy(
-    dataset.map((data) => data["Platform (EXP)"]).sort()
+    statisticRef.map((data) => data["experiment.platform"]).sort()
   );
   const libraryLayout = _.countBy(
-    dataset.map((data) => data["Library Layout (EXP)"]).sort()
+    statisticRef.map((data) => data["experiment.libraryLayout"]).sort()
   );
   const librarySource = _.countBy(
-    dataset.map((data) => data["Library Source"]).sort()
+    statisticRef.map((data) => data["experiment.librarySource"]).sort()
   );
 
   const OrganismForm = (
-    <Form inverted>
+    <Grid className="ebs-filters-submenu">
       {organism &&
         Object.keys(organism).map((key, index) => {
           return (
-            <Item key={index}>
-              <Form.Checkbox label={key} name="organism" value={key} />
-              <Label color="grey">{organism[key]}</Label>
-            </Item>
+            <Grid.Row key={index}>
+              <Grid.Column>
+                <Checkbox
+                  className="ebs-inverted"
+                  label={key}
+                  name="sample.organism"
+                  value={key}
+                />
+              </Grid.Column>
+              <Grid.Column width={2} floated="right">
+                <Label color="grey">{organism[key]}</Label>
+              </Grid.Column>
+            </Grid.Row>
           );
         })}
-    </Form>
+    </Grid>
   );
 
   const InstrumentForm = (
-    <Form inverted>
+    <Grid className="ebs-filters-submenu">
       {instrument &&
         Object.keys(instrument).map((key, index) => {
           return (
-            <Item key={index}>
-              <Checkbox label={key} name="instrument" value={key} />
-              <Label color="grey">{instrument[key]}</Label>
-            </Item>
+            <Grid.Row key={index}>
+              <Grid.Column>
+                <Checkbox
+                  className="ebs-inverted"
+                  label={key}
+                  name="experiment.instrument"
+                  value={key}
+                />
+              </Grid.Column>
+              <Grid.Column width={2} floated="right">
+                <Label color="grey">{instrument[key]}</Label>
+              </Grid.Column>
+            </Grid.Row>
           );
         })}
-    </Form>
+    </Grid>
   );
 
   const PlatformForm = (
-    <Form inverted>
+    <Grid className="ebs-filters-submenu">
       {platform &&
         Object.keys(platform).map((key, index) => {
           return (
-            <Item key={index}>
-              <Checkbox label={key} name="instrument" value={key} />
-              <Label color="grey">{platform[key]}</Label>
-            </Item>
+            <Grid.Row key={index}>
+              <Grid.Column>
+                <Checkbox
+                  className="ebs-inverted"
+                  label={key}
+                  name="experiment.platform"
+                  value={key}
+                />
+              </Grid.Column>
+
+              <Grid.Column width={2} floated="right">
+                <Label color="grey">{platform[key]}</Label>
+              </Grid.Column>
+            </Grid.Row>
           );
         })}
-    </Form>
+    </Grid>
   );
 
   const LibraryLayoutForm = (
-    <Form inverted>
+    <Grid className="ebs-filters-submenu">
       {libraryLayout &&
         Object.keys(libraryLayout).map((key, index) => {
           return (
-            <Item key={index}>
-              <Checkbox label={key} name="instrument" value={key} />
-              <Label color="grey">{libraryLayout[key]}</Label>
-            </Item>
+            <Grid.Row key={index}>
+              <Grid.Column>
+                <Checkbox
+                  className="ebs-inverted"
+                  label={key}
+                  name="experiment.libraryLayout"
+                  value={key}
+                />
+              </Grid.Column>
+
+              <Grid.Column width={2} floated="right">
+                <Label color="grey">{libraryLayout[key]}</Label>
+              </Grid.Column>
+            </Grid.Row>
           );
         })}
-    </Form>
+    </Grid>
   );
 
   const LibrarySourceForm = (
-    <Form inverted>
+    <Grid className="ebs-filters-submenu">
       {librarySource &&
         Object.keys(librarySource).map((key, index) => {
           return (
-            <Item key={index}>
-              <Checkbox label={key} name="instrument" value={key} />
-              <Label color="grey">{librarySource[key]}</Label>
-            </Item>
+            <Grid.Row key={index}>
+              <Grid.Column>
+                <Checkbox
+                  className="ebs-inverted"
+                  label={key}
+                  name="experiment.librarySource"
+                  value={key}
+                />
+              </Grid.Column>
+
+              <Grid.Column width={2} floated="right">
+                <Label color="grey">{librarySource[key]}</Label>
+              </Grid.Column>
+            </Grid.Row>
           );
         })}
-    </Form>
+    </Grid>
   );
 
   const [activeIndex, setActiveIndex] = useState({
@@ -121,7 +245,7 @@ export default function Filters() {
   return (
     <>
       <Segment inverted>
-        <Input icon="search" placeholder="Search..." />
+        <Search setRowData={setRowData} />
       </Segment>
       <Accordion inverted fluid as={Menu} vertical>
         <Menu.Item>
@@ -170,7 +294,7 @@ export default function Filters() {
         <Menu.Item>
           <Accordion.Title
             active={activeIndex[4]}
-            content="Library Resource"
+            content="Library Source"
             index={4}
             onClick={handleClick}
           />

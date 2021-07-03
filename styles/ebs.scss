@@ -52,3 +52,13 @@ body {
     min-width:550px;
     max-width:1150px
 }
+.ebs-filters-submenu {
+    padding-top:1.5em !important;
+    padding-bottom:1.5em !important;
+}
+.ebs-inverted { // Fixed in https://github.com/fomantic/Fomantic-UI 2.4.4
+    label {
+        color: rgba(255,255,255,.9) !important;
+        background-color: #1b1c1d;
+    }
+}
