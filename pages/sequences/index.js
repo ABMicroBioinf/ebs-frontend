@@ -179,6 +179,31 @@ const applyCutomFields = (origin, custom) => {
   const base = Object.assign([], origin);
   return base.map((obj) => custom.find((o) => o.value === obj.value) || obj);
 };
+
+const flatColumns = (arr) => {
+  return arr.flatMap((obj) => {
+    if (obj.children.length > 0) {
+      return obj.children.map((child) => child);
+    } else {
+      return obj;
+    }
+  });
+};
+
+const flatRows = (arr) => {
+  const pullout = (obj, prefix = "") => {
+    return Object.entries(obj).flatMap(([key, value]) => {
+      if (value === Object(value) && value !== null && value !== undefined) {
+        return pullout(value, `${prefix}${key}.`);
+      } else {
+        return [[`${prefix}${key}`, value]];
+      }
+    });
+    // .reduce((res, o) => Object.assign(res, o), {});
+  };
+
+  return arr.map((item) => Object.fromEntries(pullout(item)));
+};
 /**
  * - END - Helper functions
  */
@@ -187,7 +212,6 @@ function Sequences() {
   const { accessToken } = useAuth();
 
   const [data, setData] = useState({ headers: [], rows: [] });
-  // const [scheme, setScheme] = useState([]);
 
   const fetchData = useCallback(async () => {
     const config = {
@@ -207,15 +231,14 @@ function Sequences() {
         // we can use a scheme of the first data row to represent the rest of data scheme
         const DEFAULT_SCHEME = getSchemeDefault(res.data[0]);
         const CUSTOMIZED_SCHEME = applyCutomFields(
-          DEFAULT_SCHEME,
-          CUSTOM_FIELDS
+          flatColumns(DEFAULT_SCHEME),
+          flatColumns(CUSTOM_FIELDS)
         );
-        // setScheme(CUSTOMIZED_SCHEME);
 
         if (validateCustomFields(DEFAULT_SCHEME, CUSTOM_FIELDS)) {
           setData({
             headers: CUSTOMIZED_SCHEME,
-            rows: res.data,
+            rows: flatRows(res.data),
           });
         }
       })
@@ -226,17 +249,7 @@ function Sequences() {
     fetchData();
   }, []);
 
-  return (
-    // scheme.length > 0 &&
-    data.rows.length > 0 && (
-      <EBSDataView
-        data={data}
-        // scheme={scheme}
-        setData={setData}
-        // setScheme={setScheme}
-      />
-    )
-  );
+  return data.rows.length > 0 && <EBSDataView data={data} setData={setData} />;
 }
 
 export default withAuth(Sequences);

@@ -24,32 +24,6 @@ import {
   Placeholder,
 } from "semantic-ui-react";
 
-// helper
-const flatColumns = (arr) => {
-  return arr.flatMap((obj) => {
-    if (obj.children.length > 0) {
-      return obj.children.map((child) => child);
-    } else {
-      return obj;
-    }
-  });
-};
-
-const flatRows = (arr) => {
-  const pullout = (obj, prefix = "") => {
-    return Object.entries(obj).flatMap(([key, value]) => {
-      if (value === Object(value) && value !== null && value !== undefined) {
-        return pullout(value, `${prefix}${key}.`);
-      } else {
-        return [[`${prefix}${key}`, value]];
-      }
-    });
-    // .reduce((res, o) => Object.assign(res, o), {});
-  };
-
-  return arr.map((item) => Object.fromEntries(pullout(item)));
-};
-
 // interface
 const EBSDataContext = createContext({
   columnData: [],
@@ -61,8 +35,8 @@ export default function EBSDataView(props) {
   const { data } = props;
   const { headers, rows } = data;
 
-  const CUSTOM_COLUMNS = flatColumns(headers.slice());
-  const CUSTOM_ROWS = flatRows(rows.slice());
+  const CUSTOM_COLUMNS = headers.slice();
+  const CUSTOM_ROWS = rows.slice();
 
   const initialDatasetState = (() => {
     const DEFAULT_DATASET = CUSTOM_ROWS;
