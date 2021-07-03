@@ -37,7 +37,7 @@ export default function EBSTableHeader() {
                 }}
                 key={index}
               >
-                {colState.alias ? colState.alias : colState.name}
+                {colState.alias ? colState.alias : colState.value}
               </Table.HeaderCell>
             ))}
         {/* <Table.HeaderCell>Details</Table.HeaderCell> */}

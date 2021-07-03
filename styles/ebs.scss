@@ -20,6 +20,8 @@ body {
 .ebs-table-temporary {
     // max-width: 1024px !important;
     overflow-x: scroll !important;
+    overflow-y: auto !important;
+    max-height: 450px !important;
 }
 .ebs-pagination-temporary {
     // width: 100vh !important;

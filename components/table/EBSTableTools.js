@@ -12,6 +12,7 @@ import {
   Input,
   Checkbox,
   Grid,
+  Icon,
 } from "semantic-ui-react";
 import { useEBSData } from "./EBSDataView";
 
@@ -21,7 +22,7 @@ import { useEBSData } from "./EBSDataView";
 function ColumnSelector(props) {
   const { columnData, setRowData } = props;
 
-  const handleCheck = useCallback((e) => {
+  const handleChange = useCallback((e) => {
     setRowData({
       type: "SET_HISTORY",
       module: "columns",
@@ -56,14 +57,15 @@ function ColumnSelector(props) {
           <Grid.Column key={index}>
             <input
               disabled={column.primary}
-              label={column.name}
-              value={column.name}
-              onChange={handleCheck}
+              label={column.value}
+              value={column.value}
+              onChange={handleChange}
               onBlur={handleBlur}
               defaultChecked={column.display}
               type="checkbox"
             />
-            <label>{column.name}</label>
+            {/* <label>{column.alias ? column.alias : column.value}</label> */}
+            <label>{column.value}</label>
           </Grid.Column>
         ))}
     </Grid>
@@ -188,6 +190,10 @@ export default function EBSTableTools() {
                 ORIGIN.length
               );
             })()}
+          </Menu.Item>
+
+          <Menu.Item>
+            <Icon name="refresh" />
           </Menu.Item>
 
           <Menu.Item

@@ -103,9 +103,15 @@ export default function EBSDataView(props) {
     const { order, search, columns, sort, pagination } = history;
     const { page, pageSize } = pagination;
 
+    // const pick = (obj, keys) => {
+    //   return keys
+    //     .map((k) => (k in obj ? { [k]: obj[k] } : {}))
+    //     .reduce((res, o) => Object.assign(res, o), {});
+    // };
+
     const pick = (obj, keys) => {
       return keys
-        .map((k) => (k in obj ? { [k]: obj[k] } : {}))
+        .map((k) => (k.value in obj ? { [k.value]: obj[k.value] } : {}))
         .reduce((res, o) => Object.assign(res, o), {});
     };
 
@@ -126,7 +132,7 @@ export default function EBSDataView(props) {
             search: action.search ? action.search : search,
             columns: action.column
               ? columns.map((column) => {
-                  if (column.name === action.column) {
+                  if (column.value === action.column) {
                     return { ...column, display: !column.display };
                   }
                   return column;
@@ -164,14 +170,12 @@ export default function EBSDataView(props) {
                 break;
 
               case "columns":
-                results = results.map((data) =>
-                  pick(
+                results = results.map((data) => {
+                  return pick(
                     data,
-                    columns
-                      .filter((colState) => colState.display && colState)
-                      .map((colState) => colState.name)
-                  )
-                );
+                    columns.filter((colState) => colState.display && colState)
+                  );
+                });
                 break;
 
               case "sort":

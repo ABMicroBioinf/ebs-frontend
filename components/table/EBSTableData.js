@@ -40,7 +40,7 @@ export default function EBSTableData() {
         </Table.Row>
       );
     }
-  }, [dataset]);
+  }, [dataset, columnData]);
 
   useEffect(() => {
     setRowData({
