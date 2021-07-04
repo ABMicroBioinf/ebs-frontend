@@ -92,6 +92,31 @@ export default function Filters() {
   const { rowData, setRowData } = useEBSData();
   const { ORIGIN } = rowData;
 
+  const [activeIndex, setActiveIndex] = useState({
+    0: false,
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+  });
+
+  const handleClick = (e, data) => {
+    const { index, active } = data;
+    setActiveIndex({ ...activeIndex, [index]: !active });
+  };
+
+  const handleChange = (e, data) => {
+    // Temporary
+    setRowData({
+      type: "SET_HISTORY",
+      module: "search",
+      search: data.value,
+    });
+    setRowData({
+      type: "APPLY_HISTORY",
+    });
+  };
+
   const statisticRef = ORIGIN.slice();
 
   // alias names are hardcoded. it needs to be fixed in the future
@@ -123,6 +148,7 @@ export default function Filters() {
                   label={key}
                   name="sample.organism"
                   value={key}
+                  onChange={handleChange}
                 />
               </Grid.Column>
               <Grid.Column width={2} floated="right">
@@ -146,6 +172,7 @@ export default function Filters() {
                   label={key}
                   name="experiment.instrument"
                   value={key}
+                  onChange={handleChange}
                 />
               </Grid.Column>
               <Grid.Column width={2} floated="right">
@@ -169,6 +196,7 @@ export default function Filters() {
                   label={key}
                   name="experiment.platform"
                   value={key}
+                  onChange={handleChange}
                 />
               </Grid.Column>
 
@@ -193,6 +221,7 @@ export default function Filters() {
                   label={key}
                   name="experiment.libraryLayout"
                   value={key}
+                  onChange={handleChange}
                 />
               </Grid.Column>
 
@@ -217,6 +246,7 @@ export default function Filters() {
                   label={key}
                   name="experiment.librarySource"
                   value={key}
+                  onChange={handleChange}
                 />
               </Grid.Column>
 
@@ -228,19 +258,6 @@ export default function Filters() {
         })}
     </Grid>
   );
-
-  const [activeIndex, setActiveIndex] = useState({
-    0: false,
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-  });
-
-  const handleClick = (e, data) => {
-    const { index, active } = data;
-    setActiveIndex({ ...activeIndex, [index]: !active });
-  };
 
   return (
     <>

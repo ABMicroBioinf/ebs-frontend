@@ -11,17 +11,17 @@ import {
 } from "react";
 import EBSTableData from "./EBSTableData";
 import EBSFilters from "../../components/table/EBSFilters";
+import { SequencesTotalCount } from "./EBSStatistics";
 
 import TopNav from "../../components/TopNav";
 import {
   Dimmer,
   Loader,
   Grid,
-  Segment,
-  Statistic,
   Header,
   Icon,
   Placeholder,
+  Sidebar,
 } from "semantic-ui-react";
 
 // interface
@@ -98,11 +98,12 @@ export default function EBSDataView(props) {
         return {
           ...state,
           history: {
-            order: action.module
-              ? order.includes(action.module)
-                ? [...order]
-                : [...order, action.module]
-              : order,
+            // order: action.module
+            //   ? order.includes(action.module)
+            //     ? [...order]
+            //     : [...order, action.module]
+            //   : order,
+            order: action.module ? [...order, action.module] : order,
             search: action.search ? action.search : search,
             columns: action.column
               ? columns.map((column) => {
@@ -225,40 +226,21 @@ export default function EBSDataView(props) {
           )}
         </div>
       </div>
+      {/* <Sidebar>
+        {CUSTOM_COLUMNS.length > 0 && CUSTOM_ROWS.length > 0 ? (
+          <EBSFilters />
+        ) : (
+          <Dimmer active>
+            <Loader>Loading</Loader>
+          </Dimmer>
+        )}
+      </Sidebar> */}
       <div className="ebs-section-main">
         <Grid padded>
           <Grid.Row>
             <Grid.Column>
               <Header size="large">Statistic</Header>
-              <Segment>
-                <Statistic.Group widths="4">
-                  <Statistic color="orange">
-                    <Statistic.Value>
-                      <Icon size="small" name="flask" />
-                      83
-                    </Statistic.Value>
-                    <Statistic.Label>Total RUNs</Statistic.Label>
-                  </Statistic>
-                  <Statistic color="yellow">
-                    <Statistic.Value>
-                      <Icon size="small" name="cogs" />1
-                    </Statistic.Value>
-                    <Statistic.Label>Total Platforms</Statistic.Label>
-                  </Statistic>
-                  <Statistic color="green">
-                    <Statistic.Value>
-                      <Icon size="small" name="chain" />5
-                    </Statistic.Value>
-                    <Statistic.Label>Total Organisms</Statistic.Label>
-                  </Statistic>
-                  <Statistic color="blue">
-                    <Statistic.Value>
-                      <Icon size="small" name="retweet" />1
-                    </Statistic.Value>
-                    <Statistic.Label>Total Instruments</Statistic.Label>
-                  </Statistic>
-                </Statistic.Group>
-              </Segment>
+              <SequencesTotalCount />
             </Grid.Column>
           </Grid.Row>
 
