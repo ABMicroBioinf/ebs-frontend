@@ -14,7 +14,8 @@ import {
   Input,
   Grid,
   Icon,
-  Divider,
+  Container,
+  Item,
 } from "semantic-ui-react";
 
 /**
@@ -90,9 +91,11 @@ function Search(props) {
   );
 }
 
-export default function Filters() {
+export default function Filters(props) {
   const { rowData, setRowData } = useEBSData();
   const { ORIGIN } = rowData;
+
+  const { wideView, setWideView } = props;
 
   const [activeIndex, setActiveIndex] = useState({
     0: false,
@@ -261,7 +264,23 @@ export default function Filters() {
     </Grid>
   );
 
-  return (
+  return wideView ? (
+    <Grid
+      verticalAlign="middle"
+      centered
+      padded
+      className="ebs-left-side-as-button-frame"
+      onClick={() => {
+        setWideView(!wideView);
+      }}
+    >
+      <Grid.Row>
+        <Grid.Column className="ebs-paddingless">
+          <Icon name="angle double right" />
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  ) : (
     <>
       <Segment inverted>
         <Search setRowData={setRowData} />
@@ -329,8 +348,11 @@ export default function Filters() {
         </Accordion>
       </div>
       <Segment inverted>
-        <Divider inverted />
-        <Menu.Item>
+        <Menu.Item
+          onClick={() => {
+            setWideView(!wideView);
+          }}
+        >
           <Grid columns={2}>
             <Grid.Row>
               <Grid.Column>Wide View</Grid.Column>

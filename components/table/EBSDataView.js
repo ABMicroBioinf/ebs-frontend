@@ -205,6 +205,8 @@ export default function EBSDataView(props) {
   const [columnData] = useState(CUSTOM_COLUMNS);
   const [rowData, setRowData] = useReducer(dataReducer, initialDatasetState);
 
+  const [wideView, setWideView] = useState(false);
+
   return (
     <EBSDataContext.Provider
       value={{
@@ -214,18 +216,28 @@ export default function EBSDataView(props) {
       }}
     >
       <TopNav />
-      <div className="ebs-left-side-content-frame">
-        {/* <div className="ebs-scrollable-inner"> */}
+      <div
+        className={`${
+          wideView
+            ? "ebs-left-side-content-wide-frame"
+            : "ebs-left-side-content-frame"
+        }`}
+      >
         {CUSTOM_COLUMNS.length > 0 && CUSTOM_ROWS.length > 0 ? (
-          <EBSFilters />
+          <EBSFilters wideView={wideView} setWideView={setWideView} />
         ) : (
           <Dimmer active>
             <Loader>Loading</Loader>
           </Dimmer>
         )}
-        {/* </div> */}
       </div>
-      <div className="ebs-main-content-with-left-side-frame">
+      <div
+        className={`${
+          wideView
+            ? "ebs-main-content-with-left-side-wide-frame"
+            : "ebs-main-content-with-left-side-frame"
+        }`}
+      >
         <Grid padded>
           <Grid.Row>
             <Grid.Column>
