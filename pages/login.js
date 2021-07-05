@@ -57,9 +57,9 @@ function Login() {
   return (
     <>
       <TopNav />
-      <Grid className="middle aligned ebs-full-height" centered>
-        <Grid.Column className="ebs-login" textAlign="center">
-          <Segment className="middle alignedt">
+      <Grid centered padded>
+        <Grid.Column className="ebs-login-form-wrapper" textAlign="center">
+          <Segment className="middle aligned">
             <Icon name="dna" size="huge" />
             <h2>EBS Login</h2>
             <Form onSubmit={login}>

@@ -21,7 +21,6 @@ import {
   Header,
   Icon,
   Placeholder,
-  Sidebar,
 } from "semantic-ui-react";
 
 // interface
@@ -215,18 +214,8 @@ export default function EBSDataView(props) {
       }}
     >
       <TopNav />
-      <div className="ebs-side-section-left">
-        <div className="ebs-scrollable-inner">
-          {CUSTOM_COLUMNS.length > 0 && CUSTOM_ROWS.length > 0 ? (
-            <EBSFilters />
-          ) : (
-            <Dimmer active>
-              <Loader>Loading</Loader>
-            </Dimmer>
-          )}
-        </div>
-      </div>
-      {/* <Sidebar>
+      <div className="ebs-left-side-content-frame">
+        {/* <div className="ebs-scrollable-inner"> */}
         {CUSTOM_COLUMNS.length > 0 && CUSTOM_ROWS.length > 0 ? (
           <EBSFilters />
         ) : (
@@ -234,8 +223,9 @@ export default function EBSDataView(props) {
             <Loader>Loading</Loader>
           </Dimmer>
         )}
-      </Sidebar> */}
-      <div className="ebs-section-main">
+        {/* </div> */}
+      </div>
+      <div className="ebs-main-content-with-left-side-frame">
         <Grid padded>
           <Grid.Row>
             <Grid.Column>

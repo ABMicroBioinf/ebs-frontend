@@ -1,18 +1,46 @@
-body {
-    // 40px is for deduction of top navbar
-    margin-top:40px !important;
-}
-.ebs-full-height {
-    // 40px is for deduction of top navbar
-    height: calc(100vh - 40px);
+/*
+ * Author: Jongil Yoon <jiysait@gmail.com>
+*/
+$topnav-height: 40px;
+$sidebar-width: 250px;
+
+/*
+ * BASE Layout
+*/
+#__next {
+    padding-top:$topnav-height !important;
+    height: 100% !important;
 }
 .ebs-top-navbar {
     -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1) !important;
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1) !important;
 }
-.ebs-login {
+
+/*
+ * EBS Custom
+*/
+.ebs-login-form-wrapper, .ebs-register-form-wrapper {
     max-width: 450px;
 }
+.ebs-left-side-content-frame {
+    position:fixed;
+    display:flex;
+    flex-direction:column;
+    top:$topnav-height;
+    bottom:0;
+    left:0;
+    width:$sidebar-width;
+    background:#1B1C1D;
+    color:antiquewhite;
+    overflow-x:hidden;
+    flex:1;
+}
+.ebs-main-content-with-left-side-frame {
+    margin-left:$sidebar-width;
+    min-width:550px;
+    // max-width:1150px
+}
+
 .ebs-account-segment-spacing {
     padding-top: 2em !important;
     padding-bottom: 4em !important;
@@ -23,46 +51,32 @@ body {
     overflow-y: auto !important;
     max-height: 450px !important;
 }
-.ebs-pagination-temporary {
-    // width: 100vh !important;
-}
-.ebs-side-section-left {
-    // 40px is for deduction of top navbar
-    position:fixed;
-    display:flex;
-    flex-direction:column;
-    top:40px;
-    bottom:0;
-    left:0;
-    width:250px;
-    background:#1B1C1D;
-    color:antiquewhite;
-    overflow-x:hidden;
-    flex:1;
-}
 .ebs-scrollable-inner {
     flex:1;
-    overflow-y:scroll
-}
-.ebs-section-main {
-    // 40px is for deduction of top navbar
-    // 250px is for deduction of side bar
-    margin-top:40px;
-    margin-left:250px;
-    min-width:550px;
-    max-width:1150px
+    overflow-x:hidden;
+    overflow-y:scroll;
 }
 .ebs-filters-submenu {
     padding-top:1.5em !important;
     padding-bottom:1.5em !important;
 }
+
+/*
+ * Fix (Unsupported at the current version and Browser specific)
+*/
 .ebs-inverted { // Fixed in https://github.com/fomantic/Fomantic-UI 2.4.4
     label {
         color: rgba(255,255,255,.9) !important;
         background-color: #1b1c1d;
     }
 }
+@-moz-document url-prefix() {
+}
 
+
+/*
+ * ETC
+*/
 .ebs-inline-wrapper {
     display: inline;
 }

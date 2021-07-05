@@ -13,6 +13,8 @@ import {
   Segment,
   Input,
   Grid,
+  Icon,
+  Divider,
 } from "semantic-ui-react";
 
 /**
@@ -264,63 +266,81 @@ export default function Filters() {
       <Segment inverted>
         <Search setRowData={setRowData} />
       </Segment>
-      <Accordion inverted fluid as={Menu} vertical>
-        <Menu.Item>
-          <Accordion.Title
-            active={activeIndex[0]}
-            content="Organism"
-            index={0}
-            onClick={handleClick}
-          />
-          <Accordion.Content active={activeIndex[0]} content={OrganismForm} />
-        </Menu.Item>
+      <div className="ebs-scrollable-inner">
+        <Accordion inverted fluid as={Menu} vertical>
+          <Menu.Item>
+            <Accordion.Title
+              active={activeIndex[0]}
+              content="Organism"
+              index={0}
+              onClick={handleClick}
+            />
+            <Accordion.Content active={activeIndex[0]} content={OrganismForm} />
+          </Menu.Item>
 
-        <Menu.Item>
-          <Accordion.Title
-            active={activeIndex[1]}
-            content="Instrument"
-            index={1}
-            onClick={handleClick}
-          />
-          <Accordion.Content active={activeIndex[1]} content={InstrumentForm} />
-        </Menu.Item>
+          <Menu.Item>
+            <Accordion.Title
+              active={activeIndex[1]}
+              content="Instrument"
+              index={1}
+              onClick={handleClick}
+            />
+            <Accordion.Content
+              active={activeIndex[1]}
+              content={InstrumentForm}
+            />
+          </Menu.Item>
 
-        <Menu.Item>
-          <Accordion.Title
-            active={activeIndex[2]}
-            content="Platform"
-            index={2}
-            onClick={handleClick}
-          />
-          <Accordion.Content active={activeIndex[2]} content={PlatformForm} />
-        </Menu.Item>
+          <Menu.Item>
+            <Accordion.Title
+              active={activeIndex[2]}
+              content="Platform"
+              index={2}
+              onClick={handleClick}
+            />
+            <Accordion.Content active={activeIndex[2]} content={PlatformForm} />
+          </Menu.Item>
 
-        <Menu.Item>
-          <Accordion.Title
-            active={activeIndex[3]}
-            content="Library Layout"
-            index={3}
-            onClick={handleClick}
-          />
-          <Accordion.Content
-            active={activeIndex[3]}
-            content={LibraryLayoutForm}
-          />
-        </Menu.Item>
+          <Menu.Item>
+            <Accordion.Title
+              active={activeIndex[3]}
+              content="Library Layout"
+              index={3}
+              onClick={handleClick}
+            />
+            <Accordion.Content
+              active={activeIndex[3]}
+              content={LibraryLayoutForm}
+            />
+          </Menu.Item>
 
+          <Menu.Item>
+            <Accordion.Title
+              active={activeIndex[4]}
+              content="Library Source"
+              index={4}
+              onClick={handleClick}
+            />
+            <Accordion.Content
+              active={activeIndex[4]}
+              content={LibrarySourceForm}
+            />
+          </Menu.Item>
+        </Accordion>
+      </div>
+      <Segment inverted>
+        <Divider inverted />
         <Menu.Item>
-          <Accordion.Title
-            active={activeIndex[4]}
-            content="Library Source"
-            index={4}
-            onClick={handleClick}
-          />
-          <Accordion.Content
-            active={activeIndex[4]}
-            content={LibrarySourceForm}
-          />
+          <Grid columns={2}>
+            <Grid.Row>
+              <Grid.Column>Wide View</Grid.Column>
+              <Grid.Column textAlign="right">
+                <Icon name="angle double left" />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         </Menu.Item>
-      </Accordion>
+      </Segment>
     </>
   );
 }

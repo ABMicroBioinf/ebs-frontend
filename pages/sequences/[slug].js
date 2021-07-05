@@ -2,9 +2,10 @@
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
 import { useRouter } from "next/router";
-// import { verify } from "../../middleware/verify";
-import TopNav from "../../components/TopNav";
 import withAuth from "../../middleware/withAuth";
+
+import TopNav from "../../components/TopNav";
+import { Grid } from "semantic-ui-react";
 
 function Sequence() {
   const router = useRouter();
@@ -13,27 +14,11 @@ function Sequence() {
   return (
     <>
       <TopNav />
-      {slug}
+      <Grid padded>
+        <Grid.Column>{slug}</Grid.Column>
+      </Grid>
     </>
   );
 }
-
-// export async function getServerSideProps(context) {
-//   // Gatekeeper
-//   const authentication = verify(context);
-//   if (authentication.status !== 200) {
-//     return {
-//       redirect: {
-//         destination: "/login",
-//         statusCode: 401, //unauthorized
-//       },
-//     };
-//   }
-//   return {
-//     props: {
-//       data: [],
-//     },
-//   };
-// }
 
 export default withAuth(Sequence);
