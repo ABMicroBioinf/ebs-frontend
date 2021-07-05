@@ -14,8 +14,6 @@ import {
   Input,
   Grid,
   Icon,
-  Container,
-  Item,
 } from "semantic-ui-react";
 
 /**
