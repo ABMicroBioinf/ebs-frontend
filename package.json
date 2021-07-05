@@ -8,6 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@nivo/bar": "^0.72.0",
+    "@nivo/core": "^0.72.0",
+    "@nivo/pie": "^0.72.0",
+    "@nivo/sunburst": "^0.72.0",
+    "@nivo/swarmplot": "^0.72.0",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "cookie": "^0.4.1",
