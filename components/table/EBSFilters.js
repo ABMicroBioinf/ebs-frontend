@@ -3,7 +3,6 @@
  */
 import _ from "lodash";
 import { useCallback, useReducer, useState } from "react";
-import { useEBSData } from "./EBSDataView";
 
 import {
   Accordion,
@@ -90,10 +89,8 @@ function Search(props) {
 }
 
 export default function Filters(props) {
-  const { rowData, setRowData } = useEBSData();
+  const { rowData, setRowData, wideView, setWideView } = props;
   const { ORIGIN } = rowData;
-
-  const { wideView, setWideView } = props;
 
   const [activeIndex, setActiveIndex] = useState({
     0: false,

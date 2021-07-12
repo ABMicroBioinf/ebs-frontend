@@ -4,7 +4,6 @@
 import _ from "lodash";
 import { useEffect, useState } from "react";
 import { Segment, Statistic, Icon, Popup } from "semantic-ui-react";
-import { useEBSData } from "./EBSDataView";
 
 function Count(props) {
   const { label, number, duration, icon, color, content } = props;
@@ -46,8 +45,8 @@ function Count(props) {
   );
 }
 
-export function SequencesTotalCount() {
-  const { rowData } = useEBSData();
+export function SequencesTotalCount(props) {
+  const { rowData } = props;
   const { ORIGIN } = rowData;
   const statisticRef = ORIGIN.slice();
 

@@ -5,7 +5,6 @@ import { useCallback, useEffect } from "react";
 import EBSCellRow from "./EBSCellRow";
 import EBSTableHeader from "./EBSTableHeader";
 import EBSTableTools from "./EBSTableTools";
-import { useEBSData } from "./EBSDataView";
 
 import { Grid, Table } from "semantic-ui-react";
 
@@ -21,8 +20,8 @@ const pick = (obj, keys) => {
  * @param {*} columData, rowData
  * @returns An entire layout of a table
  */
-export default function EBSTableData() {
-  const { columnData, rowData, setRowData } = useEBSData();
+export default function EBSTableData(props) {
+  const { tableTitle, columnData, rowData, setRowData } = props;
   const { dataset, history } = rowData;
   const { columns } = history;
 
@@ -30,8 +29,8 @@ export default function EBSTableData() {
     if (columns && dataset.length > 0) {
       const keys = columns.filter((colState) => colState.display);
       return dataset.map((row, index) => {
-        const rowObj = pick(row, keys);
-        return <EBSCellRow row={rowObj} key={index} />;
+        const rowObj = { ...row, data: pick(row.data, keys) };
+        return <EBSCellRow row={rowObj} setRowData={setRowData} key={index} />;
       });
     } else {
       return (
@@ -53,14 +52,19 @@ export default function EBSTableData() {
       <Grid.Column>
         <Grid padded>
           <Grid.Row>
-            <h2>Sequences</h2>
+            <h2>{tableTitle}</h2>
           </Grid.Row>
           <Grid.Row>
-            <EBSTableTools />
+            <EBSTableTools
+              tableTitle={tableTitle}
+              columnData={columnData}
+              rowData={rowData}
+              setRowData={setRowData}
+            />
           </Grid.Row>
           <Grid.Row className="ebs-table-temporary">
             <Table sortable celled collapsing striped size="small">
-              <EBSTableHeader />
+              <EBSTableHeader rowData={rowData} setRowData={setRowData} />
               <Table.Body>{getEBSCellRow()}</Table.Body>
             </Table>
           </Grid.Row>

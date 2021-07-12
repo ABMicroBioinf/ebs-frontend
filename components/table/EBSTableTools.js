@@ -2,7 +2,7 @@
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
 import { useCallback, useState } from "react";
-import { useEBSData } from "./EBSDataView";
+import { CSVLink } from "react-csv";
 
 import {
   Menu,
@@ -12,6 +12,8 @@ import {
   Dropdown,
   Grid,
   Icon,
+  Modal,
+  Header,
 } from "semantic-ui-react";
 
 /**
@@ -96,13 +98,18 @@ function PageSizeSelector(props) {
   );
 }
 
-export default function EBSTableTools() {
-  const { columnData, rowData, setRowData } = useEBSData();
+export default function EBSTableTools(props) {
+  const { tableTitle, columnData, rowData, setRowData } = props;
   const { ORIGIN, history, dataset } = rowData;
   const { pagination } = history;
   const { page, pageSize, pageCount } = pagination;
 
   const [activeItem, setActiveItem] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+
+  const handleExport = useCallback(() => {
+    setOpenAlert(!openAlert);
+  }, []);
 
   const handleItemClick = useCallback(
     (e, { name }) => {
@@ -161,6 +168,9 @@ export default function EBSTableTools() {
   return (
     <>
       <Menu attached="top" tabular fluid>
+        <Menu.Item>
+          <Button onClick={handleExport}>Export as CSV</Button>
+        </Menu.Item>
         <Menu.Item>
           <Pagination
             secondary
@@ -224,6 +234,30 @@ export default function EBSTableTools() {
           onClick={handleSubmenuClose}
         />
       </Segment>
+
+      <Modal
+        onClose={() => setOpenAlert(false)}
+        onOpen={() => setOpenAlert(true)}
+        open={openAlert}
+        size="small"
+      >
+        <Modal.Header>Export as CSV</Modal.Header>
+        <Modal.Content>
+          <Modal.Description>
+            <Header>Selection Details</Header>
+            <p>rows selected, filename, size, preview</p>
+          </Modal.Description>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setOpenAlert(false)}>cancel</Button>
+          <CSVLink
+            data={ORIGIN.filter((obj) => obj.isSelected).map((obj) => obj.data)}
+            filename={`${tableTitle}.csv`}
+          >
+            Export as CSV
+          </CSVLink>
+        </Modal.Actions>
+      </Modal>
     </>
   );
 }

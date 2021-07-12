@@ -1,15 +1,29 @@
 /**
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
-import { Table } from "semantic-ui-react";
+import { useCallback } from "react";
+import { Checkbox, Table } from "semantic-ui-react";
 
 export default function EBSCellRow(props) {
-  const { row } = props;
+  const { row, setRowData } = props;
+
+  const handleChange = useCallback(() => {
+    setRowData({
+      type: "SET_SELECTION",
+      row: { ...row, isSelected: !row.isSelected },
+    });
+    setRowData({
+      type: "APPLY_HISTORY",
+    });
+  }, [row]);
 
   return (
     <Table.Row>
+      <Table.Cell>
+        <Checkbox checked={row.isSelected} onChange={handleChange} />
+      </Table.Cell>
       {row &&
-        Object.values(row).map((value, index) => (
+        Object.values(row.data).map((value, index) => (
           <Table.Cell key={index}>{value}</Table.Cell>
         ))}
       {/* <Table.Cell>

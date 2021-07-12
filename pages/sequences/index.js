@@ -6,7 +6,7 @@ import withAuth from "../../middleware/withAuth";
 import { useAuth } from "../../middleware/AuthProvider";
 import { useCallback, useEffect, useState } from "react";
 
-import EBSDataView from "../../components/table/EBSDataView";
+import SequencesMainView from "../../components/view/sequences/Main";
 
 /**
  * #####################################################################
@@ -249,7 +249,9 @@ function Sequences() {
     fetchData();
   }, []);
 
-  return data.rows.length > 0 && <EBSDataView data={data} setData={setData} />;
+  return (
+    data.rows.length > 0 && <SequencesMainView data={data} setData={setData} />
+  );
 }
 
 export default withAuth(Sequences);

@@ -1,41 +1,25 @@
-/**
- * Author: Jongil Yoon <jiysait@gmail.com>
- */
 import _ from "lodash";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useReducer,
-  useState,
-} from "react";
-import EBSTableData from "./EBSTableData";
-import EBSFilters from "../../components/table/EBSFilters";
-import { SequencesTotalCount } from "./EBSStatistics";
+import { useCallback, useReducer, useState } from "react";
 
-import TopNav from "../../components/TopNav";
+import EBSTableData from "../../table/EBSTableData";
+import TopNav from "../../TopNav";
 import {
   Dimmer,
-  Loader,
   Grid,
   Header,
   Icon,
+  Loader,
   Placeholder,
 } from "semantic-ui-react";
 
-// interface
-const EBSDataContext = createContext({
-  columnData: [],
-  rowData: {},
-  setRowData: () => {},
-});
-
-export default function EBSDataView(props) {
+export default function TBMain(props) {
   const { data } = props;
   const { headers, rows } = data;
 
   const CUSTOM_COLUMNS = headers.slice();
-  const CUSTOM_ROWS = rows.slice();
+  const CUSTOM_ROWS = rows
+    .slice()
+    .map((obj, index) => ({ index: index, isSelected: false, data: obj }));
 
   const initialDatasetState = (() => {
     const DEFAULT_DATASET = CUSTOM_ROWS;
@@ -92,6 +76,25 @@ export default function EBSDataView(props) {
     switch (action.type) {
       case "RESET_DATASET":
         return initialDatasetState;
+
+      case "SET_SELECTION":
+        results.splice(action.row.index, 1, action.row);
+        return {
+          ...state,
+          ORIGIN: results,
+        };
+
+      case "SELECT_ALL":
+        return {
+          ...state,
+          ORIGIN: results.map((obj) => ({ ...obj, isSelected: true })),
+        };
+
+      case "DESELECT_ALL":
+        return {
+          ...state,
+          ORIGIN: results.map((obj) => ({ ...obj, isSelected: false })),
+        };
 
       case "SET_HISTORY":
         return {
@@ -208,13 +211,7 @@ export default function EBSDataView(props) {
   const [wideView, setWideView] = useState(false);
 
   return (
-    <EBSDataContext.Provider
-      value={{
-        columnData,
-        rowData,
-        setRowData,
-      }}
-    >
+    <>
       <TopNav />
       <div
         className={`${
@@ -223,13 +220,18 @@ export default function EBSDataView(props) {
             : "ebs-left-side-content-frame"
         }`}
       >
-        {CUSTOM_COLUMNS.length > 0 && CUSTOM_ROWS.length > 0 ? (
-          <EBSFilters wideView={wideView} setWideView={setWideView} />
+        {/* {CUSTOM_ROWS.length > 0 ? (
+          <EBSFilters
+            rowData={rowData}
+            wideView={wideView}
+            setRowData={setRowData}
+            setWideView={setWideView}
+          />
         ) : (
           <Dimmer active>
             <Loader>Loading</Loader>
           </Dimmer>
-        )}
+        )} */}
       </div>
       <div
         className={`${
@@ -241,15 +243,26 @@ export default function EBSDataView(props) {
         <Grid padded>
           <Grid.Row>
             <Grid.Column>
-              <Header size="large">Statistic</Header>
-              <SequencesTotalCount />
+              {/* <Header size="large">Statistic</Header>
+              {CUSTOM_ROWS.length > 0 ? (
+                <SequencesTotalCount rowData={rowData} />
+              ) : (
+                <Dimmer active>
+                  <Loader>Loading</Loader>
+                </Dimmer>
+              )} */}
             </Grid.Column>
           </Grid.Row>
 
           <Grid.Row>
             <Grid.Column>
               {CUSTOM_COLUMNS.length > 0 && CUSTOM_ROWS.length > 0 ? (
-                <EBSTableData />
+                <EBSTableData
+                  tableTitle="TB Profiler"
+                  columnData={columnData}
+                  rowData={rowData}
+                  setRowData={setRowData}
+                />
               ) : (
                 <>
                   <Placeholder fluid>
@@ -280,14 +293,6 @@ export default function EBSDataView(props) {
           </Grid.Row>
         </Grid>
       </div>
-    </EBSDataContext.Provider>
+    </>
   );
-}
-
-export function useEBSData() {
-  const context = useContext(EBSDataContext);
-  if (context === undefined) {
-    throw new Error("useEBSData must be used within an EBSDataProvider");
-  }
-  return context;
 }

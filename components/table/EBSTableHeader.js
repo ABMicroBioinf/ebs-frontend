@@ -1,17 +1,33 @@
 /**
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
-import { Table } from "semantic-ui-react";
-import { useEBSData } from "./EBSDataView";
+import { useCallback } from "react";
+import { useState } from "react";
+import { Checkbox, Table } from "semantic-ui-react";
 
-export default function EBSTableHeader() {
-  const { rowData, setRowData } = useEBSData();
-  const { history } = rowData;
+export default function EBSTableHeader(props) {
+  const { rowData, setRowData } = props;
+  const { dataset, history } = rowData;
   const { columns, sort } = history;
+
+  const [selectAll, setSelectAll] = useState(false);
+
+  const handleChange = useCallback(() => {
+    setSelectAll(!selectAll);
+    setRowData({
+      type: !selectAll ? "SELECT_ALL" : "DESELECT_ALL",
+    });
+    setRowData({
+      type: "APPLY_HISTORY",
+    });
+  }, [dataset]);
 
   return (
     <Table.Header>
       <Table.Row>
+        <Table.HeaderCell>
+          <Checkbox checked={selectAll} onChange={handleChange} />
+        </Table.HeaderCell>
         {columns &&
           columns
             .filter((colState) => colState.display && colState)

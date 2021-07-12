@@ -45,9 +45,9 @@ export default function TopNav() {
     },
     {
       key: 3,
-      text: "Analysis(temp)",
+      text: "Chart Examples",
       as: "button",
-      to: "/analysis",
+      to: "/test",
       handler: goLink,
       depth: 1,
       has_children: false,
