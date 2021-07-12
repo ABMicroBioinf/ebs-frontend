@@ -14,6 +14,8 @@ import {
   Icon,
   Modal,
   Header,
+  Table,
+  TableBody,
 } from "semantic-ui-react";
 
 /**
@@ -245,17 +247,46 @@ export default function EBSTableTools(props) {
         <Modal.Content>
           <Modal.Description>
             <Header>Selection Details</Header>
-            <p>rows selected, filename, size, preview</p>
+            <Table celled padded>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell singleLine>Rows selected</Table.HeaderCell>
+                  <Table.HeaderCell singleLine>Filename</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <TableBody>
+                <Table.Row>
+                  <Table.Cell>
+                    <Header as="h2" textAlign="center">
+                      {ORIGIN.filter((obj) => obj.isSelected).length}
+                    </Header>
+                  </Table.Cell>
+                  <Table.Cell singleLine>{`${tableTitle}.csv`}</Table.Cell>
+                </Table.Row>
+              </TableBody>
+            </Table>
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <Button onClick={() => setOpenAlert(false)}>cancel</Button>
-          <CSVLink
-            data={ORIGIN.filter((obj) => obj.isSelected).map((obj) => obj.data)}
-            filename={`${tableTitle}.csv`}
+          <Button color="red" onClick={() => setOpenAlert(false)}>
+            Cancel
+          </Button>
+          <div
+            className={`ui green button ebs-custom-csv-export ${
+              ORIGIN.filter((obj) => obj.isSelected).length > 0
+                ? ""
+                : "disabled"
+            }`}
           >
-            Export as CSV
-          </CSVLink>
+            <CSVLink
+              data={ORIGIN.filter((obj) => obj.isSelected).map(
+                (obj) => obj.data
+              )}
+              filename={`${tableTitle}.csv`}
+            >
+              Export
+            </CSVLink>
+          </div>
         </Modal.Actions>
       </Modal>
     </>

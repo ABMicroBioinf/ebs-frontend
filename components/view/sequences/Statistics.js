@@ -52,11 +52,13 @@ export function SequencesTotalCount(props) {
 
   const runs = statisticRef;
   const platforms = _.uniq(
-    statisticRef.map((data) => data["experiment.platform"])
+    statisticRef.map((row) => row.data["experiment.platform"])
   );
-  const organisms = _.uniq(statisticRef.map((data) => data["sample.organism"]));
+  const organisms = _.uniq(
+    statisticRef.map((row) => row.data["sample.organism"])
+  );
   const instruments = _.uniq(
-    statisticRef.map((data) => data["experiment.instrument"])
+    statisticRef.map((row) => row.data["experiment.instrument"])
   );
 
   return (

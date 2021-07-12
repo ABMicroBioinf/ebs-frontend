@@ -11,8 +11,9 @@ import {
   Loader,
   Placeholder,
 } from "semantic-ui-react";
+import AnalysisSideMenu from "./SideMenu";
 
-export default function TBMain(props) {
+export default function TBMainView(props) {
   const { data } = props;
   const { headers, rows } = data;
 
@@ -156,7 +157,6 @@ export default function TBMain(props) {
                     ),
                   };
                 });
-                console.log(results);
                 break;
 
               case "sort":
@@ -224,8 +224,8 @@ export default function TBMain(props) {
             : "ebs-left-side-content-frame"
         }`}
       >
-        {/* {CUSTOM_ROWS.length > 0 ? (
-          <EBSFilters
+        {CUSTOM_ROWS.length > 0 ? (
+          <AnalysisSideMenu
             rowData={rowData}
             wideView={wideView}
             setRowData={setRowData}
@@ -235,7 +235,7 @@ export default function TBMain(props) {
           <Dimmer active>
             <Loader>Loading</Loader>
           </Dimmer>
-        )} */}
+        )}
       </div>
       <div
         className={`${

@@ -4,8 +4,8 @@
 import _ from "lodash";
 import { useCallback, useReducer, useState } from "react";
 import EBSTableData from "../../table/EBSTableData";
-import EBSFilters from "../../table/EBSFilters";
-import { SequencesTotalCount } from "../../table/EBSStatistics";
+import Filters from "./Filters";
+import { SequencesTotalCount } from "./Statistics";
 
 import TopNav from "../../TopNav";
 import {
@@ -31,7 +31,7 @@ export default function SequencesMainView(props) {
   const CUSTOM_COLUMNS = headers.slice();
   const CUSTOM_ROWS = rows
     .slice()
-    .map((obj) => ({ isSelected: false, data: obj }));
+    .map((obj, index) => ({ index: index, isSelected: false, data: obj }));
 
   const initialDatasetState = (() => {
     const DEFAULT_DATASET = CUSTOM_ROWS;
@@ -89,6 +89,25 @@ export default function SequencesMainView(props) {
       case "RESET_DATASET":
         return initialDatasetState;
 
+      case "SET_SELECTION":
+        results.splice(action.row.index, 1, action.row);
+        return {
+          ...state,
+          ORIGIN: results,
+        };
+
+      case "SELECT_ALL":
+        return {
+          ...state,
+          ORIGIN: results.map((obj) => ({ ...obj, isSelected: true })),
+        };
+
+      case "DESELECT_ALL":
+        return {
+          ...state,
+          ORIGIN: results.map((obj) => ({ ...obj, isSelected: false })),
+        };
+
       case "SET_HISTORY":
         return {
           ...state,
@@ -135,16 +154,19 @@ export default function SequencesMainView(props) {
             switch (module) {
               case "search":
                 results = results.filter((row) =>
-                  JSON.stringify(Object.values(row)).includes(search)
+                  JSON.stringify(Object.values(row.data)).includes(search)
                 );
                 break;
 
               case "columns":
-                results = results.map((data) => {
-                  return pick(
-                    data,
-                    columns.filter((colState) => colState.display && colState)
-                  );
+                results = results.map((row) => {
+                  return {
+                    ...row,
+                    data: pick(
+                      row.data,
+                      columns.filter((colState) => colState.display && colState)
+                    ),
+                  };
                 });
                 break;
 
@@ -153,7 +175,7 @@ export default function SequencesMainView(props) {
                   results = _.orderBy(
                     results,
                     (obj) => {
-                      return parseFloat(obj[sort.column]);
+                      return parseFloat(obj.data[sort.column]);
                     },
                     [sort.direction]
                   );
@@ -161,10 +183,10 @@ export default function SequencesMainView(props) {
                   results =
                     sort.direction === "asc"
                       ? _.sortBy(results, (obj) => {
-                          return obj[sort.column];
+                          return obj.data[sort.column];
                         })
                       : _.sortBy(results, (obj) => {
-                          return obj[sort.column];
+                          return obj.data[sort.column];
                         }).reverse();
                 }
                 break;
@@ -214,7 +236,7 @@ export default function SequencesMainView(props) {
         }`}
       >
         {CUSTOM_ROWS.length > 0 ? (
-          <EBSFilters
+          <Filters
             rowData={rowData}
             wideView={wideView}
             setRowData={setRowData}

@@ -2,12 +2,10 @@
  * Author: Jongil Yoon <jiysait@gmail.com>
  */
 import withAuth from "../../middleware/withAuth";
+import { useEffect, useState } from "react";
 
-import TBMain from "../../components/view/analysis/TBMain";
-
+import TBMainView from "../../components/view/analysis/Main";
 import { TBPROFILER } from "./tbprofiler";
-import { useEffect } from "react";
-import { useState } from "react";
 
 const getSchemeDefault = (sample, parent = null) => {
   let scheme = [];
@@ -58,7 +56,7 @@ function TBAnalysis() {
     });
   }, []);
 
-  return data.rows.length > 0 && <TBMain data={data} />;
+  return data.rows.length > 0 && <TBMainView data={data} />;
 }
 
 export default withAuth(TBAnalysis);

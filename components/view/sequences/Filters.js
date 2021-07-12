@@ -121,19 +121,19 @@ export default function Filters(props) {
 
   // alias names are hardcoded. it needs to be fixed in the future
   const organism = _.countBy(
-    statisticRef.map((data) => data["sample.organism"]).sort()
+    statisticRef.map((row) => row.data["sample.organism"]).sort()
   );
   const instrument = _.countBy(
-    statisticRef.map((data) => data["experiment.instrument"]).sort()
+    statisticRef.map((row) => row.data["experiment.instrument"]).sort()
   );
   const platform = _.countBy(
-    statisticRef.map((data) => data["experiment.platform"]).sort()
+    statisticRef.map((row) => row.data["experiment.platform"]).sort()
   );
   const libraryLayout = _.countBy(
-    statisticRef.map((data) => data["experiment.libraryLayout"]).sort()
+    statisticRef.map((row) => row.data["experiment.libraryLayout"]).sort()
   );
   const librarySource = _.countBy(
-    statisticRef.map((data) => data["experiment.librarySource"]).sort()
+    statisticRef.map((row) => row.data["experiment.librarySource"]).sort()
   );
 
   const OrganismForm = (
