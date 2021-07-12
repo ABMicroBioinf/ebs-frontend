@@ -4,7 +4,14 @@
 import withAuth from "../../middleware/withAuth";
 
 import TopNav from "../../components/TopNav";
-import { Grid, Header, List } from "semantic-ui-react";
+import {
+  Accordion,
+  Grid,
+  Header,
+  Icon,
+  Menu,
+  Segment,
+} from "semantic-ui-react";
 
 import { swarmPlotData } from "./swamPlotDataExample";
 import { barData } from "./barDataExample";
@@ -226,6 +233,7 @@ const MyResponsivePie = ({ data /* see data tab */ }) => (
 // install (please make sure versions match peerDependencies)
 // yarn add @nivo/core @nivo/bar
 import { ResponsiveBar } from "@nivo/bar";
+import { useState } from "react";
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
 // no chart will be rendered.
@@ -326,35 +334,66 @@ const MyResponsiveBar = ({ data /* see data tab */ }) => (
 );
 
 function Analysis() {
+  const [wideView, setWideView] = useState(false);
+
   return (
     <>
       <TopNav />
-      <div className="ebs-left-side-content-frame">
-        <List bulleted>
-          <List.Item>
-            TB-Analysis
-            <List.List>
-              <List.Item>Analysis 1</List.Item>
-              <List.Item>Analysis 2</List.Item>
-            </List.List>
-          </List.Item>
-          <List.Item>
-            CPO-Analysis
-            <List.List>
-              <List.Item>Analysis 1</List.Item>
-              <List.Item>Analysis 2</List.Item>
-            </List.List>
-          </List.Item>
-          <List.Item>
-            M-Analysis
-            <List.List>
-              <List.Item>Analysis 1</List.Item>
-              <List.Item>Analysis 2</List.Item>
-            </List.List>
-          </List.Item>
-        </List>
+      <div
+        className={`${
+          wideView
+            ? "ebs-left-side-content-wide-frame"
+            : "ebs-left-side-content-frame"
+        }`}
+      >
+        {wideView ? (
+          <Grid
+            verticalAlign="middle"
+            centered
+            padded
+            className="ebs-left-side-as-button-frame"
+            onClick={() => {
+              setWideView(!wideView);
+            }}
+          >
+            <Grid.Row>
+              <Grid.Column className="ebs-paddingless">
+                <Icon name="angle double right" />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        ) : (
+          <>
+            <Segment inverted></Segment>
+            <div className="ebs-scrollable-inner">
+              <Accordion inverted fluid as={Menu} vertical></Accordion>
+            </div>
+            <Segment inverted>
+              <Menu.Item
+                onClick={() => {
+                  setWideView(!wideView);
+                }}
+              >
+                <Grid columns={2}>
+                  <Grid.Row>
+                    <Grid.Column>Wide View</Grid.Column>
+                    <Grid.Column textAlign="right">
+                      <Icon name="angle double left" />
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </Menu.Item>
+            </Segment>
+          </>
+        )}
       </div>
-      <div className="ebs-main-content-with-left-side-frame">
+      <div
+        className={`${
+          wideView
+            ? "ebs-main-content-with-left-side-wide-frame"
+            : "ebs-main-content-with-left-side-frame"
+        }`}
+      >
         <Grid padded>
           <Grid.Row>
             <Grid.Column style={{ height: "400px" }}>
@@ -365,24 +404,6 @@ function Analysis() {
               <MyResponsiveSunburst data={sunburstData} />
             </Grid.Column>
           </Grid.Row>
-
-          {/* <Grid.Row>
-            <Grid.Column>
-              <Header as="h1">Sequence data will be placed below</Header>
-              <Placeholder fluid>
-                <Placeholder.Header image>
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                </Placeholder.Header>
-                <Placeholder.Paragraph>
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                  <Placeholder.Line />
-                </Placeholder.Paragraph>
-              </Placeholder>
-            </Grid.Column>
-          </Grid.Row> */}
         </Grid>
       </div>
     </>
