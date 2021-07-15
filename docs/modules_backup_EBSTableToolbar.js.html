@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/backup/EBSTableToolbar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/backup/EBSTableToolbar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// @ts-check
+/**
+ * @author Jongil Yoon
+ * @email jiysait@gmail.com
+ * @create date 2021-07-15 13:18:35
+ * @modify date 2021-07-15 13:18:41
+ * @desc [description]
+ */
+import { useCallback, useReducer } from "react";
+import { Dropdown, Grid, Input } from "semantic-ui-react";
+
+/**
+ * Search Tool
+ */
+function Search(props) {
+  const { setRowData } = props;
+
+  const initialSearchState = {
+    loading: false,
+    searchValue: "",
+  };
+
+  function searchReducer(state, action) {
+    switch (action.searchType) {
+      case "CLEAN_QUERY":
+        return initialSearchState;
+      case "START_SEARCH":
+        return { ...state, loading: true, searchValue: action.searchQuery };
+      case "FINISH_SEARCH":
+        return { ...state, loading: false, searchValue: action.searchQuery };
+      case "NOT_FOUND":
+        return { ...state, loading: false };
+
+      default:
+        throw new Error();
+    }
+  }
+
+  const [searchState, dispatchSearch] = useReducer(
+    searchReducer,
+    initialSearchState
+  );
+  const { searchValue } = searchState;
+
+  const handleSearchChange = useCallback((e, data) => {
+    dispatchSearch({ searchType: "START_SEARCH", searchQuery: data.value });
+    if (data.value.length === 0) {
+      dispatchSearch({ searchType: "CLEAN_QUERY" });
+      setRowData({
+        type: "SET_HISTORY",
+        module: "search",
+        search: "",
+      });
+      setRowData({
+        type: "APPLY_HISTORY",
+      });
+      return;
+    }
+
+    dispatchSearch({
+      searchType: "FINISH_SEARCH",
+      searchQuery: data.value,
+    });
+    setRowData({
+      type: "SET_HISTORY",
+      module: "search",
+      search: data.value,
+    });
+    setRowData({
+      type: "APPLY_HISTORY",
+    });
+  }, []);
+
+  return (
+    &lt;Input
+      onChange={handleSearchChange}
+      value={searchValue}
+      icon="search"
+      placeholder="Search..."
+      type="text"
+    />
+  );
+}
+
+/**
+ * Column Selector
+ */
+function ColumnSelector(props) {
+  const { columnData, setRowData } = props;
+
+  const handleCheck = useCallback((e) => {
+    setRowData({
+      type: "SET_HISTORY",
+      module: "columns",
+      column: e.currentTarget.value,
+    });
+    setRowData({
+      type: "APPLY_HISTORY",
+    });
+  }, []);
+
+  const handleBlur = useCallback((e) => {
+    if (e &amp;&amp; e.relatedTarget === null) {
+      // setToggleParent(false)
+      // console.log('relatedtarget exist')
+    }
+  }, []);
+
+  return (
+    &lt;Dropdown text="columns">
+      &lt;Dropdown.Menu>
+        {columnData &amp;&amp;
+          columnData.map((column, index) => (
+            &lt;Dropdown.Item key={index} disabled={column.primary}>
+              &lt;input
+                onChange={handleCheck}
+                onBlur={handleBlur}
+                value={column.name}
+                defaultChecked={column.display}
+                type="checkbox"
+              />
+              &lt;label>{column.name}&lt;/label>
+            &lt;/Dropdown.Item>
+          ))}
+      &lt;/Dropdown.Menu>
+    &lt;/Dropdown>
+  );
+}
+
+/**
+ * Toolbar Component
+ * @param {*} props
+ * @returns
+ */
+export default function EBSTableToolbar(props) {
+  const { columnData, rowData, setRowData } = props;
+  const { ORIGIN, history, dataset } = rowData;
+  const { pagination } = history;
+  const { page, pageSize } = pagination;
+
+  return (
+    &lt;Grid container columns="equal">
+      &lt;Grid.Row>
+        &lt;Grid.Column textAlign="left">
+          {(() => {
+            return (
+              "Showing " +
+              (
+                (Number(page) - 1) * Number(pageSize) +
+                (dataset.length > 0 ? 1 : 0)
+              ).toString() +
+              " - " +
+              (Number(pageSize) > dataset.length
+                ? ORIGIN.length
+                : Number(page) * Number(pageSize)
+              ).toString() +
+              " of " +
+              ORIGIN.length
+            );
+          })()}
+        &lt;/Grid.Column>
+        &lt;Grid.Column textAlign="right">
+          &lt;Search rowData={rowData} setRowData={setRowData} />
+        &lt;/Grid.Column>
+        &lt;Grid.Column textAlign="right">
+          &lt;ColumnSelector
+            columnData={columnData}
+            rowData={rowData}
+            setRowData={setRowData}
+          />
+        &lt;/Grid.Column>
+      &lt;/Grid.Row>
+    &lt;/Grid>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ColumnSelector">ColumnSelector</a></li><li><a href="global.html#EBSApp">EBSApp</a></li><li><a href="global.html#getSchemeDefault">getSchemeDefault</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#PageSizeSelector">PageSizeSelector</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#Sequences">Sequences</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jul 15 2021 14:50:37 GMT-0600 (미 산지 하계 표준시)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

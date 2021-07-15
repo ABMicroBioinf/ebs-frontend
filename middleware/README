@@ -1,0 +1,10 @@
+HOC function
+Implementation of Protected route
+
+Before rendering child component, HOC function checks if user is a valid user.
+
+Package contains following files
+AuthProvider.js
+withAuth.js
+withConditionalRedirect.js
+withoutAuth.js

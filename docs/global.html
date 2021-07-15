@@ -94,81 +94,6 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="CUSTOM_FIELDS"><span class="type-signature">(constant) </span>CUSTOM_FIELDS<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <p>#####################################################################
-Customize your table here</p>
-<p>interface custom_fields {
-name: string,
-value: string,
-alias: string,
-display: boolean,
-children: Object[],
-}
-#####################################################################</p>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pages_sequences_index.js.html">pages/sequences/index.js</a>, <a href="pages_sequences_index.js.html#line26">line 26</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -231,7 +156,7 @@ children: Object[],
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_backup_EBSTableToolbar.js.html">components/backup/EBSTableToolbar.js</a>, <a href="components_backup_EBSTableToolbar.js.html#line83">line 83</a>
+        <a href="modules_backup_EBSTableToolbar.js.html">modules/backup/EBSTableToolbar.js</a>, <a href="modules_backup_EBSTableToolbar.js.html#line88">line 88</a>
     </li></ul></dd>
     
 
@@ -267,7 +192,7 @@ children: Object[],
     
 
     
-    <h4 class="name" id="ColumnSelector"><span class="type-signature"></span>ColumnSelector<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ColumnSelector"><span class="type-signature"></span>ColumnSelector<span class="signature">(props)</span><span class="type-signature"> &rarr; {React.ReactElement}</span></h4>
     
 
     
@@ -275,7 +200,7 @@ children: Object[],
 
 
 <div class="description">
-    <p>Column Selector</p>
+    <p>ColumnSelector that</p>
 </div>
 
 
@@ -284,6 +209,55 @@ children: Object[],
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#ColumnSelectorProps">ColumnSelectorProps</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -319,7 +293,7 @@ children: Object[],
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_table_EBSTableTools.js.html">components/table/EBSTableTools.js</a>, <a href="components_table_EBSTableTools.js.html#line24">line 24</a>
+        <a href="modules_table_EBSTableTools.js.html">modules/table/EBSTableTools.js</a>, <a href="modules_table_EBSTableTools.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -344,6 +318,179 @@ children: Object[],
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">React.ReactElement</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="EBSApp"><span class="type-signature"></span>EBSApp<span class="signature">(props)</span><span class="type-signature"> &rarr; {React.ReactElement}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>The most top level of Next.js component that extends react application by overriding the global App component.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#EBSAppProps">EBSAppProps</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="pages__app.js.html">pages/_app.js</a>, <a href="pages__app.js.html#line32">line 32</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">React.ReactElement</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -407,7 +554,7 @@ children: Object[],
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pages_sequences_index.js.html">pages/sequences/index.js</a>, <a href="pages_sequences_index.js.html#line131">line 131</a>
+        <a href="pages_sequences_index.js.html">pages/sequences/index.js</a>, <a href="pages_sequences_index.js.html#line130">line 130</a>
     </li></ul></dd>
     
 
@@ -495,7 +642,7 @@ children: Object[],
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="pages_index.js.html">pages/index.js</a>, <a href="pages_index.js.html#line26">line 26</a>
+        <a href="pages_index.js.html">pages/index.js</a>, <a href="pages_index.js.html#line27">line 27</a>
     </li></ul></dd>
     
 
@@ -524,7 +671,7 @@ children: Object[],
 
         
 <div class="param-desc">
-    <p>Laid out ReactElement</p>
+    <p>Main layout of Home</p>
 </div>
 
 
@@ -553,7 +700,146 @@ children: Object[],
     
 
     
-    <h4 class="name" id="PageSizeSelector"><span class="type-signature"></span>PageSizeSelector<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="PageSizeSelector"><span class="type-signature"></span>PageSizeSelector<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#PageSizeSelectorProps">PageSizeSelectorProps</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_table_EBSTableTools.js.html">modules/table/EBSTableTools.js</a>, <a href="modules_table_EBSTableTools.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="Search"><span class="type-signature"></span>Search<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -561,7 +847,7 @@ children: Object[],
 
 
 <div class="description">
-    <p>Page Selector</p>
+    <p>Search Tool</p>
 </div>
 
 
@@ -605,7 +891,7 @@ children: Object[],
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_table_EBSTableTools.js.html">components/table/EBSTableTools.js</a>, <a href="components_table_EBSTableTools.js.html#line61">line 61</a>
+        <a href="components_views_sequences_Filters.js.html">components/views/sequences/Filters.js</a>, <a href="components_views_sequences_Filters.js.html#line26">line 26</a>
     </li></ul></dd>
     
 
@@ -693,7 +979,7 @@ children: Object[],
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_backup_EBSTableToolbar.js.html">components/backup/EBSTableToolbar.js</a>, <a href="components_backup_EBSTableToolbar.js.html#line10">line 10</a>
+        <a href="modules_backup_EBSTableToolbar.js.html">modules/backup/EBSTableToolbar.js</a>, <a href="modules_backup_EBSTableToolbar.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -729,106 +1015,12 @@ children: Object[],
     
 
     
-    <h4 class="name" id="Search"><span class="type-signature"></span>Search<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Sequences"><span class="type-signature"></span>Sequences<span class="signature">()</span><span class="type-signature"> &rarr; {React.ReactElement|null}</span></h4>
     
 
     
 
 
-
-<div class="description">
-    <p>Search Tool</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_view_sequences_Filters.js.html">components/view/sequences/Filters.js</a>, <a href="components_view_sequences_Filters.js.html#line21">line 21</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="Sequences"><span class="type-signature"></span>Sequences<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <ul>
-<li>END - Helper functions</li>
-</ul>
-</div>
 
 
 
@@ -896,6 +1088,27 @@ children: Object[],
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">React.ReactElement</span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -904,6 +1117,449 @@ children: Object[],
         
     
 
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id="ColumnSelectorProps">ColumnSelectorProps</h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>columnData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_table_EBSTableTools.js.html">modules/table/EBSTableTools.js</a>, <a href="modules_table_EBSTableTools.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="EBSAppProps">EBSAppProps</h4>
+
+
+
+
+<div class="description">
+    <p>EBSAppProps</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>Component</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">React.ComponentType.&lt;any></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pageProps</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>authenticated</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>token</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="pages__app.js.html">pages/_app.js</a>, <a href="pages__app.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="PageSizeSelectorProps">PageSizeSelectorProps</h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pageSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="modules_table_EBSTableTools.js.html">modules/table/EBSTableTools.js</a>, <a href="modules_table_EBSTableTools.js.html#line70">line 70</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
     
 
     
@@ -917,13 +1573,13 @@ children: Object[],
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ColumnSelector">ColumnSelector</a></li><li><a href="global.html#CUSTOM_FIELDS">CUSTOM_FIELDS</a></li><li><a href="global.html#getSchemeDefault">getSchemeDefault</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#PageSizeSelector">PageSizeSelector</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#Sequences">Sequences</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ColumnSelector">ColumnSelector</a></li><li><a href="global.html#EBSApp">EBSApp</a></li><li><a href="global.html#getSchemeDefault">getSchemeDefault</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#PageSizeSelector">PageSizeSelector</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#Sequences">Sequences</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jul 15 2021 10:37:48 GMT-0600 (미 산지 하계 표준시)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jul 15 2021 14:50:37 GMT-0600 (미 산지 하계 표준시)
 </footer>
 
 <script> prettyPrint(); </script>
