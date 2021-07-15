@@ -1,5 +1,9 @@
 /**
- * Author: Jongil Yoon <jiysait@gmail.com>
+ * @author Jongil Yoon
+ * @email jiysait@gmail.com
+ * @create date 2021-07-15 11:08:05
+ * @modify date 2021-07-15 11:23:05
+ * @desc [description]
  */
 import axios from "axios";
 import withAuth from "../../middleware/withAuth";
@@ -8,19 +12,18 @@ import { useCallback, useEffect, useState } from "react";
 
 import SequencesMainView from "../../components/view/sequences/Main";
 
-/**
- * #####################################################################
- * Customize your table here
- *
- * interface custom_fields {
- *   name: string,
- *   value: string,
- *   alias: string,
- *   display: boolean,
- *   children: Object[],
- * }
- * #####################################################################
- */
+// #####################################################################
+// Customize your table here
+// 
+// interface custom_fields {
+//   name: string,
+//   value: string,
+//   alias: string,
+//   display: boolean,
+//   children: Object[],
+// }
+// #####################################################################
+// 
 // Add fields you want to display other than that will be disabled by default
 // parent cannot be a primary and displayed n a flatMap
 const CUSTOM_FIELDS = [
@@ -118,11 +121,6 @@ const CUSTOM_FIELDS = [
     ],
   },
 ];
-/**
- * #####################################################################
- * - END - Custom table setting
- * #####################################################################
- */
 
 /**
  * Helper functions
@@ -204,10 +202,11 @@ const flatRows = (arr) => {
 
   return arr.map((item) => Object.fromEntries(pullout(item)));
 };
-/**
- * - END - Helper functions
- */
 
+/**
+ * 
+ * @returns {React.ReactElement|null} 
+ */
 function Sequences() {
   const { accessToken } = useAuth();
 

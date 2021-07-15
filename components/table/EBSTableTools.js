@@ -1,7 +1,12 @@
+// @ts-check
 /**
- * Author: Jongil Yoon <jiysait@gmail.com>
+ * @author Jongil Yoon
+ * @email jiysait@gmail.com
+ * @create date 2021-07-15 10:38:41
+ * @modify date 2021-07-15 10:56:22
+ * @desc [description]
  */
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { CSVLink } from "react-csv";
 
 import {
@@ -19,7 +24,14 @@ import {
 } from "semantic-ui-react";
 
 /**
- * Column Selector
+ * @typedef ColumnSelectorProps
+ * @prop {Array<Object>} columnData
+ * @prop {(Object)=>void} setRowData
+ */
+/**
+ * ColumnSelector that 
+ * @param {ColumnSelectorProps} props 
+ * @returns {React.ReactElement}
  */
 function ColumnSelector(props) {
   const { columnData, setRowData } = props;
@@ -56,7 +68,14 @@ function ColumnSelector(props) {
 }
 
 /**
- * Page Selector
+ * @typedef PageSizeSelectorProps
+ * @prop {Number} pageSize
+ * @prop {(Object)=>void} setRowData
+ */
+/**
+ * 
+ * @param {PageSizeSelectorProps} props 
+ * @returns 
  */
 function PageSizeSelector(props) {
   const { pageSize, setRowData } = props;

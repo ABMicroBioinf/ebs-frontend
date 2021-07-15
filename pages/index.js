@@ -1,6 +1,12 @@
+// @ts-check
 /**
- * Author: Jongil Yoon <Jiysait@gmail.com>
+ * @author Jongil Yoon
+ * @email jiysait@gmail.com
+ * @create date 2021-07-15 09:31:16
+ * @modify date 2021-07-15 10:54:54
+ * @desc [description]
  */
+import React from "react";
 import Link from "next/link";
 import TopNav from "../components/TopNav";
 import withAuth from "../middleware/withAuth";
@@ -15,9 +21,8 @@ import {
 } from "semantic-ui-react";
 
 /**
- * Next.js recommend to handle redirection in backend
- * following code needs to be fixed
- * @returns
+ * PAGE Component for showing the first page of application.
+ * @returns {React.ReactElement} Main layout of Home
  */
 function Home() {
   return (

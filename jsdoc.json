@@ -1,6 +1,6 @@
 {
     "source": {
-        "include": ["pages", "components", "middleware"],
+        "include": ["pages", "components", "middleware", "modules"],
         "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(node_modules/|docs|next/|vscode/|public/|styles/)"
     },
