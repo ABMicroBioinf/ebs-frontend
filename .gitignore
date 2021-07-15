@@ -35,3 +35,9 @@ yarn-error.log*
 
 # A map of EBS backend API
 apimap.json
+
+# Mac user
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store

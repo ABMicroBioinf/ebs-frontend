@@ -1,5 +1,10 @@
+// @ts-check
 /**
- * Author: Jongil Yoon <jiysait@gmail.com>
+ * @author Jongil Yoon
+ * @email jiysait@gmail.com
+ * @create date 2021-07-15 00:09:39
+ * @modify date 2021-07-15 07:14:36
+ * @desc [description]
  */
 import withAuth from "../../middleware/withAuth";
 import { useEffect, useState } from "react";

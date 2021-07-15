@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/TopNav.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/TopNav.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Author: Jongil Yoon &lt;jiysait@gmail.com>
+ */
+import { useRouter } from "next/router";
+import { useAuth } from "../middleware/AuthProvider";
+
+import { Dropdown, Icon, Menu } from "semantic-ui-react";
+
+export default function TopNav() {
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
+
+  const goLink = (e, data) => {
+    router.push(data.to);
+  };
+
+  /**
+   * link is for external URL
+   * button is for internal routing or dropdown menu toggle button
+   */
+  const ebs_menu = [
+    {
+      key: 1,
+      text: "Seqs",
+      as: "button",
+      to: "/sequences",
+      handler: goLink,
+      depth: 1,
+      has_children: false,
+      parent: 0,
+      need_account: true,
+      value: 1,
+    },
+    {
+      key: 2,
+      text: "Analysis",
+      as: "button",
+      to: "/analysis",
+      handler: goLink,
+      depth: 1,
+      has_children: true,
+      parent: 0,
+      need_account: true,
+      value: 2,
+    },
+    {
+      key: 3,
+      text: "Chart Examples",
+      as: "button",
+      to: "/test",
+      handler: goLink,
+      depth: 1,
+      has_children: false,
+      parent: 0,
+      need_account: true,
+      value: 3,
+    },
+    {
+      key: 4,
+      text: "CPO-Analysis",
+      as: "button",
+      to: "/analysis/cpo",
+      handler: goLink,
+      depth: 2,
+      has_children: false,
+      parent: 2,
+      need_account: true,
+      value: 4,
+    },
+    {
+      key: 5,
+      text: "Metagemnome-Analysis",
+      as: "button",
+      to: "/analysis/metagenome",
+      handler: goLink,
+      depth: 2,
+      has_children: false,
+      parent: 2,
+      need_account: true,
+      value: 5,
+    },
+    {
+      key: 6,
+      text: "TB-Analysis",
+      as: "button",
+      to: "/analysis/tb",
+      handler: goLink,
+      depth: 2,
+      has_children: false,
+      parent: 2,
+      need_account: true,
+      value: 6,
+    },
+  ];
+
+  const basic_menu = [
+    {
+      key: 1,
+      text: "Github",
+      as: "link",
+      to: "https://github.com/ABMicroBioinf",
+      handler: null,
+      depth: 1,
+      has_children: false,
+      parent: 0,
+      need_account: false,
+      value: 1,
+    },
+    {
+      key: 2,
+      text: "Login",
+      as: "button",
+      to: "/login",
+      handler: goLink,
+      depth: 1,
+      has_children: false,
+      parent: 0,
+      need_account: false,
+      value: 2,
+    },
+    {
+      key: 3,
+      text: "Register",
+      as: "button",
+      to: "/register",
+      handler: goLink,
+      depth: 1,
+      has_children: false,
+      parent: 0,
+      need_account: false,
+      value: 3,
+    },
+    {
+      key: 4,
+      text: "Account",
+      as: "button",
+      to: "/account",
+      handler: goLink,
+      depth: 1,
+      has_children: false,
+      parent: 0,
+      need_account: true,
+      value: 4,
+    },
+    {
+      key: 5,
+      text: "Logout",
+      as: "button",
+      to: "/logout",
+      handler: goLink,
+      depth: 1,
+      has_children: false,
+      parent: 0,
+      need_account: true,
+      value: 5,
+    },
+  ];
+
+  return (
+    &lt;Menu
+      fixed="top"
+      color="blue"
+      inverted
+      secondary
+      className="ebs-top-navbar"
+    >
+      &lt;Menu.Item link name="Branding" href="/">
+        &lt;Icon name="dna" />
+        EBS
+      &lt;/Menu.Item>
+      {isAuthenticated &amp;&amp;
+        ebs_menu.map((menu) => {
+          if (menu.depth == 1 &amp;&amp; !menu.has_children) {
+            if (menu.as === "link") {
+              return (
+                &lt;Menu.Item
+                  link
+                  key={menu.key}
+                  name={menu.text}
+                  href={menu.to}
+                />
+              );
+            } else if (menu.as === "button") {
+              return (
+                &lt;Menu.Item
+                  key={menu.key}
+                  name={menu.text}
+                  to={menu.to}
+                  onClick={menu.handler &amp;&amp; menu.handler}
+                />
+              );
+            }
+          } else if (menu.depth == 1 &amp;&amp; menu.has_children) {
+            return (
+              &lt;Menu.Item key={menu.key}>
+                &lt;Dropdown text={menu.text}>
+                  &lt;Dropdown.Menu>
+                    {ebs_menu
+                      .filter((child) => child.parent === menu.value)
+                      .map((child) => {
+                        if (child.as === "link") {
+                          return (
+                            &lt;Dropdown.Item link key={child.key} href={child.to}>
+                              {child.text}
+                            &lt;/Dropdown.Item>
+                          );
+                        } else if (child.as === "button") {
+                          return (
+                            &lt;Dropdown.Item
+                              key={child.key}
+                              to={child.to}
+                              onClick={child.handler &amp;&amp; child.handler}
+                            >
+                              {child.text}
+                            &lt;/Dropdown.Item>
+                          );
+                        }
+                      })}
+                  &lt;/Dropdown.Menu>
+                &lt;/Dropdown>
+              &lt;/Menu.Item>
+            );
+          }
+        })}
+      &lt;Menu.Menu position="right">
+        {basic_menu.map((menu) => {
+          if (menu.depth == 1 &amp;&amp; !menu.has_children) {
+            if (menu.as === "link") {
+              // return &lt;Menu.Item
+              //     link
+              //     key={menu.key}
+              //     name={menu.text}
+              //     href={menu.to}
+              // />
+              return menu.need_account ? (
+                isAuthenticated ? (
+                  &lt;Menu.Item
+                    link
+                    key={menu.key}
+                    name={menu.text}
+                    href={menu.to}
+                  />
+                ) : null
+              ) : isAuthenticated ? null : (
+                &lt;Menu.Item
+                  link
+                  key={menu.key}
+                  name={menu.text}
+                  href={menu.to}
+                />
+              );
+            } else if (menu.as === "button") {
+              return menu.need_account ? (
+                isAuthenticated ? (
+                  &lt;Menu.Item
+                    key={menu.key}
+                    name={menu.text}
+                    to={menu.to}
+                    onClick={menu.handler &amp;&amp; menu.handler}
+                  />
+                ) : null
+              ) : isAuthenticated ? null : (
+                &lt;Menu.Item
+                  key={menu.key}
+                  name={menu.text}
+                  to={menu.to}
+                  onClick={menu.handler &amp;&amp; menu.handler}
+                />
+              );
+            }
+          } else if (menu.depth == 1 &amp;&amp; menu.has_children) {
+            return (
+              &lt;Menu.Item key={menu.key}>
+                &lt;Dropdown text={menu.text}>
+                  &lt;Dropdown.Menu>
+                    {basic_menu
+                      .filter((child) => child.parent === menu.value)
+                      .map((child) => {
+                        if (child.as === "link") {
+                          // return &lt;Dropdown.Item
+                          //     link
+                          //     key={child.key}
+                          //     href={child.to}
+                          // >
+                          //     {child.text}
+                          // &lt;/Dropdown.Item>
+                          return child.need_account ? (
+                            isAuthenticated ? (
+                              &lt;Dropdown.Item
+                                link
+                                key={child.key}
+                                href={child.to}
+                              >
+                                {child.text}
+                              &lt;/Dropdown.Item>
+                            ) : null
+                          ) : isAuthenticated ? null : (
+                            &lt;Dropdown.Item link key={child.key} href={child.to}>
+                              {child.text}
+                            &lt;/Dropdown.Item>
+                          );
+                        } else if (child.as === "button") {
+                          // return &lt;Dropdown.Item
+                          //     key={child.key}
+                          //     to={child.to}
+                          //     onClick={child.handler &amp;&amp; child.handler}
+                          // >
+                          //     {child.text}
+                          // &lt;/Dropdown.Item>
+                          return child.need_account ? (
+                            isAuthenticated ? (
+                              &lt;Dropdown.Item
+                                key={child.key}
+                                to={child.to}
+                                onClick={child.handler &amp;&amp; child.handler}
+                              >
+                                {child.text}
+                              &lt;/Dropdown.Item>
+                            ) : null
+                          ) : isAuthenticated ? null : (
+                            &lt;Dropdown.Item
+                              key={child.key}
+                              to={child.to}
+                              onClick={child.handler &amp;&amp; child.handler}
+                            >
+                              {child.text}
+                            &lt;/Dropdown.Item>
+                          );
+                        }
+                      })}
+                  &lt;/Dropdown.Menu>
+                &lt;/Dropdown>
+              &lt;/Menu.Item>
+            );
+          }
+        })}
+      &lt;/Menu.Menu>
+    &lt;/Menu>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ColumnSelector">ColumnSelector</a></li><li><a href="global.html#CUSTOM_FIELDS">CUSTOM_FIELDS</a></li><li><a href="global.html#getSchemeDefault">getSchemeDefault</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#PageSizeSelector">PageSizeSelector</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#Sequences">Sequences</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jul 15 2021 07:17:42 GMT-0600 (미 산지 하계 표준시)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
