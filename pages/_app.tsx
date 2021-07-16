@@ -9,25 +9,26 @@ import "../styles/globals.css";
 import "../styles/ebs.scss";
 import "semantic-ui-css/semantic.min.css";
 
+import type { AppProps, AppContext } from "next/app";
+
 import App from "next/app";
 import cookie from "cookie";
 import { AuthProvider } from "../middleware/AuthProvider";
 
 /**
  * EBSAppProps
- * @typedef EBSAppProps
- * @prop {AppProps.Component} Component - Home component of index.js.
- * @prop {AppProps.PageProps} pageProps - Page props of App props.
- * @prop {Boolean} authenticated - If a current user is authenticated.
- * @prop {String} token - Access token of JWT key string.
  */
+interface EBSAppProps extends AppProps {
+  authenticated: boolean;
+  token: string;
+}
 
 /**
  * The most top level of Next.js component that extends react application by overriding the global App component.
- * @param {EBSAppProps} EBSAppProps - See {@link EBSAppProps}.
- * @returns {ReactElement} - Home page that is the main page(index.js) of next.js.
+ * @param {EBSAppProps} EBSAppProps - Customized AppProps.
+ * @returns {JSX.Element} - Home page that is the main page(index.js) of next.js.
  */
-function EBSApp(EBSAppProps) {
+function EBSApp(EBSAppProps: EBSAppProps) {
   const { Component, pageProps, authenticated, token } = EBSAppProps;
   return (
     <AuthProvider authenticated={authenticated} token={token}>
@@ -37,11 +38,11 @@ function EBSApp(EBSAppProps) {
 }
 
 /**
- * Overriding getInitialProps 
+ * Overriding getInitialProps
  * @param {AppContext} appContext - Application context of Next.js.
  * @returns {Promise<EBSAppProps>} - AppContext with custom props which are authenticated and token.
  */
-EBSApp.getInitialProps = async (appContext) => {
+EBSApp.getInitialProps = async (appContext: AppContext) => {
   let token = "";
   let authenticated = false;
   const request = appContext.ctx.req;

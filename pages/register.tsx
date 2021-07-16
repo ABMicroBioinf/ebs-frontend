@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -11,7 +10,7 @@ import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import withoutAuth from "../middleware/withoutAuth";
 
-import TopNav from "../components/TopNav";
+import TopNav from "../components/global/TopNav";
 import {
   Button,
   Form,
@@ -23,6 +22,10 @@ import {
   Header,
 } from "semantic-ui-react";
 
+/**
+ * Register
+ * @returns {JSX.Element} Account registration page
+ */
 function Register() {
   const router = useRouter();
 

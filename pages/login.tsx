@@ -27,7 +27,7 @@ import {
 
 /**
  * Login
- * @returns {React.ReactElement} - Login page.
+ * @returns {JSX.Element} - Login page.
  */
 function Login() {
   const router = useRouter();

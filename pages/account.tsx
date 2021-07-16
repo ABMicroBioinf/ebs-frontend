@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -6,7 +5,6 @@
  * @modify date 2021-07-15 15:10:12
  * @desc [description]
  */
-import React from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
@@ -26,7 +24,7 @@ import {
 
 /**
  * Account
- * @returns {React.ReactNode}
+ * @returns {JSX.Element} - Account dashboard
  */
 function Account() {
   const router = useRouter();
@@ -60,7 +58,7 @@ function Account() {
     await axios
       .delete("http://localhost:8000/api/account/delete", config)
       .then((res) => {
-        if (res === 200) {
+        if (res.status === 200) {
           router.push("/logout");
         }
       })

@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -12,13 +11,6 @@ import EBSTableHeader from "./EBSTableHeader";
 import EBSTableTools from "./EBSTableTools";
 
 import { Grid, Table } from "semantic-ui-react";
-
-// helers
-const pick = (obj, keys) => {
-  return keys
-    .map((k) => (k.value in obj ? { [k.value]: obj[k.value] } : {}))
-    .reduce((res, o) => Object.assign(res, o), {});
-};
 
 /**
  * A top level table component layouts entire structure of data table

@@ -21,7 +21,7 @@ import {
 
 /**
  * The main page of application.
- * @returns {React.ReactElement} - Main layout of Home
+ * @returns {JSX.Element} - Home page; Landing page after login
  */
 function Home() {
   return (

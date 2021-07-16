@@ -27,7 +27,7 @@ function isBrowser() {
 /**
  * HOC function that redirects user depending on clientCondition and serverCondition
  * @param {ConditionalRedirectProps} - See {@link ConditionalRedirectProps}
- * @returns {Function} - 
+ * @returns {Component} - WrappedComponent, if authentication is successfully done
  */
 export default function withConditionalRedirect({
   WrappedComponent,

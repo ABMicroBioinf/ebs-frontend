@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -11,6 +10,10 @@ import { useCallback, useEffect } from "react";
 import { useAuth } from "../middleware/AuthProvider";
 import withAuth from "../middleware/withAuth";
 
+/**
+ * Logout
+ * @returns {JSX.Element} - Pending message, if something goes wrong
+ */
 function Logout() {
   const { setAuthenticated } = useAuth();
 
