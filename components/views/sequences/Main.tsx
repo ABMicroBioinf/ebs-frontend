@@ -10,10 +10,10 @@ import { useReducer, useState } from "react";
 
 import { EBSTableStateReducer } from "../../../modules/table/reducers/reducer";
 import { EBSTabularDataContext } from "../../../modules/table/interfaces/EBSDataTypes";
-import { getEBSTableInitialState } from "../../../modules/table/preprocess/EBSTableStateHandler";
+import { getEBSTableInitialState } from "../../../modules/table/helpers/EBSTableStateHandler";
 
 import { SequencesTotalCount } from "./Statistics";
-import Filters from "./Filters";
+import SideMenu from "./SideMenu";
 import EBSTableData from "../../../modules/table/EBSTableData";
 
 import TopNav from "../../global/TopNav";
@@ -51,7 +51,7 @@ function SequencesMainView({ ebsTabularData }: EBSTabularDataContext) {
       >
         {ebsTableState.headers.length > 0 &&
         ebsTableState.records.length > 0 ? (
-          <Filters
+          <SideMenu
             ebsTableState={ebsTableState}
             wideView={wideView}
             setEBSTableState={setEBSTableState}

@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -8,6 +7,8 @@
  */
 import _ from "lodash";
 import { useCallback, useReducer, useState } from "react";
+
+import { EBSTableDashboardStateContext } from "../../../modules/table/interfaces/EBSDataTypes";
 
 import {
   Accordion,
@@ -93,9 +94,18 @@ function Search(props) {
   );
 }
 
-export default function Filters(props) {
-  const { rowData, setRowData, wideView, setWideView } = props;
-  const { ORIGIN } = rowData;
+/**
+ * SideMenu
+ * @param props
+ * @returns
+ */
+function SideMenu({
+  ebsTableState,
+  wideView,
+  setEBSTableState,
+  setWideView,
+}: EBSTableDashboardStateContext) {
+  const { RECORDS_ORIGIN_REF } = ebsTableState;
 
   const [activeIndex, setActiveIndex] = useState({
     0: false,
@@ -111,18 +121,17 @@ export default function Filters(props) {
   };
 
   const handleChange = (e, data) => {
-    // Temporary
-    setRowData({
-      type: "SET_HISTORY",
+    setEBSTableState({
+      type: "SET_STATE_CHAIN",
       module: "search",
       search: data.value,
     });
-    setRowData({
-      type: "APPLY_HISTORY",
+    setEBSTableState({
+      type: "APPLY_STATE_CHAIN",
     });
   };
 
-  const statisticRef = ORIGIN.slice();
+  const statisticRef = RECORDS_ORIGIN_REF.slice();
 
   // alias names are hardcoded. it needs to be fixed in the future
   const organism = _.countBy(
@@ -282,9 +291,7 @@ export default function Filters(props) {
     </Grid>
   ) : (
     <>
-      <Segment inverted>
-        <Search setRowData={setRowData} />
-      </Segment>
+      <Segment inverted>{/* <Search setRowData={setRowData} /> */}</Segment>
       <div className="ebs-scrollable-inner">
         <Accordion inverted fluid as={Menu} vertical>
           <Menu.Item>
@@ -366,3 +373,5 @@ export default function Filters(props) {
     </>
   );
 }
+
+export default SideMenu;

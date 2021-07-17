@@ -6,8 +6,12 @@
  * @desc [description]
  */
 import _ from "lodash";
-import { EBSTableState } from "../interfaces/EBSDataTypes";
-import { resetEBSTableState } from "../preprocess/EBSTableStateHandler";
+import {
+  EBSTableAction,
+  EBSTableStateInterface,
+  EBSTabularRecord,
+} from "../interfaces/EBSDataTypes";
+import { resetEBSTableState } from "../helpers/EBSTableStateHandler";
 
 /**
  * EBSTableStateReducer
@@ -15,59 +19,68 @@ import { resetEBSTableState } from "../preprocess/EBSTableStateHandler";
  * @param action
  * @returns {EBSTableState}
  */
-function EBSTableStateReducer(state: EBSTableState, action): EBSTableState {
+function EBSTableStateReducer(
+  state: EBSTableStateInterface,
+  action: EBSTableAction
+): EBSTableStateInterface {
   const { RECORDS_ORIGIN_REF, stateChain } = state;
-  const { order, search, columns, sort, pagination } = stateChain;
+  const { chainQueue, search, columns, sort, pagination } = stateChain;
   const { page, pageSize } = pagination;
 
-  let results = RECORDS_ORIGIN_REF.slice();
+  let results: Array<EBSTabularRecord> = RECORDS_ORIGIN_REF.slice();
   switch (action.type) {
-    case "RESET_DATASET":
+    case "RESET_DATA":
       return resetEBSTableState(state);
 
     case "SET_SELECTION":
-      results.splice(action.row.index, 1, action.row);
+      results.splice(action.record.index, 1, action.record);
       return {
         ...state,
-        ORIGIN: results,
+        RECORDS_ORIGIN_REF: results,
       };
 
-    case "SELECT_ALL":
+    case "SELECT_ALL_DATA":
       return {
         ...state,
-        ORIGIN: results.map((obj) => ({ ...obj, isSelected: true })),
+        RECORDS_ORIGIN_REF: results.map(
+          (obj): EBSTabularRecord => ({ ...obj, isSelected: true })
+        ),
       };
 
-    case "DESELECT_ALL":
+    case "DESELECT_ALL_DATA":
       return {
         ...state,
-        ORIGIN: results.map((obj) => ({ ...obj, isSelected: false })),
+        RECORDS_ORIGIN_REF: results.map(
+          (obj): EBSTabularRecord => ({ ...obj, isSelected: false })
+        ),
       };
 
-    case "SET_HISTORY":
+    case "SET_STATE_CHAIN":
       return {
         ...state,
         stateChain: {
-          order: action.module ? [...order, action.module] : order,
+          chainQueue: action.module
+            ? [...chainQueue, action.module]
+            : chainQueue,
           search: action.search ? action.search : search,
-          columns: action.column
+          columns: action.columnsColumn
             ? columns.map((column) => {
-                if (column.value === action.column) {
+                if (column.value === action.columnsColumn) {
                   return { ...column, display: !column.display };
                 }
                 return column;
               })
             : columns,
-          sort: action.sort
-            ? sort.column === action.sort
+          sort: action.sortColumn
+            ? sort.column === action.sortColumn
               ? {
                   ...sort,
-                  type: action.dataType,
+                  dataType: action.sortDataType,
                   direction: sort.direction === "asc" ? "desc" : "asc",
                 }
               : {
-                  column: action.sort,
-                  type: action.dataType,
+                  column: action.sortColumn,
+                  dataType: action.sortDataType,
                   direction: "asc",
                 }
             : sort,
@@ -79,9 +92,9 @@ function EBSTableStateReducer(state: EBSTableState, action): EBSTableState {
         },
       };
 
-    case "APPLY_HISTORY":
-      order.forEach((module) => {
-        if (module !== null && module !== undefined && module !== "") {
+    case "APPLY_STATE_CHAIN":
+      chainQueue.forEach((module) => {
+        if (module !== null && module !== undefined) {
           switch (module) {
             case "search":
               results = results.filter((row) =>
@@ -129,13 +142,13 @@ function EBSTableStateReducer(state: EBSTableState, action): EBSTableState {
       });
       return {
         ...state,
-        dataset: results.slice(
+        records: results.slice(
           // pagination
           (page - 1) * pageSize,
           (page - 1) * pageSize + pageSize
         ),
-        history: {
-          ...history,
+        stateChain: {
+          ...stateChain,
           pagination: {
             ...pagination,
             pageCount:

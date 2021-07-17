@@ -7,8 +7,8 @@
  */
 import {
   EBSSortContext,
-  EBSTableState,
-  EBSTableStateChain,
+  EBSTableStateInterface,
+  EBSTableStateChainInterface,
   EBSTabularData,
   EBSTabularHeader,
   EBSTabularRecord,
@@ -20,15 +20,17 @@ import {
  * @returns {EBSTableState} -
  */
 function getEBSTableInitialState({
+  title,
   headers,
   records,
-}: EBSTabularData): EBSTableState {
+}: EBSTabularData): EBSTableStateInterface {
   const CUSTOM_COLUMNS: Array<EBSTabularHeader> = headers.slice();
   const CUSTOM_ROWS: Array<EBSTabularRecord> = records
     .slice()
     .map((obj, index) => ({ index: index, isSelected: false, data: obj }));
 
-  return ((): EBSTableState => {
+  return ((): EBSTableStateInterface => {
+    const DEFAULT_TITLE: string = title;
     const DEFAULT_RECORDS: Array<EBSTabularRecord> = CUSTOM_ROWS;
     const DEFAULT_PAGE: number = 1;
     const DEFAULT_PAGE_SIZE: number = 5;
@@ -44,8 +46,8 @@ function getEBSTableInitialState({
         ? Math.floor(DEFAULT_RECORDS.length / DEFAULT_PAGE_SIZE) + 1
         : Math.floor(DEFAULT_RECORDS.length / DEFAULT_PAGE_SIZE))();
 
-    const DEFAULT_TABLE_STATE_CHAIN: EBSTableStateChain = {
-      order: [],
+    const DEFAULT_TABLE_STATE_CHAIN: EBSTableStateChainInterface = {
+      chainQueue: [],
       search: DEFAULT_SEARCH_KEYWORD,
       columns: DEFAULT_HEADERS,
       sort: DEFAULT_SORT,
@@ -57,8 +59,9 @@ function getEBSTableInitialState({
     };
 
     return {
-      HEADERS_ORIGIN_REF: Object.freeze(DEFAULT_HEADERS),
-      RECORDS_ORIGIN_REF: Object.freeze(DEFAULT_RECORDS),
+      HEADERS_ORIGIN_REF: DEFAULT_HEADERS,
+      RECORDS_ORIGIN_REF: DEFAULT_RECORDS,
+      title: DEFAULT_TITLE,
       headers: DEFAULT_HEADERS,
       records: DEFAULT_RECORDS,
       stateChain: DEFAULT_TABLE_STATE_CHAIN,
@@ -66,12 +69,19 @@ function getEBSTableInitialState({
   })();
 }
 
-function resetEBSTableState(state: EBSTableState): EBSTableState {
+/**
+ * Reset EBSTableState
+ * @param state
+ * @returns
+ */
+function resetEBSTableState(
+  state: EBSTableStateInterface
+): EBSTableStateInterface {
   const {
     HEADERS_ORIGIN_REF: cur_HEADERS_ORIGIN_REF,
     RECORDS_ORIGIN_REF: cur_RECORDS_ORIGIN_REF,
   } = state;
-  return ((): EBSTableState => {
+  return ((): EBSTableStateInterface => {
     const DEFAULT_RECORDS: Array<EBSTabularRecord> = cur_RECORDS_ORIGIN_REF;
     const DEFAULT_PAGE: number = 1;
     const DEFAULT_PAGE_SIZE: number = 5;
@@ -87,8 +97,8 @@ function resetEBSTableState(state: EBSTableState): EBSTableState {
         ? Math.floor(DEFAULT_RECORDS.length / DEFAULT_PAGE_SIZE) + 1
         : Math.floor(DEFAULT_RECORDS.length / DEFAULT_PAGE_SIZE))();
 
-    const DEFAULT_TABLE_STATE_CHAIN: EBSTableStateChain = {
-      order: [],
+    const DEFAULT_TABLE_STATE_CHAIN: EBSTableStateChainInterface = {
+      chainQueue: [],
       search: DEFAULT_SEARCH_KEYWORD,
       columns: DEFAULT_HEADERS,
       sort: DEFAULT_SORT,

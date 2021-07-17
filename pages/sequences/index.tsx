@@ -17,7 +17,7 @@ import {
   applyCustomFields,
   flatColumns,
   flatRows,
-} from "../../modules/table/preprocess/EBSTabularDataHandler";
+} from "../../modules/table/helpers/EBSTabularDataHandler";
 
 import SequencesMainView from "../../components/views/sequences/Main";
 
@@ -29,6 +29,7 @@ function Sequences() {
   const { accessToken } = useAuth();
 
   const [ebsTabularData, setEBSTabularData] = useState({
+    title: "",
     headers: [],
     records: [],
   });
@@ -57,6 +58,7 @@ function Sequences() {
 
         if (validateCustomFields(DEFAULT_SCHEME, CUSTOM_FIELDS)) {
           setEBSTabularData({
+            title: "Sequence",
             headers: CUSTOMIZED_SCHEME,
             records: flatRows(res.data),
           });

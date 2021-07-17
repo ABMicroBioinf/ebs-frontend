@@ -33,6 +33,7 @@ interface EBSTabularRecord {
  * EBSTabularData
  */
 interface EBSTabularData {
+  title: string;
   headers: Array<EBSTabularHeader>;
   records: Array<EBSTabularRecord>;
 }
@@ -46,59 +47,106 @@ interface EBSTabularDataContext {
 }
 
 /**
- * EBSTableStateChainContext
+ * EBSSortContext
  */
-interface EBSTableStateChain {
-  order: Array<string>;
-  search: string;
-  columns: Array<EBSTabularHeader>;
-  sort: {
-    column: string;
-    direction: string;
-    dataType: string;
-  };
-  pagination: {
-    page: number;
-    pageSize: number;
-    pageCount: number;
-  };
+interface EBSSortContext {
+  column?: string;
+  direction?: "asc" | "desc";
+  dataType: "string" | "number";
 }
 
 /**
- * EBSTableState
+ * EBSPaginationContext
  */
-interface EBSTableState {
-  HEADERS_ORIGIN_REF: Array<EBSTabularHeader>;
-  RECORDS_ORIGIN_REF: Array<EBSTabularRecord>;
+interface EBSPaginationContext {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+}
+
+/**
+ * EBSTableStateChainContext
+ */
+interface EBSTableStateChainInterface {
+  chainQueue: Array<"columns" | "search" | "sort">;
+  search: string;
+  columns: Array<EBSTabularHeader>;
+  sort: EBSSortContext;
+  pagination: EBSPaginationContext;
+}
+
+/**
+ * EBSTableStateInterface
+ */
+interface EBSTableStateInterface {
+  title: string;
   headers: Array<EBSTabularHeader>;
   records: Array<EBSTabularRecord>;
-  stateChain: EBSTableStateChain;
+  stateChain: EBSTableStateChainInterface;
+  readonly HEADERS_ORIGIN_REF: Array<EBSTabularHeader>;
+  readonly RECORDS_ORIGIN_REF: Array<EBSTabularRecord>;
 }
 
 /**
  * EBSTableStateContext
  */
 interface EBSTableStateContext {
-  ebsTableState: EBSTableState;
-  setEBSTableState: Dispatch<SetStateAction<EBSTableState>>;
+  ebsTableState: EBSTableStateInterface;
+  setEBSTableState: Dispatch<EBSTableAction>;
 }
 
 /**
- * EBSSortContext
+ * EBSTableDashboardStateContext
  */
-interface EBSSortContext {
-  column: string;
-  direction: string;
-  dataType: string;
+interface EBSTableDashboardStateContext extends EBSTableStateContext {
+  wideView: boolean;
+  setWideView: Dispatch<SetStateAction<boolean>>;
 }
+
+/**
+ * EBSTableAction (A Type of Reducer Action)
+ * RESET_DATA
+ * SELECT_ALL_DATA
+ * DESELECT_ALL_DATA
+ * SET_COLUMNS
+ * SORT_DATA
+ * SEARCH_DATA
+ * PAGINATE_DATA
+ */
+type EBSTableAction =
+  | {
+      type:
+        | "RESET_DATA"
+        | "SELECT_ALL_DATA"
+        | "DESELECT_ALL_DATA"
+        | "APPLY_STATE_CHAIN";
+    }
+  | {
+      type: "SET_SELECTION";
+      record: EBSTabularRecord;
+    }
+  | {
+      type: "SET_STATE_CHAIN";
+      module: "columns" | "search" | "sort";
+      columnsColumn: string;
+      sortDataType: "string" | "number";
+      sortColumn?: string;
+      sortDirection?: "asc" | "desc";
+      search: string;
+      page: number;
+      pageSize: number;
+    };
 
 export type {
   EBSTabularHeader,
   EBSTabularRecord,
   EBSTabularData,
   EBSTabularDataContext,
-  EBSTableStateChain,
-  EBSTableState,
-  EBSTableStateContext,
   EBSSortContext,
+  EBSPaginationContext,
+  EBSTableStateChainInterface,
+  EBSTableStateInterface,
+  EBSTableStateContext,
+  EBSTableDashboardStateContext,
+  EBSTableAction,
 };
