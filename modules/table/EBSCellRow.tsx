@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -9,26 +8,21 @@
 import { useCallback } from "react";
 import { Checkbox, Table } from "semantic-ui-react";
 
-export default function EBSCellRow(props) {
-  const { row, setRowData } = props;
-
+function EBSCellRow({ record, setEBSTableState }) {
   const handleChange = useCallback(() => {
-    setRowData({
-      type: "SET_SELECTION",
-      row: { ...row, isSelected: !row.isSelected },
+    setEBSTableState({
+      type: "SELECT_RECORD",
+      record: { ...record, isSelected: !record.isSelected },
     });
-    setRowData({
-      type: "APPLY_HISTORY",
-    });
-  }, [row]);
+  }, [record]);
 
   return (
     <Table.Row>
       <Table.Cell>
-        <Checkbox checked={row.isSelected} onChange={handleChange} />
+        <Checkbox checked={record.isSelected} onChange={handleChange} />
       </Table.Cell>
-      {row &&
-        Object.values(row.data).map((value, index) => (
+      {record &&
+        Object.values(record.data).map((value, index) => (
           <Table.Cell key={index}>{value}</Table.Cell>
         ))}
       {/* <Table.Cell>
@@ -37,3 +31,5 @@ export default function EBSCellRow(props) {
     </Table.Row>
   );
 }
+
+export default EBSCellRow;

@@ -6,10 +6,10 @@
  * @desc [description]
  */
 import _ from "lodash";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 import { EBSTableStateReducer } from "../../../modules/table/reducers/reducer";
-import { EBSTabularDataContext } from "../../../modules/table/interfaces/EBSDataTypes";
+import { EBSTabularDataContext } from "../../../modules/table/interfaces/EBSContexts";
 import { getEBSTableInitialState } from "../../../modules/table/helpers/EBSTableStateHandler";
 
 import { SequencesTotalCount } from "./Statistics";
@@ -90,7 +90,6 @@ function SequencesMainView({ ebsTabularData }: EBSTabularDataContext) {
               {ebsTableState.headers.length > 0 &&
               ebsTableState.records.length > 0 ? (
                 <EBSTableData
-                  tableTitle="Run"
                   ebsTableState={ebsTableState}
                   setEBSTableState={setEBSTableState}
                 />

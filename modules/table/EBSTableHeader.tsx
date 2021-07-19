@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -9,23 +8,26 @@
 import { useCallback } from "react";
 import { useState } from "react";
 import { Checkbox, Table } from "semantic-ui-react";
+import {
+  EBSTableInstanceStateContext,
+  EBSTabularHeaderContext,
+} from "./interfaces/EBSContexts";
 
-export default function EBSTableHeader(props) {
-  const { rowData, setRowData } = props;
-  const { dataset, history } = rowData;
-  const { columns, sort } = history;
+function EBSTableHeader({
+  ebsTableState,
+  setEBSTableState,
+}: EBSTableInstanceStateContext) {
+  const { stateChain, headers, records } = ebsTableState;
+  const { sort } = stateChain;
 
   const [selectAll, setSelectAll] = useState(false);
 
   const handleChange = useCallback(() => {
     setSelectAll(!selectAll);
-    setRowData({
-      type: !selectAll ? "SELECT_ALL" : "DESELECT_ALL",
+    setEBSTableState({
+      type: !selectAll ? "SELECT_ALL_RECORDS" : "DESELECT_ALL_RECORDS",
     });
-    setRowData({
-      type: "APPLY_HISTORY",
-    });
-  }, [dataset]);
+  }, [records]);
 
   return (
     <Table.Header>
@@ -33,9 +35,12 @@ export default function EBSTableHeader(props) {
         <Table.HeaderCell>
           <Checkbox checked={selectAll} onChange={handleChange} />
         </Table.HeaderCell>
-        {columns &&
-          columns
-            .filter((colState) => colState.display && colState)
+        {headers &&
+          headers
+            .filter(
+              (colState: EBSTabularHeaderContext) =>
+                colState.display && colState
+            )
             .map((colState, index) => (
               <Table.HeaderCell
                 sorted={
@@ -46,14 +51,10 @@ export default function EBSTableHeader(props) {
                     : null
                 }
                 onClick={() => {
-                  setRowData({
-                    type: "SET_HISTORY",
-                    module: "sort",
-                    sort: colState.value,
-                    dataType: colState.type,
-                  });
-                  setRowData({
-                    type: "APPLY_HISTORY",
+                  setEBSTableState({
+                    type: "TOGGLE_SORT",
+                    sortColumn: colState.value,
+                    sortDataType: colState.type,
                   });
                 }}
                 key={index}
@@ -65,3 +66,5 @@ export default function EBSTableHeader(props) {
     </Table.Header>
   );
 }
+
+export default EBSTableHeader;

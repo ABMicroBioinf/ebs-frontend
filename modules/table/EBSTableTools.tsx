@@ -22,6 +22,7 @@ import {
   Table,
   TableBody,
 } from "semantic-ui-react";
+import { EBSTableInstanceStateContext } from "./interfaces/EBSContexts";
 
 /**
  * @typedef ColumnSelectorProps
@@ -29,32 +30,34 @@ import {
  * @prop {(Object)=>void} setRowData
  */
 /**
- * ColumnSelector that 
- * @param {ColumnSelectorProps} props 
+ * ColumnSelector that
+ * @param {ColumnSelectorProps} props
  * @returns {React.ReactElement}
  */
-function ColumnSelector(props) {
-  const { columnData, setRowData } = props;
+function ColumnSelector({
+  ebsTableState,
+  setEBSTableState,
+}: EBSTableInstanceStateContext) {
+  const { headers, records } = ebsTableState;
 
   const handleChange = useCallback((e) => {
-    setRowData({
-      type: "SET_HISTORY",
-      module: "columns",
-      column: e.currentTarget.value,
+    setEBSTableState({
+      type: "TOGGLE_HEADER",
+      header: e.currentTarget.value,
     });
-    setRowData({
-      type: "APPLY_HISTORY",
-    });
+    // setRowData({
+    //   type: "APPLY_HISTORY",
+    // });
   }, []);
 
   return (
     <Grid columns={5}>
-      {columnData &&
-        columnData.map((column, index) => (
+      {headers &&
+        headers.map((column, index) => (
           <Grid.Column key={index}>
             <input
               disabled={column.primary}
-              label={column.value}
+              // label={column.value}
               value={column.value}
               onChange={handleChange}
               defaultChecked={column.display}
@@ -73,12 +76,17 @@ function ColumnSelector(props) {
  * @prop {(Object)=>void} setRowData
  */
 /**
- * 
- * @param {PageSizeSelectorProps} props 
- * @returns 
+ *
+ * @param {PageSizeSelectorProps} props
+ * @returns
  */
-function PageSizeSelector(props) {
-  const { pageSize, setRowData } = props;
+function PageSizeSelector({
+  ebsTableState,
+  setEBSTableState,
+}: EBSTableInstanceStateContext) {
+  const { stateChain } = ebsTableState;
+  const { pagination } = stateChain;
+  const { page, pageSize, pageCount } = pagination;
 
   const pageSizeOptions = [
     { key: 1, text: "5", value: 5 },
@@ -90,13 +98,10 @@ function PageSizeSelector(props) {
 
   const handlePageSizeChange = useCallback(
     (e, data) => {
-      setRowData({
-        type: "SET_HISTORY",
+      setEBSTableState({
+        type: "SET_PAGESIZE",
         page: 1,
         pageSize: data.value,
-      });
-      setRowData({
-        type: "APPLY_HISTORY",
       });
     },
     [pageSize]
@@ -119,10 +124,13 @@ function PageSizeSelector(props) {
   );
 }
 
-export default function EBSTableTools(props) {
-  const { tableTitle, columnData, rowData, setRowData } = props;
-  const { ORIGIN, history, dataset } = rowData;
-  const { pagination } = history;
+function EBSTableTools({
+  ebsTableState,
+  setEBSTableState,
+}: EBSTableInstanceStateContext) {
+  const { title, stateChain, headers, records, RECORDS_ORIGIN_REF } =
+    ebsTableState;
+  const { pagination } = stateChain;
   const { page, pageSize, pageCount } = pagination;
 
   const [activeItem, setActiveItem] = useState("");
@@ -141,12 +149,9 @@ export default function EBSTableTools(props) {
 
   const handlePageChange = useCallback(
     (e, data) => {
-      setRowData({
-        type: "SET_HISTORY",
+      setEBSTableState({
+        type: "SET_PAGE",
         page: data.activePage,
-      });
-      setRowData({
-        type: "APPLY_HISTORY",
       });
     },
     [page]
@@ -159,32 +164,33 @@ export default function EBSTableTools(props) {
 
   const handleRefresh = useCallback((e) => {
     e.preventDefault();
-    setRowData({
-      type: "RESET_DATASET",
-    });
-    setRowData({
-      type: "APPLY_HISTORY",
+    setEBSTableState({
+      type: "RESET_DATA",
     });
   }, []);
 
   const getSubmenu = useCallback(() => {
     switch (activeItem) {
       case "page":
-        return <PageSizeSelector pageSize={pageSize} setRowData={setRowData} />;
+        return (
+          <PageSizeSelector
+            ebsTableState={ebsTableState}
+            setEBSTableState={setEBSTableState}
+          />
+        );
 
       case "columns":
         return (
           <ColumnSelector
-            columnData={columnData}
-            rowData={rowData}
-            setRowData={setRowData}
+            ebsTableState={ebsTableState}
+            setEBSTableState={setEBSTableState}
           />
         );
 
       default:
         return null;
     }
-  }, [activeItem, pageSize, columnData, rowData]);
+  }, [activeItem, pageSize, headers, records]);
 
   return (
     <>
@@ -213,15 +219,15 @@ export default function EBSTableTools(props) {
                 "Showing " +
                 (
                   (Number(page) - 1) * Number(pageSize) +
-                  (dataset.length > 0 ? 1 : 0)
+                  (records.length > 0 ? 1 : 0)
                 ).toString() +
                 " - " +
-                (Number(pageSize) > dataset.length
-                  ? ORIGIN.length
+                (Number(pageSize) > records.length
+                  ? RECORDS_ORIGIN_REF.length
                   : Number(page) * Number(pageSize)
                 ).toString() +
                 " of " +
-                ORIGIN.length
+                RECORDS_ORIGIN_REF.length
               );
             })()}
           </Menu.Item>
@@ -277,10 +283,13 @@ export default function EBSTableTools(props) {
                 <Table.Row>
                   <Table.Cell>
                     <Header as="h2" textAlign="center">
-                      {ORIGIN.filter((obj) => obj.isSelected).length}
+                      {
+                        RECORDS_ORIGIN_REF.filter((obj) => obj.isSelected)
+                          .length
+                      }
                     </Header>
                   </Table.Cell>
-                  <Table.Cell singleLine>{`${tableTitle}.csv`}</Table.Cell>
+                  <Table.Cell singleLine>{`${title}.csv`}</Table.Cell>
                 </Table.Row>
               </TableBody>
             </Table>
@@ -292,16 +301,16 @@ export default function EBSTableTools(props) {
           </Button>
           <div
             className={`ui green button ebs-custom-csv-export ${
-              ORIGIN.filter((obj) => obj.isSelected).length > 0
+              RECORDS_ORIGIN_REF.filter((obj) => obj.isSelected).length > 0
                 ? ""
                 : "disabled"
             }`}
           >
             <CSVLink
-              data={ORIGIN.filter((obj) => obj.isSelected).map(
+              data={RECORDS_ORIGIN_REF.filter((obj) => obj.isSelected).map(
                 (obj) => obj.data
               )}
-              filename={`${tableTitle}.csv`}
+              filename={`${title}.csv`}
             >
               Export
             </CSVLink>
@@ -311,3 +320,5 @@ export default function EBSTableTools(props) {
     </>
   );
 }
+
+export default EBSTableTools;

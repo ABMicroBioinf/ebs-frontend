@@ -8,7 +8,10 @@
 import _ from "lodash";
 import { useCallback, useReducer, useState } from "react";
 
-import { EBSTableDashboardStateContext } from "../../../modules/table/interfaces/EBSDataTypes";
+import {
+  EBSTableDashboardStateContext,
+  EBSTableInstanceStateContext,
+} from "../../../modules/table/interfaces/EBSContexts";
 
 import {
   Accordion,
@@ -24,9 +27,7 @@ import {
 /**
  * Search Tool
  */
-function Search(props) {
-  const { setRowData } = props;
-
+function Search({ setEBSTableState }: EBSTableInstanceStateContext) {
   const initialSearchState = {
     loading: false,
     searchValue: "",
@@ -58,13 +59,9 @@ function Search(props) {
     dispatchSearch({ searchType: "START_SEARCH", searchQuery: data.value });
     if (data.value.length === 0) {
       dispatchSearch({ searchType: "CLEAN_QUERY" });
-      setRowData({
-        type: "SET_HISTORY",
-        module: "search",
-        search: "",
-      });
-      setRowData({
-        type: "APPLY_HISTORY",
+      setEBSTableState({
+        type: "SEARCH_KEYWORD",
+        keyword: "",
       });
       return;
     }
@@ -73,13 +70,9 @@ function Search(props) {
       searchType: "FINISH_SEARCH",
       searchQuery: data.value,
     });
-    setRowData({
-      type: "SET_HISTORY",
-      module: "search",
-      search: data.value,
-    });
-    setRowData({
-      type: "APPLY_HISTORY",
+    setEBSTableState({
+      type: "SEARCH_KEYWORD",
+      keyword: data.value,
     });
   }, []);
 
@@ -122,12 +115,8 @@ function SideMenu({
 
   const handleChange = (e, data) => {
     setEBSTableState({
-      type: "SET_STATE_CHAIN",
-      module: "search",
-      search: data.value,
-    });
-    setEBSTableState({
-      type: "APPLY_STATE_CHAIN",
+      type: "SEARCH_KEYWORD",
+      keyword: data.value,
     });
   };
 
@@ -291,7 +280,9 @@ function SideMenu({
     </Grid>
   ) : (
     <>
-      <Segment inverted>{/* <Search setRowData={setRowData} /> */}</Segment>
+      <Segment inverted>
+        <Search setEBSTableState={setEBSTableState} />
+      </Segment>
       <div className="ebs-scrollable-inner">
         <Accordion inverted fluid as={Menu} vertical>
           <Menu.Item>

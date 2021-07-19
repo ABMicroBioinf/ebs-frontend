@@ -7,154 +7,129 @@
  */
 import _ from "lodash";
 import {
-  EBSTableAction,
-  EBSTableStateInterface,
-  EBSTabularRecord,
-} from "../interfaces/EBSDataTypes";
+  EBSTableActionContext,
+  EBSTableStateContext,
+  EBSTabularHeaderContext,
+  EBSTabularRecordContext,
+} from "../interfaces/EBSContexts";
 import { resetEBSTableState } from "../helpers/EBSTableStateHandler";
 
 /**
  * EBSTableStateReducer
- * @param {EBSTableState} state
- * @param action
- * @returns {EBSTableState}
+ * @param {EBSTableStateContext} state -
+ * @param {EBSTableActionContext} action -
+ * @returns {EBSTableStateContext} -
  */
 function EBSTableStateReducer(
-  state: EBSTableStateInterface,
-  action: EBSTableAction
-): EBSTableStateInterface {
-  const { RECORDS_ORIGIN_REF, stateChain } = state;
-  const { chainQueue, search, columns, sort, pagination } = stateChain;
+  state: EBSTableStateContext,
+  action: EBSTableActionContext
+): EBSTableStateContext {
+  const { headers, records, stateChain } = state;
+  const { chainQueue, pagination } = stateChain;
   const { page, pageSize } = pagination;
 
-  let results: Array<EBSTabularRecord> = RECORDS_ORIGIN_REF.slice();
   switch (action.type) {
     case "RESET_DATA":
       return resetEBSTableState(state);
 
-    case "SET_SELECTION":
-      results.splice(action.record.index, 1, action.record);
+    case "SELECT_ALL_RECORDS":
       return {
         ...state,
-        RECORDS_ORIGIN_REF: results,
-      };
-
-    case "SELECT_ALL_DATA":
-      return {
-        ...state,
-        RECORDS_ORIGIN_REF: results.map(
-          (obj): EBSTabularRecord => ({ ...obj, isSelected: true })
+        records: records.map(
+          (obj): EBSTabularRecordContext => ({ ...obj, isSelected: true })
         ),
       };
 
-    case "DESELECT_ALL_DATA":
+    case "DESELECT_ALL_RECORDS":
       return {
         ...state,
-        RECORDS_ORIGIN_REF: results.map(
-          (obj): EBSTabularRecord => ({ ...obj, isSelected: false })
+        records: records.map(
+          (obj): EBSTabularRecordContext => ({ ...obj, isSelected: false })
         ),
       };
 
-    case "SET_STATE_CHAIN":
+    case "SELECT_RECORD":
+      records.splice(action.record.index, 1, action.record);
+      return {
+        ...state,
+        records: records,
+      };
+
+    case "TOGGLE_HEADER":
       return {
         ...state,
         stateChain: {
-          chainQueue: action.module
-            ? [...chainQueue, action.module]
-            : chainQueue,
-          search: action.search ? action.search : search,
-          columns: action.columnsColumn
-            ? columns.map((column) => {
-                if (column.value === action.columnsColumn) {
-                  return { ...column, display: !column.display };
-                }
-                return column;
-              })
-            : columns,
-          sort: action.sortColumn
-            ? sort.column === action.sortColumn
+          ...stateChain,
+          chainQueue: !chainQueue.includes("columns") && [
+            ...chainQueue,
+            "columns",
+          ],
+        },
+        headers: headers.map(
+          (header: EBSTabularHeaderContext): EBSTabularHeaderContext => {
+            if (header.value === action.header.value) {
+              return { ...header, display: !header.display };
+            }
+            return header;
+          }
+        ),
+      };
+
+    case "SEARCH_KEYWORD":
+      return {
+        ...state,
+        stateChain: {
+          ...stateChain,
+          chainQueue: !chainQueue.includes("search") && [
+            ...chainQueue,
+            "search",
+          ],
+          search: { keyword: action.keyword },
+        },
+      };
+
+    case "TOGGLE_SORT":
+      return {
+        ...state,
+        stateChain: {
+          ...stateChain,
+          chainQueue: !chainQueue.includes("sort") && [...chainQueue, "sort"],
+          sort:
+            stateChain.sort.column === action.sortColumn
               ? {
-                  ...sort,
+                  ...stateChain.sort,
                   dataType: action.sortDataType,
-                  direction: sort.direction === "asc" ? "desc" : "asc",
+                  direction:
+                    stateChain.sort.direction === "asc" ? "desc" : "asc",
                 }
               : {
                   column: action.sortColumn,
                   dataType: action.sortDataType,
                   direction: "asc",
-                }
-            : sort,
-          pagination: {
-            ...pagination,
-            page: action.page ? action.page : page,
-            pageSize: action.pageSize ? action.pageSize : pageSize,
-          },
+                },
         },
       };
 
-    case "APPLY_STATE_CHAIN":
-      chainQueue.forEach((module) => {
-        if (module !== null && module !== undefined) {
-          switch (module) {
-            case "search":
-              results = results.filter((row) =>
-                JSON.stringify(Object.values(row.data)).includes(search)
-              );
-              break;
-
-            case "columns":
-              results = results.map((row) => {
-                return {
-                  ...row,
-                  data: pick(
-                    row.data,
-                    columns.filter((colState) => colState.display && colState)
-                  ),
-                };
-              });
-              break;
-
-            case "sort":
-              if (sort.dataType === "number") {
-                results = _.orderBy(
-                  results,
-                  (obj) => {
-                    return parseFloat(obj.data[sort.column]);
-                  },
-                  [sort.direction]
-                );
-              } else {
-                results =
-                  sort.direction === "asc"
-                    ? _.sortBy(results, (obj) => {
-                        return obj.data[sort.column];
-                      })
-                    : _.sortBy(results, (obj) => {
-                        return obj.data[sort.column];
-                      }).reverse();
-              }
-              break;
-
-            default:
-              throw new Error("Invalid History Action");
-          }
-        }
-      });
+    case "SET_PAGE":
       return {
         ...state,
-        records: results.slice(
-          // pagination
-          (page - 1) * pageSize,
-          (page - 1) * pageSize + pageSize
-        ),
         stateChain: {
           ...stateChain,
           pagination: {
             ...pagination,
-            pageCount:
-              results.length % pageSize > 0
-                ? Math.floor(results.length / pageSize) + 1
-                : Math.floor(results.length / pageSize),
+            page: action.page ? action.page : page,
+          },
+        },
+      };
+
+    case "SET_PAGESIZE":
+      return {
+        ...state,
+        stateChain: {
+          ...stateChain,
+          pagination: {
+            ...pagination,
+            pageSize: action.pageSize ? action.pageSize : pageSize,
           },
         },
       };

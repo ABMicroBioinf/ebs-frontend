@@ -8,17 +8,17 @@
 import {
   EBSPaginationContext,
   EBSSortContext,
-  EBSTableStateChainInterface,
-  EBSTabularHeader,
-} from "../interfaces/EBSDataTypes";
+  EBSTableStateChainContext,
+  EBSTabularHeaderContext,
+} from "../../table/interfaces/EBSContexts";
 
 /**
  * EBSTableStateChain
  */
-class EBSTableStateChain implements EBSTableStateChainInterface {
+class EBSTableStateChain implements EBSTableStateChainContext {
   moduleQueue: Array<"columns" | "search" | "sort">;
   search: string;
-  columns: Array<EBSTabularHeader>;
+  columns: Array<EBSTabularHeaderContext>;
   sort: EBSSortContext;
   pagination: EBSPaginationContext;
 

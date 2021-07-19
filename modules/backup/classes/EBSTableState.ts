@@ -8,16 +8,16 @@
 import _ from "lodash";
 import {
   EBSSortContext,
-  EBSTableStateChainInterface,
-  EBSTableStateInterface,
-  EBSTabularHeader,
-  EBSTabularRecord,
-} from "../interfaces/EBSDataTypes";
+  EBSTableStateChainContext,
+  EBSTableStateContext,
+  EBSTabularHeaderContext,
+  EBSTabularRecordContext,
+} from "../../table/interfaces/EBSContexts";
 
 /**
  * EBSTableState
  */
-class EBSTableState implements EBSTableStateInterface {
+class EBSTableState implements EBSTableStateContext {
   /**
    * Interface
    */
