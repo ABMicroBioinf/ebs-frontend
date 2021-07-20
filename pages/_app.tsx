@@ -25,10 +25,10 @@ interface EBSAppProps extends AppProps {
 
 /**
  * The most top level of Next.js component that extends react application by overriding the global App component.
- * @param {EBSAppProps} EBSAppProps - Customized AppProps.
- * @returns {JSX.Element} - Home page that is the main page(index.js) of next.js.
+ * @param EBSAppProps - See {@link EBSAppProps}
+ * @returns - A Component of Next.js
  */
-function EBSApp(EBSAppProps: EBSAppProps) {
+function EBSApp(EBSAppProps: EBSAppProps): JSX.Element {
   const { Component, pageProps, authenticated, token } = EBSAppProps;
   return (
     <AuthProvider authenticated={authenticated} token={token}>
@@ -39,8 +39,8 @@ function EBSApp(EBSAppProps: EBSAppProps) {
 
 /**
  * Overriding getInitialProps
- * @param {AppContext} appContext - Application context of Next.js.
- * @returns {Promise<EBSAppProps>} - AppContext with custom props which are authenticated and token.
+ * @param appContext - Application context of Next.js.
+ * @returns - AppContext with custom props which are authenticated and token.
  */
 EBSApp.getInitialProps = async (appContext: AppContext) => {
   let token = "";

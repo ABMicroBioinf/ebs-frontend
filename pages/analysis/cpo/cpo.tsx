@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -8,9 +7,13 @@
  */
 import withAuth from "../../../middleware/withAuth";
 
-import TopNav from "../../components/TopNav";
+import TopNav from "../../../components/global/TopNav";
 
-function CPOAnalysis() {
+/**
+ * CPOAnalysis
+ * @returns - Analysis of CPO page component
+ */
+function CPOAnalysis(): JSX.Element {
   return (
     <>
       <TopNav />

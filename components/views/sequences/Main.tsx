@@ -9,7 +9,10 @@ import _ from "lodash";
 import { useReducer, useState } from "react";
 
 import { EBSTableStateReducer } from "../../../modules/table/reducers/reducer";
-import { EBSTabularDataContext } from "../../../modules/table/interfaces/EBSContexts";
+import {
+  EBSTabularDataContext,
+  EBSTabularDataStateContext,
+} from "../../../modules/table/interfaces/EBSContexts";
 import { getEBSTableInitialState } from "../../../modules/table/helpers/EBSTableStateHandler";
 
 import { SequencesTotalCount } from "./Statistics";
@@ -28,10 +31,12 @@ import {
 
 /**
  * Sequences Main View
- * @param {EBSTabularDataContext} props
- * @returns {JSX.Element} - Combination of components
+ * @param param - See {@link EBSTableDataContext}
+ * @returns - Sequence Main View Components
  */
-function SequencesMainView({ ebsTabularData }: EBSTabularDataContext) {
+function SequencesMainView({
+  ebsTabularData,
+}: EBSTabularDataStateContext): JSX.Element {
   const [ebsTableState, setEBSTableState] = useReducer(
     EBSTableStateReducer,
     getEBSTableInitialState(ebsTabularData)

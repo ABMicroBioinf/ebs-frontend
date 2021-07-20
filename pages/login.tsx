@@ -27,9 +27,9 @@ import {
 
 /**
  * Login
- * @returns {JSX.Element} - Login page.
+ * @returns - Login page component.
  */
-function Login() {
+function Login(): JSX.Element {
   const router = useRouter();
 
   const { setAuthenticated } = useAuth();

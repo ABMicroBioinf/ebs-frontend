@@ -13,10 +13,15 @@ import {
   EBSTabularHeaderContext,
 } from "./interfaces/EBSContexts";
 
+/**
+ * EBSTableHeader
+ * @param param - See {@link EBSTableInstanceStateContext}
+ * @returns - Table Header Component
+ */
 function EBSTableHeader({
   ebsTableState,
   setEBSTableState,
-}: EBSTableInstanceStateContext) {
+}: EBSTableInstanceStateContext): JSX.Element {
   const { stateChain, headers, records } = ebsTableState;
   const { sort } = stateChain;
 

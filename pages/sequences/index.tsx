@@ -23,13 +23,14 @@ import SequencesMainView from "../../components/views/sequences/Main";
 
 /**
  * Sequence Page
- * @returns {JSX.Element} - Sequence Main View
+ * @returns - Sequence Main View Component
  */
-function Sequences() {
+function Sequences(): JSX.Element {
   const { accessToken } = useAuth();
 
   const [ebsTabularData, setEBSTabularData] = useState({
     title: "",
+    placementURI: "",
     headers: [],
     records: [],
   });
@@ -59,6 +60,7 @@ function Sequences() {
         if (validateCustomFields(DEFAULT_SCHEME, CUSTOM_FIELDS)) {
           setEBSTabularData({
             title: "Sequence",
+            placementURI: "sequences",
             headers: CUSTOMIZED_SCHEME,
             records: flatRows(res.data),
           });

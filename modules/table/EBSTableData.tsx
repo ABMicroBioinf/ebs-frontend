@@ -18,14 +18,14 @@ import { Grid, Table } from "semantic-ui-react";
 
 /**
  * A top level table component layouts entire structure of data table
- * @param {*} columData, rowData
- * @returns An entire layout of a table
+ * @param param - See {@link EBSTableInstanceStateContext}
+ * @returns - Table Component
  */
 export default function EBSTableData({
   ebsTableState,
   setEBSTableState,
-}: EBSTableInstanceStateContext) {
-  const { title, headers, records } = ebsTableState;
+}: EBSTableInstanceStateContext): JSX.Element {
+  const { title, placementURI, headers, records } = ebsTableState;
 
   const getEBSCellRow = useCallback(() => {
     if (headers && records.length > 0) {
@@ -35,6 +35,7 @@ export default function EBSTableData({
         return (
           <EBSCellRow
             record={rowObj}
+            placementURI={placementURI}
             setEBSTableState={setEBSTableState}
             key={index}
           />

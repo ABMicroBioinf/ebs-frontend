@@ -5,29 +5,44 @@
  * @modify date 2021-07-15 13:27:22
  * @desc [description]
  */
-import { useCallback } from "react";
-import { Checkbox, Table } from "semantic-ui-react";
+import Link from "next/link";
+import { Table } from "semantic-ui-react";
+import EBSCellHeading from "./EBSCellHeading";
+import { EBSTableRecordContext } from "./interfaces/EBSContexts";
 
-function EBSCellRow({ record, setEBSTableState }) {
-  const handleChange = useCallback(() => {
-    setEBSTableState({
-      type: "SELECT_RECORD",
-      record: { ...record, isSelected: !record.isSelected },
-    });
-  }, [record]);
-
+/**
+ * EBSCellRow
+ * @param param - See {@link EBSTableRecordContext}
+ * @returns - Cell Row Component
+ */
+function EBSCellRow({
+  record,
+  placementURI,
+  setEBSTableState,
+}: EBSTableRecordContext): JSX.Element {
   return (
     <Table.Row>
       <Table.Cell>
-        <Checkbox checked={record.isSelected} onChange={handleChange} />
+        <EBSCellHeading
+          record={record}
+          placementURI={placementURI}
+          setEBSTableState={setEBSTableState}
+        />
       </Table.Cell>
       {record &&
-        Object.values(record.data).map((value, index) => (
-          <Table.Cell key={index}>{value}</Table.Cell>
-        ))}
-      {/* <Table.Cell>
-        <Link href={`/sequences/${Object.values(row)[primary]}`}>details</Link>
-      </Table.Cell> */}
+        Object.values(record.data).map((value, index) => {
+          console.log(record.data);
+          return index === 0 ? (
+            <Table.Cell key={index}>
+              {/* <Link href={`/${placementURI}/${Object.values(record)[primary]}`}> */}
+              <Link href={`/${placementURI}/${Object.values(record)}`}>
+                {value}
+              </Link>
+            </Table.Cell>
+          ) : (
+            <Table.Cell key={index}>{value}</Table.Cell>
+          );
+        })}
     </Table.Row>
   );
 }

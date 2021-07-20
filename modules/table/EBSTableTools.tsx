@@ -8,6 +8,8 @@
 import React, { useCallback, useState } from "react";
 import { CSVLink } from "react-csv";
 
+import { EBSTableInstanceStateContext } from "./interfaces/EBSContexts";
+
 import {
   Menu,
   Segment,
@@ -21,25 +23,27 @@ import {
   Table,
   TableBody,
 } from "semantic-ui-react";
-import { EBSTableInstanceStateContext } from "./interfaces/EBSContexts";
 
 /**
- * ColumnSelector that
- * @param {ColumnSelectorProps} props
- * @returns {React.ReactElement}
+ * ColumnSelector
+ * @param param - See {@link EBSTableInstanceStateContext}
+ * @returns - Column Selector component
  */
 function ColumnSelector({
   ebsTableState,
   setEBSTableState,
-}: EBSTableInstanceStateContext) {
+}: EBSTableInstanceStateContext): JSX.Element {
   const { headers } = ebsTableState;
 
-  const handleChange = useCallback((e) => {
-    setEBSTableState({
-      type: "TOGGLE_HEADER",
-      header: e.currentTarget.value,
-    });
-  }, []);
+  const handleChange = useCallback(
+    (e) => {
+      setEBSTableState({
+        type: "TOGGLE_HEADER",
+        header: e.currentTarget.value,
+      });
+    },
+    [headers]
+  );
 
   return (
     <Grid columns={5}>
@@ -63,16 +67,16 @@ function ColumnSelector({
 
 /**
  * PageSizeSelector
- * @param {PageSizeSelectorProps} props
- * @returns
+ * @param param - See {@link EBSTableInstanceStateContext}
+ * @returns - Page Size Selector Component
  */
 function PageSizeSelector({
   ebsTableState,
   setEBSTableState,
-}: EBSTableInstanceStateContext) {
+}: EBSTableInstanceStateContext): JSX.Element {
   const { stateChain } = ebsTableState;
   const { pagination } = stateChain;
-  const { page, pageSize, pageCount } = pagination;
+  const { pageSize } = pagination;
 
   const pageSizeOptions = [
     { key: 1, text: "5", value: 5 },
@@ -112,13 +116,13 @@ function PageSizeSelector({
 
 /**
  * EBSTableTools
- * @param param0
- * @returns
+ * @param param - See {@link EBSTableInstanceStateContext}
+ * @returns - Table Tools Component
  */
 function EBSTableTools({
   ebsTableState,
   setEBSTableState,
-}: EBSTableInstanceStateContext) {
+}: EBSTableInstanceStateContext): JSX.Element {
   const { title, stateChain, headers, records, RECORDS_ORIGIN_REF } =
     ebsTableState;
   const { pagination } = stateChain;
@@ -129,7 +133,7 @@ function EBSTableTools({
 
   const handleExport = useCallback(() => {
     setOpenAlert(!openAlert);
-  }, []);
+  }, [openAlert]);
 
   const handleItemClick = useCallback(
     (e, { name }) => {
@@ -148,7 +152,7 @@ function EBSTableTools({
     [page]
   );
 
-  const handleSubmenuClose = useCallback((e) => {
+  const handleSubMenuClose = useCallback((e) => {
     e.preventDefault();
     setActiveItem("");
   }, []);
@@ -160,7 +164,7 @@ function EBSTableTools({
     });
   }, []);
 
-  const getSubmenu = useCallback(() => {
+  const getSubMenu = useCallback(() => {
     switch (activeItem) {
       case "page":
         return (
@@ -243,13 +247,13 @@ function EBSTableTools({
       </Menu>
 
       <Segment hidden={activeItem === ""} attached="bottom">
-        {getSubmenu()}
+        {getSubMenu()}
         <Button
           circular
           floated="right"
           size="mini"
           icon="close"
-          onClick={handleSubmenuClose}
+          onClick={handleSubMenuClose}
         />
       </Segment>
 

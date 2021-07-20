@@ -17,23 +17,30 @@ import {
 } from "../interfaces/EBSContexts";
 
 /**
- * (preprocessing)
+ * EBSTableStateHandler
+ * @module EBSTableStateHandler
  */
-function preProcessing(state: EBSTableStateContext) {
+
+/**
+ * preProcessing - Batch processing ahead of main data process
+ * @param state -
+ * @returns -
+ */
+function preProcessing(state: EBSTableStateContext): EBSTableStateContext {
   return { ...state };
 }
 
 /**
- * Applying states and Pagination (postprocessing)
+ * postProcessing - Batch processing after main data process
+ * @param state -
+ * @returns -
  */
-function postProcessing(state: EBSTableStateContext) {
+function postProcessing(state: EBSTableStateContext): EBSTableStateContext {
   const { headers, RECORDS_ORIGIN_REF, stateChain } = state;
   const { chainQueue, search, sort, pagination } = stateChain;
   const { page, pageSize } = pagination;
 
   let results: Array<EBSTabularRecordContext> = RECORDS_ORIGIN_REF.slice();
-
-  console.log(headers);
 
   chainQueue.forEach((module) => {
     if (module !== null && module !== undefined) {
@@ -85,7 +92,6 @@ function postProcessing(state: EBSTableStateContext) {
   return {
     ...state,
     records: results.slice(
-      // pagination
       (page - 1) * pageSize,
       (page - 1) * pageSize + pageSize
     ),
@@ -103,12 +109,13 @@ function postProcessing(state: EBSTableStateContext) {
 }
 
 /**
- * Get initial state of EBS Table
- * @param {EBSTabularDataContext} -
- * @returns {EBSTableStateContext} -
+ * getEBSTableInitialState - Get initial state of EBS Table
+ * @param param -
+ * @returns -
  */
 function getEBSTableInitialState({
   title,
+  placementURI,
   headers,
   records,
 }: EBSTabularDataContext): EBSTableStateContext {
@@ -119,10 +126,11 @@ function getEBSTableInitialState({
 
   return ((): EBSTableStateContext => {
     const DEFAULT_TITLE: string = title;
+    const DEFAULT_PAGE_URI: string = placementURI;
     const DEFAULT_RECORDS: Array<EBSTabularRecordContext> = CUSTOM_ROWS;
-    const DEFAULT_PAGE: number = 1;
-    const DEFAULT_PAGE_SIZE: number = 5;
-    const DEFAULT_SEARCH_KEYWORD: string = "";
+    const DEFAULT_PAGE = 1;
+    const DEFAULT_PAGE_SIZE = 5;
+    const DEFAULT_SEARCH_KEYWORD = "";
     const DEFAULT_SORT: EBSSortContext = {
       column: null,
       direction: null,
@@ -147,6 +155,7 @@ function getEBSTableInitialState({
 
     return postProcessing({
       title: DEFAULT_TITLE,
+      placementURI: DEFAULT_PAGE_URI,
       stateChain: DEFAULT_TABLE_STATE_CHAIN,
       headers: DEFAULT_HEADERS.slice(),
       records: DEFAULT_RECORDS.slice(),
@@ -157,9 +166,9 @@ function getEBSTableInitialState({
 }
 
 /**
- * Reset EBSTableState
- * @param state
- * @returns
+ * resetEBSTableState - Reset EBSTableState
+ * @param state -
+ * @returns -
  */
 function resetEBSTableState(state: EBSTableStateContext): EBSTableStateContext {
   const {
@@ -169,9 +178,9 @@ function resetEBSTableState(state: EBSTableStateContext): EBSTableStateContext {
   return ((): EBSTableStateContext => {
     const DEFAULT_RECORDS: Array<EBSTabularRecordContext> =
       cur_RECORDS_ORIGIN_REF;
-    const DEFAULT_PAGE: number = 1;
-    const DEFAULT_PAGE_SIZE: number = 5;
-    const DEFAULT_SEARCH_KEYWORD: string = "";
+    const DEFAULT_PAGE = 1;
+    const DEFAULT_PAGE_SIZE = 5;
+    const DEFAULT_SEARCH_KEYWORD = "";
     const DEFAULT_SORT: EBSSortContext = {
       column: null,
       direction: null,

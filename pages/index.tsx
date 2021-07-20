@@ -20,10 +20,10 @@ import {
 } from "semantic-ui-react";
 
 /**
- * The main page of application.
- * @returns {JSX.Element} - Home page; Landing page after login
+ * The main page of frontend application
+ * @returns - Home page component
  */
-function Home() {
+function Home(): JSX.Element {
   return (
     <>
       <TopNav />

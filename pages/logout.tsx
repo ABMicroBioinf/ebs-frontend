@@ -12,9 +12,10 @@ import withAuth from "../middleware/withAuth";
 
 /**
  * Logout
- * @returns {JSX.Element} - Pending message, if something goes wrong
+ * @returns - Conditional Routing
+ * A pending message will be displayed, if something goes wrong.
  */
-function Logout() {
+function Logout(): JSX.Element {
   const { setAuthenticated } = useAuth();
 
   const logout = useCallback(async () => {

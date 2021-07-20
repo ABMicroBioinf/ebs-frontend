@@ -25,6 +25,7 @@ interface EBSTabularHeaderContext {
  */
 interface EBSTabularRecordContext {
   index: number;
+  primary: string;
   data: object;
   isSelected: boolean;
 }
@@ -34,6 +35,7 @@ interface EBSTabularRecordContext {
  */
 interface EBSTabularDataContext {
   title: string;
+  placementURI: string;
   headers: Array<EBSTabularHeaderContext>;
   records: Array<EBSTabularRecordContext>;
 }
@@ -41,7 +43,7 @@ interface EBSTabularDataContext {
 /**
  * EBSTabularDataContext
  */
-interface EBSTabularDataContext {
+interface EBSTabularDataStateContext {
   ebsTabularData: EBSTabularDataContext;
   setEBSTabularData: Dispatch<SetStateAction<EBSTabularDataContext>>;
 }
@@ -86,6 +88,7 @@ interface EBSTableStateChainContext {
  */
 interface EBSTableStateContext {
   title: string;
+  placementURI: string;
   stateChain: EBSTableStateChainContext;
   headers: Array<EBSTabularHeaderContext>;
   records: Array<EBSTabularRecordContext>;
@@ -98,6 +101,15 @@ interface EBSTableStateContext {
  */
 interface EBSTableInstanceStateContext {
   ebsTableState: EBSTableStateContext;
+  setEBSTableState: Dispatch<EBSTableActionContext>;
+}
+
+/**
+ * EBSTableRecordContext
+ */
+interface EBSTableRecordContext {
+  record: EBSTabularRecordContext;
+  placementURI: string;
   setEBSTableState: Dispatch<EBSTableActionContext>;
 }
 
@@ -116,7 +128,7 @@ type EBSTableActionContext =
   | {
       type: "RESET_DATA" | "SELECT_ALL_RECORDS" | "DESELECT_ALL_RECORDS";
     }
-  | { type: "TOGGLE_HEADER"; header: EBSTabularHeaderContext }
+  | { type: "TOGGLE_HEADER"; header: string }
   | {
       type: "SELECT_RECORD";
       record: EBSTabularRecordContext;
@@ -142,11 +154,13 @@ export type {
   EBSTabularHeaderContext,
   EBSTabularRecordContext,
   EBSTabularDataContext,
+  EBSTabularDataStateContext,
   EBSSortContext,
   EBSPaginationContext,
   EBSTableStateChainContext,
   EBSTableStateContext,
   EBSTableInstanceStateContext,
+  EBSTableRecordContext,
   EBSTableDashboardStateContext,
   EBSTableActionContext,
 };

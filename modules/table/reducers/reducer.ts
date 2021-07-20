@@ -6,16 +6,18 @@
  * @desc [description]
  */
 import _ from "lodash";
+
+import {
+  resetEBSTableState,
+  postProcessing,
+} from "../helpers/EBSTableStateHandler";
+
 import {
   EBSTableActionContext,
   EBSTableStateContext,
   EBSTabularHeaderContext,
   EBSTabularRecordContext,
 } from "../interfaces/EBSContexts";
-import {
-  resetEBSTableState,
-  postProcessing,
-} from "../helpers/EBSTableStateHandler";
 
 /**
  * EBSTableStateReducer
@@ -69,7 +71,7 @@ function EBSTableStateReducer(
         },
         headers: headers.map(
           (header: EBSTabularHeaderContext): EBSTabularHeaderContext => {
-            if (header.value === action.header.value) {
+            if (header.value === action.header) {
               return { ...header, display: !header.display };
             }
             return header;
@@ -132,6 +134,7 @@ function EBSTableStateReducer(
           ...stateChain,
           pagination: {
             ...pagination,
+            page: action.page ? action.page : page,
             pageSize: action.pageSize ? action.pageSize : pageSize,
           },
         },

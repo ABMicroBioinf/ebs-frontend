@@ -24,9 +24,9 @@ import {
 
 /**
  * Account
- * @returns {JSX.Element} - Account dashboard
+ * @returns - Account page component
  */
-function Account() {
+function Account(): JSX.Element {
   const router = useRouter();
 
   const { accessToken } = useAuth();
@@ -35,9 +35,22 @@ function Account() {
   const [repeat, setRepeat] = useState("");
   const [shouldAlert, setShouldAlert] = useState(false);
 
-  const handlePasswordChange = useCallback(() => {}, []);
-  const handleRepeatChange = useCallback(() => {}, []);
-  const submitPassword = useCallback(() => {}, []);
+  const handlePasswordChange = useCallback(
+    (e) => {
+      console.log(e);
+    },
+    [password]
+  );
+  const handleRepeatChange = useCallback(
+    (e) => {
+      console.log(e);
+    },
+    [repeat]
+  );
+  const submitPassword = useCallback((e) => {
+    e.preventDefault();
+    console.log(e);
+  }, []);
 
   const handleAccountDeleteClick = useCallback(() => {
     setShouldAlert(true);
@@ -45,8 +58,6 @@ function Account() {
 
   const submitAccountDelete = useCallback(async (e) => {
     e.preventDefault();
-
-    console.log(accessToken);
 
     const config = {
       headers: {
@@ -82,7 +93,7 @@ function Account() {
               className="ebs-account-segment-spacing middle aligned"
             >
               <h2>Password</h2>
-              <Form onSubmit={handlePasswordChange}>
+              <Form onSubmit={submitPassword}>
                 <Form.Field width={5}>
                   <Input
                     name="password"
@@ -91,6 +102,7 @@ function Account() {
                     iconPosition="left"
                     placeholder="Password"
                     required
+                    onChange={handlePasswordChange}
                   />
                 </Form.Field>
                 <Form.Field width={5}>
@@ -101,6 +113,7 @@ function Account() {
                     iconPosition="left"
                     placeholder="Confirm Password"
                     required
+                    onChange={handleRepeatChange}
                   />
                 </Form.Field>
                 <Form.Button color="green" content="Change Password" />

@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -8,9 +7,13 @@
  */
 import withAuth from "../../../middleware/withAuth";
 
-import TopNav from "../../components/TopNav";
+import TopNav from "../../../components/global/TopNav";
 
-function MetagenomeAnalysis() {
+/**
+ * MetagenomeAnalysis
+ * @returns - Analysis of Metagenome page component
+ */
+function MetagenomeAnalysis(): JSX.Element {
   return (
     <>
       <TopNav />

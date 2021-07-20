@@ -23,10 +23,10 @@ import {
 } from "semantic-ui-react";
 
 /**
- * Register
- * @returns {JSX.Element} Account registration page
+ * Registration
+ * @returns Registration page component
  */
-function Register() {
+function Register(): JSX.Element {
   const router = useRouter();
 
   const [openAlert, setOpenAlert] = useState(false);
