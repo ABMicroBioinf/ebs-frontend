@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -6,12 +5,16 @@
  * @modify date 2021-07-15 11:33:01
  * @desc [description]
  */
-import { useRouter } from "next/router";
 import { useAuth } from "../../middleware/AuthProvider";
 
 import { Dropdown, Icon, Menu } from "semantic-ui-react";
+import { useRouter } from "next/router";
 
-export default function TopNav() {
+/**
+ * TopNav
+ * @returns - Top Navigation Bar Component
+ */
+function TopNav(): JSX.Element {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
 
@@ -19,10 +22,6 @@ export default function TopNav() {
     router.push(data.to);
   };
 
-  /**
-   * link is for external URL
-   * button is for internal routing or dropdown menu toggle button
-   */
   const ebs_menu = [
     {
       key: 1,
@@ -343,3 +342,5 @@ export default function TopNav() {
     </Menu>
   );
 }
+
+export default TopNav;

@@ -25,10 +25,10 @@ export default function EBSTableData({
   ebsTableState,
   setEBSTableState,
 }: EBSTableInstanceStateContext): JSX.Element {
-  const { title, placementURI, headers, records } = ebsTableState;
+  const { title, placementURI, stateChain, headers, records } = ebsTableState;
 
   const getEBSCellRow = useCallback(() => {
-    if (headers && records.length > 0) {
+    if (headers.length > 0 && records.length > 0) {
       const keys = headers.filter((colState) => colState.display);
       return records.map((record, index) => {
         const rowObj = { ...record, data: pick(record.data, keys) };
@@ -49,7 +49,7 @@ export default function EBSTableData({
         </Table.Row>
       );
     }
-  }, [records, headers]);
+  }, [records, headers, stateChain]);
 
   return (
     <Grid padded>

@@ -27,20 +27,27 @@ import {
  * @returns -
  */
 function preProcessing(state: EBSTableStateContext): EBSTableStateContext {
-  return { ...state };
+  return {
+    ...state,
+    RECORDS_STATE_REF: state.RECORDS_STATE_REF.map((obj) => ({
+      ...obj,
+      isSelected: false,
+    })),
+  };
 }
 
 /**
  * postProcessing - Batch processing after main data process
  * @param state -
+ * @param hasProcessed -
  * @returns -
  */
 function postProcessing(state: EBSTableStateContext): EBSTableStateContext {
-  const { headers, RECORDS_ORIGIN_REF, stateChain } = state;
+  const { headers, RECORDS_STATE_REF, stateChain } = state;
   const { chainQueue, search, sort, pagination } = stateChain;
   const { page, pageSize } = pagination;
 
-  let results: Array<EBSTabularRecordContext> = RECORDS_ORIGIN_REF.slice();
+  let results: Array<EBSTabularRecordContext> = RECORDS_STATE_REF.slice();
 
   chainQueue.forEach((module) => {
     if (module !== null && module !== undefined) {
@@ -159,8 +166,8 @@ function getEBSTableInitialState({
       stateChain: DEFAULT_TABLE_STATE_CHAIN,
       headers: DEFAULT_HEADERS.slice(),
       records: DEFAULT_RECORDS.slice(),
-      HEADERS_ORIGIN_REF: DEFAULT_HEADERS,
-      RECORDS_ORIGIN_REF: DEFAULT_RECORDS,
+      HEADERS_STATE_REF: DEFAULT_HEADERS,
+      RECORDS_STATE_REF: DEFAULT_RECORDS,
     });
   })();
 }
@@ -172,12 +179,12 @@ function getEBSTableInitialState({
  */
 function resetEBSTableState(state: EBSTableStateContext): EBSTableStateContext {
   const {
-    HEADERS_ORIGIN_REF: cur_HEADERS_ORIGIN_REF,
-    RECORDS_ORIGIN_REF: cur_RECORDS_ORIGIN_REF,
+    HEADERS_STATE_REF: cur_HEADERS_STATE_REF,
+    RECORDS_STATE_REF: cur_RECORDS_STATE_REF,
   } = state;
   return ((): EBSTableStateContext => {
     const DEFAULT_RECORDS: Array<EBSTabularRecordContext> =
-      cur_RECORDS_ORIGIN_REF;
+      cur_RECORDS_STATE_REF;
     const DEFAULT_PAGE = 1;
     const DEFAULT_PAGE_SIZE = 5;
     const DEFAULT_SEARCH_KEYWORD = "";
@@ -187,7 +194,7 @@ function resetEBSTableState(state: EBSTableStateContext): EBSTableStateContext {
       dataType: "string",
     };
     const DEFAULT_HEADERS: Array<EBSTabularHeaderContext> =
-      cur_HEADERS_ORIGIN_REF;
+      cur_HEADERS_STATE_REF;
     const DEFAULT_PAGE_COUNT: number = (() =>
       DEFAULT_RECORDS.length % DEFAULT_PAGE_SIZE > 0
         ? Math.floor(DEFAULT_RECORDS.length / DEFAULT_PAGE_SIZE) + 1
@@ -209,8 +216,8 @@ function resetEBSTableState(state: EBSTableStateContext): EBSTableStateContext {
       stateChain: DEFAULT_TABLE_STATE_CHAIN,
       headers: DEFAULT_HEADERS.slice(),
       records: DEFAULT_RECORDS.slice(),
-      HEADERS_ORIGIN_REF: DEFAULT_HEADERS,
-      RECORDS_ORIGIN_REF: DEFAULT_RECORDS,
+      HEADERS_STATE_REF: DEFAULT_HEADERS,
+      RECORDS_STATE_REF: DEFAULT_RECORDS,
     });
   })();
 }

@@ -91,8 +91,8 @@ interface EBSTableStateContext {
   stateChain: EBSTableStateChainContext;
   headers: Array<EBSTabularHeaderContext>;
   records: Array<EBSTabularRecordContext>;
-  readonly HEADERS_ORIGIN_REF: Array<EBSTabularHeaderContext>;
-  readonly RECORDS_ORIGIN_REF: Array<EBSTabularRecordContext>;
+  HEADERS_STATE_REF: Array<EBSTabularHeaderContext>;
+  RECORDS_STATE_REF: Array<EBSTabularRecordContext>;
 }
 
 /**

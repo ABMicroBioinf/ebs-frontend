@@ -123,7 +123,7 @@ function EBSTableTools({
   ebsTableState,
   setEBSTableState,
 }: EBSTableInstanceStateContext): JSX.Element {
-  const { title, stateChain, headers, records, RECORDS_ORIGIN_REF } =
+  const { title, stateChain, headers, records, RECORDS_STATE_REF } =
     ebsTableState;
   const { pagination } = stateChain;
   const { page, pageSize, pageCount } = pagination;
@@ -196,6 +196,7 @@ function EBSTableTools({
         <Menu.Item>
           <Pagination
             secondary
+            activePage={page}
             totalPages={pageCount}
             onPageChange={handlePageChange}
             boundaryRange={0}
@@ -218,11 +219,11 @@ function EBSTableTools({
                 ).toString() +
                 " - " +
                 (Number(pageSize) > records.length
-                  ? RECORDS_ORIGIN_REF.length
+                  ? RECORDS_STATE_REF.length
                   : Number(page) * Number(pageSize)
                 ).toString() +
                 " of " +
-                RECORDS_ORIGIN_REF.length
+                RECORDS_STATE_REF.length
               );
             })()}
           </Menu.Item>
@@ -278,10 +279,7 @@ function EBSTableTools({
                 <Table.Row>
                   <Table.Cell>
                     <Header as="h2" textAlign="center">
-                      {
-                        RECORDS_ORIGIN_REF.filter((obj) => obj.isSelected)
-                          .length
-                      }
+                      {RECORDS_STATE_REF.filter((obj) => obj.isSelected).length}
                     </Header>
                   </Table.Cell>
                   <Table.Cell singleLine>{`${title}.csv`}</Table.Cell>
@@ -296,13 +294,13 @@ function EBSTableTools({
           </Button>
           <div
             className={`ui green button ebs-custom-csv-export ${
-              RECORDS_ORIGIN_REF.filter((obj) => obj.isSelected).length > 0
+              RECORDS_STATE_REF.filter((obj) => obj.isSelected).length > 0
                 ? ""
                 : "disabled"
             }`}
           >
             <CSVLink
-              data={RECORDS_ORIGIN_REF.filter((obj) => obj.isSelected).map(
+              data={RECORDS_STATE_REF.filter((obj) => obj.isSelected).map(
                 (obj) => obj.data
               )}
               filename={`${title}.csv`}

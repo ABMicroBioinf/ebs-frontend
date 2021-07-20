@@ -89,16 +89,16 @@ function Search({ setEBSTableState }: EBSTableInstanceStateContext) {
 
 /**
  * SideMenu
- * @param props
- * @returns
+ * @param param -
+ * @returns - SideMenu
  */
 function SideMenu({
   ebsTableState,
   wideView,
   setEBSTableState,
   setWideView,
-}: EBSTableDashboardStateContext) {
-  const { RECORDS_ORIGIN_REF } = ebsTableState;
+}: EBSTableDashboardStateContext): JSX.Element {
+  const { RECORDS_STATE_REF } = ebsTableState;
 
   const [activeIndex, setActiveIndex] = useState({
     0: false,
@@ -120,7 +120,7 @@ function SideMenu({
     });
   };
 
-  const statisticRef = RECORDS_ORIGIN_REF.slice();
+  const statisticRef = RECORDS_STATE_REF.slice();
 
   // alias names are hardcoded. it needs to be fixed in the future
   const organism = _.countBy(

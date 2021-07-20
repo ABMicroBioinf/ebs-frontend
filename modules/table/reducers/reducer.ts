@@ -10,6 +10,7 @@ import _ from "lodash";
 import {
   resetEBSTableState,
   postProcessing,
+  preProcessing,
 } from "../helpers/EBSTableStateHandler";
 
 import {
@@ -21,26 +22,26 @@ import {
 
 /**
  * EBSTableStateReducer
- * @param {EBSTableStateContext} state -
- * @param {EBSTableActionContext} action -
- * @returns {EBSTableStateContext} -
+ * @param state -
+ * @param action -
+ * @returns -
  */
 function EBSTableStateReducer(
   state: EBSTableStateContext,
   action: EBSTableActionContext
 ): EBSTableStateContext {
-  const { headers, records, stateChain } = state;
+  const { headers, stateChain } = state;
   const { chainQueue, pagination } = stateChain;
   const { page, pageSize } = pagination;
 
   switch (action.type) {
     case "RESET_DATA":
-      return resetEBSTableState(state);
+      return resetEBSTableState(preProcessing(state));
 
     case "SELECT_ALL_RECORDS":
       return postProcessing({
         ...state,
-        records: records.map(
+        RECORDS_STATE_REF: state.RECORDS_STATE_REF.map(
           (obj): EBSTabularRecordContext => ({ ...obj, isSelected: true })
         ),
       });
@@ -48,16 +49,16 @@ function EBSTableStateReducer(
     case "DESELECT_ALL_RECORDS":
       return postProcessing({
         ...state,
-        records: records.map(
+        RECORDS_STATE_REF: state.RECORDS_STATE_REF.map(
           (obj): EBSTabularRecordContext => ({ ...obj, isSelected: false })
         ),
       });
 
     case "SELECT_RECORD":
-      records.splice(action.record.index, 1, action.record);
+      state.RECORDS_STATE_REF.splice(action.record.index, 1, action.record);
       return postProcessing({
         ...state,
-        records: records,
+        RECORDS_STATE_REF: state.RECORDS_STATE_REF,
       });
 
     case "TOGGLE_HEADER":
