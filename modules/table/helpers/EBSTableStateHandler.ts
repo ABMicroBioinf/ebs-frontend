@@ -6,6 +6,7 @@
  * @desc [description]
  */
 import _ from "lodash";
+import { pick } from "../helpers/EBSGizmos";
 import {
   EBSSortContext,
   EBSTableStateContext,
@@ -18,39 +19,37 @@ import {
 /**
  * (preprocessing)
  */
-function pre() {}
+function preProcessing(state: EBSTableStateContext) {
+  return { ...state };
+}
 
 /**
  * Applying states and Pagination (postprocessing)
  */
-function post(state: EBSTableStateContext) {
-  const {
-    headers,
-    records,
-    HEADERS_ORIGIN_REF,
-    RECORDS_ORIGIN_REF,
-    stateChain,
-  } = state;
+function postProcessing(state: EBSTableStateContext) {
+  const { headers, RECORDS_ORIGIN_REF, stateChain } = state;
   const { chainQueue, search, sort, pagination } = stateChain;
   const { page, pageSize } = pagination;
 
   let results: Array<EBSTabularRecordContext> = RECORDS_ORIGIN_REF.slice();
 
+  console.log(headers);
+
   chainQueue.forEach((module) => {
     if (module !== null && module !== undefined) {
       switch (module) {
         case "search":
-          results = results.filter((row) =>
-            JSON.stringify(Object.values(row.data)).includes(search.keyword)
+          results = results.filter((record) =>
+            JSON.stringify(Object.values(record.data)).includes(search.keyword)
           );
           break;
 
         case "columns":
-          results = results.map((row) => {
+          results = results.map((record) => {
             return {
-              ...row,
+              ...record,
               data: pick(
-                row.data,
+                record.data,
                 headers.filter((colState) => colState.display && colState)
               ),
             };
@@ -146,14 +145,14 @@ function getEBSTableInitialState({
       },
     };
 
-    return {
+    return postProcessing({
       title: DEFAULT_TITLE,
       stateChain: DEFAULT_TABLE_STATE_CHAIN,
       headers: DEFAULT_HEADERS.slice(),
       records: DEFAULT_RECORDS.slice(),
       HEADERS_ORIGIN_REF: DEFAULT_HEADERS,
       RECORDS_ORIGIN_REF: DEFAULT_RECORDS,
-    };
+    });
   })();
 }
 
@@ -196,15 +195,20 @@ function resetEBSTableState(state: EBSTableStateContext): EBSTableStateContext {
       },
     };
 
-    return {
+    return postProcessing({
       ...state,
       stateChain: DEFAULT_TABLE_STATE_CHAIN,
       headers: DEFAULT_HEADERS.slice(),
       records: DEFAULT_RECORDS.slice(),
       HEADERS_ORIGIN_REF: DEFAULT_HEADERS,
       RECORDS_ORIGIN_REF: DEFAULT_RECORDS,
-    };
+    });
   })();
 }
 
-export { getEBSTableInitialState, resetEBSTableState };
+export {
+  getEBSTableInitialState,
+  resetEBSTableState,
+  preProcessing,
+  postProcessing,
+};

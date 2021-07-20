@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -25,11 +24,6 @@ import {
 import { EBSTableInstanceStateContext } from "./interfaces/EBSContexts";
 
 /**
- * @typedef ColumnSelectorProps
- * @prop {Array<Object>} columnData
- * @prop {(Object)=>void} setRowData
- */
-/**
  * ColumnSelector that
  * @param {ColumnSelectorProps} props
  * @returns {React.ReactElement}
@@ -38,16 +32,13 @@ function ColumnSelector({
   ebsTableState,
   setEBSTableState,
 }: EBSTableInstanceStateContext) {
-  const { headers, records } = ebsTableState;
+  const { headers } = ebsTableState;
 
   const handleChange = useCallback((e) => {
     setEBSTableState({
       type: "TOGGLE_HEADER",
       header: e.currentTarget.value,
     });
-    // setRowData({
-    //   type: "APPLY_HISTORY",
-    // });
   }, []);
 
   return (
@@ -71,12 +62,7 @@ function ColumnSelector({
 }
 
 /**
- * @typedef PageSizeSelectorProps
- * @prop {Number} pageSize
- * @prop {(Object)=>void} setRowData
- */
-/**
- *
+ * PageSizeSelector
  * @param {PageSizeSelectorProps} props
  * @returns
  */
@@ -124,6 +110,11 @@ function PageSizeSelector({
   );
 }
 
+/**
+ * EBSTableTools
+ * @param param0
+ * @returns
+ */
 function EBSTableTools({
   ebsTableState,
   setEBSTableState,

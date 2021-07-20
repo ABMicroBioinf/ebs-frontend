@@ -6,7 +6,7 @@
  * @desc [description]
  */
 import _ from "lodash";
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 
 import { EBSTableStateReducer } from "../../../modules/table/reducers/reducer";
 import { EBSTabularDataContext } from "../../../modules/table/interfaces/EBSContexts";
@@ -73,7 +73,7 @@ function SequencesMainView({ ebsTabularData }: EBSTabularDataContext) {
         <Grid padded>
           <Grid.Row>
             <Grid.Column>
-              <Header size="large">Statistic</Header>
+              {/* <Header size="large">Statistic</Header>
               {ebsTableState.headers.length > 0 &&
               ebsTableState.records.length > 0 ? (
                 <SequencesTotalCount ebsTableState={ebsTableState} />
@@ -81,7 +81,7 @@ function SequencesMainView({ ebsTabularData }: EBSTabularDataContext) {
                 <Dimmer active>
                   <Loader>Loading</Loader>
                 </Dimmer>
-              )}
+              )} */}
             </Grid.Column>
           </Grid.Row>
 

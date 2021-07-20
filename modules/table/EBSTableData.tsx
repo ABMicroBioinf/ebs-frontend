@@ -6,12 +6,15 @@
  * @desc [description]
  */
 import { useCallback } from "react";
+
+import { EBSTableInstanceStateContext } from "./interfaces/EBSContexts";
+import { pick } from "./helpers/EBSGizmos";
+
 import EBSCellRow from "./EBSCellRow";
 import EBSTableHeader from "./EBSTableHeader";
 import EBSTableTools from "./EBSTableTools";
 
 import { Grid, Table } from "semantic-ui-react";
-import { EBSTableInstanceStateContext } from "./interfaces/EBSContexts";
 
 /**
  * A top level table component layouts entire structure of data table

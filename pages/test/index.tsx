@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -8,7 +7,7 @@
  */
 import withAuth from "../../middleware/withAuth";
 
-import TopNav from "../../components/TopNav";
+import TopNav from "../../components/global/TopNav";
 import {
   Accordion,
   Grid,

@@ -12,7 +12,10 @@ import {
   EBSTabularHeaderContext,
   EBSTabularRecordContext,
 } from "../interfaces/EBSContexts";
-import { resetEBSTableState } from "../helpers/EBSTableStateHandler";
+import {
+  resetEBSTableState,
+  postProcessing,
+} from "../helpers/EBSTableStateHandler";
 
 /**
  * EBSTableStateReducer
@@ -33,37 +36,36 @@ function EBSTableStateReducer(
       return resetEBSTableState(state);
 
     case "SELECT_ALL_RECORDS":
-      return {
+      return postProcessing({
         ...state,
         records: records.map(
           (obj): EBSTabularRecordContext => ({ ...obj, isSelected: true })
         ),
-      };
+      });
 
     case "DESELECT_ALL_RECORDS":
-      return {
+      return postProcessing({
         ...state,
         records: records.map(
           (obj): EBSTabularRecordContext => ({ ...obj, isSelected: false })
         ),
-      };
+      });
 
     case "SELECT_RECORD":
       records.splice(action.record.index, 1, action.record);
-      return {
+      return postProcessing({
         ...state,
         records: records,
-      };
+      });
 
     case "TOGGLE_HEADER":
-      return {
+      return postProcessing({
         ...state,
         stateChain: {
           ...stateChain,
-          chainQueue: !chainQueue.includes("columns") && [
-            ...chainQueue,
-            "columns",
-          ],
+          chainQueue: chainQueue.includes("columns")
+            ? [...chainQueue]
+            : [...chainQueue, "columns"],
         },
         headers: headers.map(
           (header: EBSTabularHeaderContext): EBSTabularHeaderContext => {
@@ -73,27 +75,28 @@ function EBSTableStateReducer(
             return header;
           }
         ),
-      };
+      });
 
     case "SEARCH_KEYWORD":
-      return {
+      return postProcessing({
         ...state,
         stateChain: {
           ...stateChain,
-          chainQueue: !chainQueue.includes("search") && [
-            ...chainQueue,
-            "search",
-          ],
+          chainQueue: chainQueue.includes("search")
+            ? [...chainQueue]
+            : [...chainQueue, "search"],
           search: { keyword: action.keyword },
         },
-      };
+      });
 
     case "TOGGLE_SORT":
-      return {
+      return postProcessing({
         ...state,
         stateChain: {
           ...stateChain,
-          chainQueue: !chainQueue.includes("sort") && [...chainQueue, "sort"],
+          chainQueue: chainQueue.includes("sort")
+            ? [...chainQueue]
+            : [...chainQueue, "sort"],
           sort:
             stateChain.sort.column === action.sortColumn
               ? {
@@ -108,10 +111,10 @@ function EBSTableStateReducer(
                   direction: "asc",
                 },
         },
-      };
+      });
 
     case "SET_PAGE":
-      return {
+      return postProcessing({
         ...state,
         stateChain: {
           ...stateChain,
@@ -120,10 +123,10 @@ function EBSTableStateReducer(
             page: action.page ? action.page : page,
           },
         },
-      };
+      });
 
     case "SET_PAGESIZE":
-      return {
+      return postProcessing({
         ...state,
         stateChain: {
           ...stateChain,
@@ -132,7 +135,7 @@ function EBSTableStateReducer(
             pageSize: action.pageSize ? action.pageSize : pageSize,
           },
         },
-      };
+      });
 
     default:
       throw new Error("Invalid Reducer Action");
