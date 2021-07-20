@@ -16,6 +16,7 @@ import { EBSTableRecordContext } from "./interfaces/EBSContexts";
  * @returns - Cell Row Component
  */
 function EBSCellRow({
+  primary,
   record,
   placementURI,
   setEBSTableState,
@@ -24,20 +25,21 @@ function EBSCellRow({
     <Table.Row>
       <Table.Cell>
         <EBSCellHeading
+          primary={primary}
           record={record}
           placementURI={placementURI}
           setEBSTableState={setEBSTableState}
         />
       </Table.Cell>
       {record &&
-        Object.values(record.data).map((value, index) => {
-          console.log(record.data);
+        Object.entries(record.data).map(([key, value], index) => {
           return index === 0 ? (
             <Table.Cell key={index}>
-              {/* <Link href={`/${placementURI}/${Object.values(record)[primary]}`}> */}
-              <Link href={`/${placementURI}/${Object.values(record)}`}>
-                {value}
-              </Link>
+              {primary !== undefined && primary.value === key ? (
+                <Link href={`/${placementURI}/${value}`}>{value}</Link>
+              ) : (
+                { value }
+              )}
             </Table.Cell>
           ) : (
             <Table.Cell key={index}>{value}</Table.Cell>

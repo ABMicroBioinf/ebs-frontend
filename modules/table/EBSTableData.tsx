@@ -34,6 +34,7 @@ export default function EBSTableData({
         const rowObj = { ...record, data: pick(record.data, keys) };
         return (
           <EBSCellRow
+            primary={headers.find((header) => header.primary)}
             record={rowObj}
             placementURI={placementURI}
             setEBSTableState={setEBSTableState}

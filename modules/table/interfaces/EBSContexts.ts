@@ -25,7 +25,6 @@ interface EBSTabularHeaderContext {
  */
 interface EBSTabularRecordContext {
   index: number;
-  primary: string;
   data: object;
   isSelected: boolean;
 }
@@ -108,6 +107,7 @@ interface EBSTableInstanceStateContext {
  * EBSTableRecordContext
  */
 interface EBSTableRecordContext {
+  primary: EBSTabularHeaderContext;
   record: EBSTabularRecordContext;
   placementURI: string;
   setEBSTableState: Dispatch<EBSTableActionContext>;

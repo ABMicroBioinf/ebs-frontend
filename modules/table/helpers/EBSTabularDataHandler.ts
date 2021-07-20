@@ -18,7 +18,7 @@
  */
 function getSchemeDefault(sample) {
   const getScheme = (sample, parent = null) => {
-    let scheme = [];
+    const scheme = [];
     for (const [key, value] of Object.entries(sample)) {
       if (value === Object(value) && value !== null && value !== undefined) {
         scheme.push({
