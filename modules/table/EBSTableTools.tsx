@@ -200,7 +200,6 @@ function EBSTableTools({
             totalPages={pageCount}
             onPageChange={handlePageChange}
             boundaryRange={0}
-            // defaultActivePage={1}
             ellipsisItem={null}
             firstItem={null}
             lastItem={null}

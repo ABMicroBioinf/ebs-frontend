@@ -6,6 +6,8 @@
  * @desc [description]
  */
 
+import { EBSTabularHeaderContext } from "../interfaces/EBSContexts";
+
 /**
  * EBSTabularDataHandler
  * @module EBSTabularDataHandler
@@ -13,11 +15,11 @@
 
 /**
  * Get Scheme of data (sample single row)
- * @param {Object} sample - Sample object
- * @returns {EBSTableScheme} - See {@link TableScheme}
+ * @param sample - Sample object
+ * @returns - See {@link EBSTabularHeaderContext}
  */
-function getSchemeDefault(sample) {
-  const getScheme = (sample, parent = null) => {
+function getSchemeDefault(sample: object): Array<EBSTabularHeaderContext> {
+  const getScheme = (sample, parent = null): Array<EBSTabularHeaderContext> => {
     const scheme = [];
     for (const [key, value] of Object.entries(sample)) {
       if (value === Object(value) && value !== null && value !== undefined) {
@@ -49,10 +51,12 @@ function getSchemeDefault(sample) {
 
 /**
  * Validate Custom Fields
- * @param {Object}
- * @param {Array<>}
+ * @returns - True, if custom field list is written in proper format.
  */
-function validateCustomFields(origin, custom) {
+function validateCustomFields(
+  origin: Array<EBSTabularHeaderContext>,
+  custom: Array<EBSTabularHeaderContext>
+): boolean {
   const getFieldStructure = (obj) => {
     if (obj.children.length > 0) {
       return obj.children.map((child) => obj.name + "." + child.name);
@@ -71,21 +75,40 @@ function validateCustomFields(origin, custom) {
 
 /**
  * Apply Custom Fields
- * @param {Object} origin -
- * @param {Array<>} custom -
- * @returns {Array<>} - Columns when display is true in the custom field definition
+ * @param origin -
+ * @param custom -
+ * @returns - Columns when display is true in the custom field definition
  */
-function applyCustomFields(origin, custom) {
-  const base = Object.assign([], origin);
-  return base.map((obj) => custom.find((o) => o.value === obj.value) || obj);
+function applyCustomFields(
+  origin: Array<EBSTabularHeaderContext>,
+  custom: Array<EBSTabularHeaderContext> = null
+): Array<EBSTabularHeaderContext> {
+  const base: Array<EBSTabularHeaderContext> = Object.assign([], origin);
+  return custom
+    ? base.map((obj) => custom.find((o) => o.value === obj.value) || obj)
+    : base.map(
+        (
+          obj: EBSTabularHeaderContext,
+          index: number
+        ): EBSTabularHeaderContext =>
+          index === 0
+            ? {
+                ...obj,
+                primary: true,
+                display: true,
+              }
+            : { ...obj, display: true }
+      );
 }
 
 /**
  * Flatten Multi Dimensional Array for column
- * @param {Array<>} arr -
- * @returns {Array<Object>} - Flatten Array of Object
+ * @param arr - Hierarchical Header Structure
+ * @returns - Flatten Array of EBSTabularHeaderContext
  */
-function flatColumns(arr) {
+function flatColumns(
+  arr: Array<EBSTabularHeaderContext>
+): Array<EBSTabularHeaderContext> {
   return arr.flatMap((obj) => {
     if (obj.children.length > 0) {
       return obj.children.map((child) => child);
@@ -97,10 +120,10 @@ function flatColumns(arr) {
 
 /**
  * Flatten Multi Dimensional Array for row
- * @param {Array<>} arr -
- * @returns {Array<Object>} - Flatten Array of Object
+ * @param arr -
+ * @returns - Flatten Array of Object
  */
-function flatRows(arr) {
+function flatRows(arr): Array<object> {
   const pullout = (obj, prefix = "") => {
     return Object.entries(obj).flatMap(([key, value]) => {
       if (value === Object(value) && value !== null && value !== undefined) {

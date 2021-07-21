@@ -6,16 +6,16 @@
  * @desc [description]
  */
 import { useRouter } from "next/router";
-import withAuth from "../../middleware/withAuth";
+import withAuth from "../../../middleware/withAuth";
 
-import TopNav from "../../components/global/TopNav";
+import TopNav from "../../../components/global/TopNav";
 import { Grid } from "semantic-ui-react";
 
 /**
- * Single Sequence Information
+ * Single TB Sample
  * @returns - Details of selected Sequence
  */
-function Sequence(): JSX.Element {
+function TBSample(): JSX.Element {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -29,4 +29,4 @@ function Sequence(): JSX.Element {
   );
 }
 
-export default withAuth(Sequence);
+export default withAuth(TBSample);

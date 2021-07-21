@@ -17,37 +17,42 @@ import EBSTableTools from "./EBSTableTools";
 import { Grid, Table } from "semantic-ui-react";
 
 /**
+ * EBSTable
  * A top level table component layouts entire structure of data table
  * @param param - See {@link EBSTableInstanceStateContext}
  * @returns - Table Component
  */
-export default function EBSTableData({
+function EBSTable({
   ebsTableState,
   setEBSTableState,
 }: EBSTableInstanceStateContext): JSX.Element {
   const { title, placementURI, stateChain, headers, records } = ebsTableState;
 
   const getEBSCellRow = useCallback(() => {
-    if (headers.length > 0 && records.length > 0) {
-      const keys = headers.filter((colState) => colState.display);
-      return records.map((record, index) => {
-        const rowObj = { ...record, data: pick(record.data, keys) };
+    if (headers.length > 0) {
+      if (records.length > 0) {
+        const keys = headers.filter((colState) => colState.display);
+        return records.map((record, index) => {
+          const rowObj = { ...record, data: pick(record.data, keys) };
+          return (
+            <EBSCellRow
+              primary={headers.find((header) => header.primary)}
+              record={rowObj}
+              placementURI={placementURI}
+              setEBSTableState={setEBSTableState}
+              key={index}
+            />
+          );
+        });
+      } else {
         return (
-          <EBSCellRow
-            primary={headers.find((header) => header.primary)}
-            record={rowObj}
-            placementURI={placementURI}
-            setEBSTableState={setEBSTableState}
-            key={index}
-          />
+          <Table.Row>
+            <Table.Cell colSpan={headers.length + 1}>Not Found</Table.Cell>
+          </Table.Row>
         );
-      });
+      }
     } else {
-      return (
-        <Table.Row>
-          <Table.Cell colSpan={headers.length + 1}>not found</Table.Cell>
-        </Table.Row>
-      );
+      return <></>;
     }
   }, [records, headers, stateChain]);
 
@@ -78,3 +83,5 @@ export default function EBSTableData({
     </Grid>
   );
 }
+
+export default EBSTable;

@@ -9,15 +9,12 @@ import _ from "lodash";
 import { useReducer, useState } from "react";
 
 import { EBSTableStateReducer } from "../../../modules/table/reducers/reducer";
-import {
-  EBSTabularDataContext,
-  EBSTabularDataStateContext,
-} from "../../../modules/table/interfaces/EBSContexts";
+import { EBSTabularDataStateContext } from "../../../modules/table/interfaces/EBSContexts";
 import { getEBSTableInitialState } from "../../../modules/table/helpers/EBSTableStateHandler";
 
 import { SequencesTotalCount } from "./Statistics";
-import SideMenu from "./SideMenu";
-import EBSTableData from "../../../modules/table/EBSTableData";
+import EBSTable from "../../../modules/table/EBSTable";
+import SequencesSideMenu from "./SideMenu";
 
 import TopNav from "../../global/TopNav";
 import {
@@ -55,8 +52,8 @@ function SequencesMainView({
         }`}
       >
         {ebsTableState.headers.length > 0 &&
-        ebsTableState.records.length > 0 ? (
-          <SideMenu
+        ebsTableState.records.length >= 0 ? (
+          <SequencesSideMenu
             ebsTableState={ebsTableState}
             wideView={wideView}
             setEBSTableState={setEBSTableState}
@@ -93,8 +90,8 @@ function SequencesMainView({
           <Grid.Row>
             <Grid.Column>
               {ebsTableState.headers.length > 0 &&
-              ebsTableState.records.length > 0 ? (
-                <EBSTableData
+              ebsTableState.records.length >= 0 ? (
+                <EBSTable
                   ebsTableState={ebsTableState}
                   setEBSTableState={setEBSTableState}
                 />

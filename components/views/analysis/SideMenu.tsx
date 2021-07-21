@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -18,11 +17,20 @@ import {
   Menu,
   Segment,
 } from "semantic-ui-react";
+import { EBSTableDashboardStateContext } from "../../../modules/table/interfaces/EBSContexts";
 
-export default function AnalysisSideMenu(props) {
-  const { rowData, wideView, setRowData, setWideView } = props;
-  const { ORIGIN } = rowData;
-
+/**
+ * AnalysisSideMen
+ * @param param -
+ * @returns -
+ */
+function AnalysisSideMenu({
+  ebsTableState,
+  wideView,
+  setEBSTableState,
+  setWideView,
+}: EBSTableDashboardStateContext): JSX.Element {
+  const { RECORDS_STATE_REF } = ebsTableState;
   const [activeIndex, setActiveIndex] = useState({
     0: false,
     1: false,
@@ -40,17 +48,9 @@ export default function AnalysisSideMenu(props) {
   const handleChange = (e, data) => {
     // Temporary
     setActiveRadio(data.value);
-    setRowData({
-      type: "SET_HISTORY",
-      module: "search",
-      search: data.value,
-    });
-    setRowData({
-      type: "APPLY_HISTORY",
-    });
   };
 
-  const statisticRef = ORIGIN.slice();
+  const statisticRef = RECORDS_STATE_REF.slice();
   const notDrugCol = [
     "main_lin",
     "sub_lin",
@@ -248,3 +248,5 @@ export default function AnalysisSideMenu(props) {
     </>
   );
 }
+
+export default AnalysisSideMenu;

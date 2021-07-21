@@ -25,9 +25,13 @@ import {
 } from "semantic-ui-react";
 
 /**
- * Search Tool
+ * Search
+ * @param param - See {@link EBSTableInstanceStateContext}
+ * @returns - Search Component
  */
-function Search({ setEBSTableState }: EBSTableInstanceStateContext) {
+function Search({
+  setEBSTableState,
+}: EBSTableInstanceStateContext): JSX.Element {
   const initialSearchState = {
     loading: false,
     searchValue: "",
@@ -88,11 +92,11 @@ function Search({ setEBSTableState }: EBSTableInstanceStateContext) {
 }
 
 /**
- * SideMenu
- * @param param -
- * @returns - SideMenu
+ * SequencesSideMenu
+ * @param param - See {@link EBSTableDashboardStateContext}
+ * @returns - SideMenu Component
  */
-function SideMenu({
+function SequencesSideMenu({
   ebsTableState,
   wideView,
   setEBSTableState,
@@ -281,7 +285,10 @@ function SideMenu({
   ) : (
     <>
       <Segment inverted>
-        <Search setEBSTableState={setEBSTableState} />
+        <Search
+          ebsTableState={ebsTableState}
+          setEBSTableState={setEBSTableState}
+        />
       </Segment>
       <div className="ebs-scrollable-inner">
         <Accordion inverted fluid as={Menu} vertical>
@@ -365,4 +372,4 @@ function SideMenu({
   );
 }
 
-export default SideMenu;
+export default SequencesSideMenu;

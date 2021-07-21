@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
@@ -7,10 +6,9 @@
  * @desc [description]
  */
 import _ from "lodash";
-import { useCallback, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 
-import EBSTableData from "../../table/EBSTableData";
-import TopNav from "../../TopNav";
+import TopNav from "../../../components/global/TopNav";
 import {
   Dimmer,
   Grid,
@@ -20,205 +18,18 @@ import {
   Placeholder,
 } from "semantic-ui-react";
 import AnalysisSideMenu from "./SideMenu";
+import { EBSTableStateReducer } from "../../../modules/table/reducers/reducer";
+import { getEBSTableInitialState } from "../../../modules/table/helpers/EBSTableStateHandler";
+import { EBSTabularDataStateContext } from "../../../modules/table/interfaces/EBSContexts";
+import EBSTable from "../../../modules/table/EBSTable";
 
-export default function TBMainView(props) {
-  const { data } = props;
-  const { headers, rows } = data;
-
-  const CUSTOM_COLUMNS = headers.slice();
-  const CUSTOM_ROWS = rows
-    .slice()
-    .map((obj, index) => ({ index: index, isSelected: false, data: obj }));
-
-  const initialDatasetState = (() => {
-    const DEFAULT_DATASET = CUSTOM_ROWS;
-    const DEFAULT_PAGE = 1;
-    const DEFAULT_PAGE_SIZE = 5;
-    const DEFAULT_SEARCH_KEYWORD = "";
-    const DEFAULT_SORT = { column: null, direction: null, dataType: "string" };
-    const DEFALUT_COLUMNS = CUSTOM_COLUMNS;
-    const DEFAULT_PAGE_COUNT = (() =>
-      DEFAULT_DATASET.length % DEFAULT_PAGE_SIZE > 0
-        ? Math.floor(DEFAULT_DATASET.length / DEFAULT_PAGE_SIZE) + 1
-        : Math.floor(DEFAULT_DATASET.length / DEFAULT_PAGE_SIZE))();
-
-    let history = {
-      order: [],
-      search: DEFAULT_SEARCH_KEYWORD,
-      columns: DEFALUT_COLUMNS,
-      sort: DEFAULT_SORT,
-      pagination: {
-        page: DEFAULT_PAGE,
-        pageSize: DEFAULT_PAGE_SIZE,
-        pageCount: DEFAULT_PAGE_COUNT,
-      },
-    };
-
-    let dataset = DEFAULT_DATASET;
-    const ORIGIN = DEFAULT_DATASET;
-
-    return {
-      ORIGIN: ORIGIN,
-      history: history,
-      dataset: dataset,
-    };
-  })();
-
-  const dataReducer = useCallback((state, action) => {
-    const { ORIGIN, history } = state;
-    const { order, search, columns, sort, pagination } = history;
-    const { page, pageSize } = pagination;
-
-    // const pick = (obj, keys) => {
-    //   return keys
-    //     .map((k) => (k in obj ? { [k]: obj[k] } : {}))
-    //     .reduce((res, o) => Object.assign(res, o), {});
-    // };
-
-    const pick = (obj, keys) => {
-      return keys
-        .map((k) => (k.value in obj ? { [k.value]: obj[k.value] } : {}))
-        .reduce((res, o) => Object.assign(res, o), {});
-    };
-
-    let results = ORIGIN.slice();
-    switch (action.type) {
-      case "RESET_DATASET":
-        return initialDatasetState;
-
-      case "SET_SELECTION":
-        results.splice(action.row.index, 1, action.row);
-        return {
-          ...state,
-          ORIGIN: results,
-        };
-
-      case "SELECT_ALL":
-        return {
-          ...state,
-          ORIGIN: results.map((obj) => ({ ...obj, isSelected: true })),
-        };
-
-      case "DESELECT_ALL":
-        return {
-          ...state,
-          ORIGIN: results.map((obj) => ({ ...obj, isSelected: false })),
-        };
-
-      case "SET_HISTORY":
-        return {
-          ...state,
-          history: {
-            // order: action.module
-            //   ? order.includes(action.module)
-            //     ? [...order]
-            //     : [...order, action.module]
-            //   : order,
-            order: action.module ? [...order, action.module] : order,
-            search: action.search ? action.search : search,
-            columns: action.column
-              ? columns.map((column) => {
-                  if (column.value === action.column) {
-                    return { ...column, display: !column.display };
-                  }
-                  return column;
-                })
-              : columns,
-            sort: action.sort
-              ? sort.column === action.sort
-                ? {
-                    ...sort,
-                    type: action.dataType,
-                    direction: sort.direction === "asc" ? "desc" : "asc",
-                  }
-                : {
-                    column: action.sort,
-                    type: action.dataType,
-                    direction: "asc",
-                  }
-              : sort,
-            pagination: {
-              ...pagination,
-              page: action.page ? action.page : page,
-              pageSize: action.pageSize ? action.pageSize : pageSize,
-            },
-          },
-        };
-
-      case "APPLY_HISTORY":
-        order.forEach((module) => {
-          if (module !== null && module !== undefined && module !== "") {
-            switch (module) {
-              case "search":
-                results = results.filter((row) =>
-                  JSON.stringify(Object.values(row.data)).includes(search)
-                );
-                break;
-
-              case "columns":
-                results = results.map((row) => {
-                  return {
-                    ...row,
-                    data: pick(
-                      row.data,
-                      columns.filter((colState) => colState.display && colState)
-                    ),
-                  };
-                });
-                break;
-
-              case "sort":
-                if (sort.dataType === "number") {
-                  results = _.orderBy(
-                    results,
-                    (obj) => {
-                      return parseFloat(obj.data[sort.column]);
-                    },
-                    [sort.direction]
-                  );
-                } else {
-                  results =
-                    sort.direction === "asc"
-                      ? _.sortBy(results, (obj) => {
-                          return obj.data[sort.column];
-                        })
-                      : _.sortBy(results, (obj) => {
-                          return obj.data[sort.column];
-                        }).reverse();
-                }
-                break;
-
-              default:
-                throw new Error("Invalid History Action");
-            }
-          }
-        });
-        return {
-          ...state,
-          dataset: results.slice(
-            // pagination
-            (page - 1) * pageSize,
-            (page - 1) * pageSize + pageSize
-          ),
-          history: {
-            ...history,
-            pagination: {
-              ...pagination,
-              pageCount:
-                results.length % pageSize > 0
-                  ? Math.floor(results.length / pageSize) + 1
-                  : Math.floor(results.length / pageSize),
-            },
-          },
-        };
-
-      default:
-        throw new Error("Invalid Reducer Action");
-    }
-  }, []);
-
-  const [columnData] = useState(CUSTOM_COLUMNS);
-  const [rowData, setRowData] = useReducer(dataReducer, initialDatasetState);
+function TBMainView({
+  ebsTabularData,
+}: EBSTabularDataStateContext): JSX.Element {
+  const [ebsTableState, setEBSTableState] = useReducer(
+    EBSTableStateReducer,
+    getEBSTableInitialState(ebsTabularData)
+  );
 
   const [wideView, setWideView] = useState(false);
 
@@ -232,11 +43,12 @@ export default function TBMainView(props) {
             : "ebs-left-side-content-frame"
         }`}
       >
-        {CUSTOM_ROWS.length > 0 ? (
+        {ebsTableState.headers.length > 0 &&
+        ebsTableState.records.length >= 0 ? (
           <AnalysisSideMenu
-            rowData={rowData}
+            ebsTableState={ebsTableState}
             wideView={wideView}
-            setRowData={setRowData}
+            setEBSTableState={setEBSTableState}
             setWideView={setWideView}
           />
         ) : (
@@ -268,12 +80,11 @@ export default function TBMainView(props) {
 
           <Grid.Row>
             <Grid.Column>
-              {CUSTOM_COLUMNS.length > 0 && CUSTOM_ROWS.length > 0 ? (
-                <EBSTableData
-                  tableTitle="TB Profiler"
-                  columnData={columnData}
-                  rowData={rowData}
-                  setRowData={setRowData}
+              {ebsTableState.headers.length > 0 &&
+              ebsTableState.records.length >= 0 ? (
+                <EBSTable
+                  ebsTableState={ebsTableState}
+                  setEBSTableState={setEBSTableState}
                 />
               ) : (
                 <>
@@ -308,3 +119,5 @@ export default function TBMainView(props) {
     </>
   );
 }
+
+export default TBMainView;
