@@ -24,7 +24,7 @@ function Logout(): JSX.Element {
     };
 
     await axios
-      .get("http://localhost:8000/api/account/logout", config)
+      .get("http://10.44.113.22/api/account/logout", config)
       .then((res) => {
         if (res.status === 200) {
           setAuthenticated(false);

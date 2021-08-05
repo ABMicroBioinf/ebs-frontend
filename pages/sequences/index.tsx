@@ -43,7 +43,7 @@ function Sequences(): JSX.Element {
     };
 
     await axios
-      .get("http://localhost:8000/api/seq/run", config)
+      .get("http://10.44.113.22/api/seq/run", config)
       .then((res) => {
         // IMPORTANT
         //

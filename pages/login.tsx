@@ -48,7 +48,7 @@ function Login(): JSX.Element {
     };
 
     await axios
-      .post("http://localhost:8000/api/account/login", data, config)
+      .post("http://10.44.113.22/api/account/login", data, config)
       .then((res) => {
         if (res.status === 200) {
           setAuthenticated(true);

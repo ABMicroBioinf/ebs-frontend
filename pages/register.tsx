@@ -46,7 +46,7 @@ function Register(): JSX.Element {
     };
 
     await axios
-      .post("http://localhost:8000/api/account/register", form_data, config)
+      .post("http://10.44.113.22/api/account/register", form_data, config)
       .then((res) => {
         if (res.status === 201) {
           router.push("/login");

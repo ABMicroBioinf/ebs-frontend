@@ -67,7 +67,7 @@ function Account(): JSX.Element {
     };
 
     await axios
-      .delete("http://localhost:8000/api/account/delete", config)
+      .delete("http://10.44.113.22/api/account/delete", config)
       .then((res) => {
         if (res.status === 200) {
           router.push("/logout");
