@@ -19,6 +19,7 @@ function TopNav(): JSX.Element {
   const { isAuthenticated } = useAuth();
 
   const goLink = (e, data) => {
+    console.log(data.to);
     router.push(data.to);
   };
 
@@ -168,7 +169,7 @@ function TopNav(): JSX.Element {
       secondary
       className="ebs-top-navbar"
     >
-      <Menu.Item link name="Branding" href="/">
+      <Menu.Item name="Branding" href="/" onClick={goLink}>
         <Icon name="dna" />
         EBS
       </Menu.Item>
