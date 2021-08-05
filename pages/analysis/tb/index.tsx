@@ -9,7 +9,7 @@ import withAuth from "../../../middleware/withAuth";
 import { useEffect, useState } from "react";
 
 import TBMainView from "../../../components/views/analysis/Main";
-import { TBPROFILER } from "./tbprofiler";
+import { TBPROFILER } from "../../../api/tbprofiler";
 import {
   applyCustomFields,
   flatColumns,

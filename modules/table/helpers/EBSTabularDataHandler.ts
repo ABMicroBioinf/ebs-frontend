@@ -18,7 +18,7 @@ import { EBSTabularHeaderContext } from "../interfaces/EBSContexts";
  * @param sample - Sample object
  * @returns - See {@link EBSTabularHeaderContext}
  */
-function getSchemeDefault(sample: object): Array<EBSTabularHeaderContext> {
+function getSchemeDefault(sample): Array<EBSTabularHeaderContext> {
   const getScheme = (sample, parent = null): Array<EBSTabularHeaderContext> => {
     const scheme = [];
     for (const [key, value] of Object.entries(sample)) {
@@ -53,10 +53,7 @@ function getSchemeDefault(sample: object): Array<EBSTabularHeaderContext> {
  * Validate Custom Fields
  * @returns - True, if custom field list is written in proper format.
  */
-function validateCustomFields(
-  origin: Array<EBSTabularHeaderContext>,
-  custom: Array<EBSTabularHeaderContext>
-): boolean {
+function validateCustomFields(origin, custom): boolean {
   const getFieldStructure = (obj) => {
     if (obj.children.length > 0) {
       return obj.children.map((child) => obj.name + "." + child.name);
@@ -106,9 +103,7 @@ function applyCustomFields(
  * @param arr - Hierarchical Header Structure
  * @returns - Flatten Array of EBSTabularHeaderContext
  */
-function flatColumns(
-  arr: Array<EBSTabularHeaderContext>
-): Array<EBSTabularHeaderContext> {
+function flatColumns(arr) {
   return arr.flatMap((obj) => {
     if (obj.children.length > 0) {
       return obj.children.map((child) => child);
@@ -123,7 +118,7 @@ function flatColumns(
  * @param arr -
  * @returns - Flatten Array of Object
  */
-function flatRows(arr): Array<object> {
+function flatRows(arr) {
   const pullout = (obj, prefix = "") => {
     return Object.entries(obj).flatMap(([key, value]) => {
       if (value === Object(value) && value !== null && value !== undefined) {
