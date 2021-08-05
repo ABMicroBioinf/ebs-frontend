@@ -51,6 +51,7 @@ EBSApp.getInitialProps = async (appContext: AppContext) => {
     const auth_token = cookies.auth_token;
     if (auth_token) {
       const sanitized = auth_token.replace(/\\054/g, ",").replace(/'/g, '"');
+      console.log(sanitized);
       const tokenObj = JSON.parse(sanitized);
       token = tokenObj.access;
     }
