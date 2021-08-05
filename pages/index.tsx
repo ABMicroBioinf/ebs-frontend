@@ -31,12 +31,36 @@ function Home(): JSX.Element {
         <Grid.Column>
           <Container>
             <Header as="h2" icon textAlign="center">
-              <Icon name="dna" textalign="center" />
-              <Header.Content>Landing Page</Header.Content>
+              {/* <Icon name="dna" textalign="center" />
+              <Header.Content>Landing Page</Header.Content> */}
+              Hello, `[user]!`
             </Header>
-            <Segment vertical>Available end points</Segment>
+            {/* <Segment vertical>Available end points</Segment> */}
             <Segment vertical>
               <List>
+                <List.Item>
+                  <List.Content>
+                    <List.Header>Sequences</List.Header>
+                    <List.Description>
+                      RUN dataset in a table view
+                    </List.Description>
+                  </List.Content>
+                </List.Item>
+                <List.Item>
+                  <List.Content>
+                    <List.Header>Analysis</List.Header>
+                    <List.Description>CPO, TB, Metagenome</List.Description>
+                  </List.Content>
+                </List.Item>
+                <List.Item>
+                  <List.Content>
+                    <List.Header>cmpAnalysis</List.Header>
+                    <List.Description>Comparison Analysis</List.Description>
+                  </List.Content>
+                </List.Item>
+              </List>
+
+              {/* <List>
                 <List.Item>
                   <List.Icon name="file" />
                   <List.Content>
@@ -162,7 +186,7 @@ function Home(): JSX.Element {
                     </List.List>
                   </List.Content>
                 </List.Item>
-              </List>
+              </List> */}
             </Segment>
           </Container>
         </Grid.Column>
