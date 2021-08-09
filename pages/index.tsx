@@ -27,7 +27,7 @@ function Home(): JSX.Element {
     const decoded = jwt.decode(accessToken);
     console.log(decoded);
     setUser(decoded.username);
-  }, []);
+  }, [user]);
 
   return (
     <>
