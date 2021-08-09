@@ -5,25 +5,30 @@
  * @modify date 2021-07-15 15:08:13
  * @desc [description]
  */
-import React from "react";
-import Link from "next/link";
-import TopNav from "../components/global/TopNav";
+import React, { useEffect, useState } from "react";
+import jwt from "jsonwebtoken";
 import withAuth from "../middleware/withAuth";
+import { useAuth } from "../middleware/AuthProvider";
 
-import {
-  Container,
-  Grid,
-  Header,
-  Icon,
-  List,
-  Segment,
-} from "semantic-ui-react";
+import TopNav from "../components/global/TopNav";
+
+import { Container, Grid, Header, List, Segment } from "semantic-ui-react";
 
 /**
  * The main page of frontend application
  * @returns - Home page component
  */
 function Home(): JSX.Element {
+  const { accessToken } = useAuth();
+
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const decoded = jwt.decode(accessToken);
+    console.log(decoded);
+    setUser(decoded.username);
+  }, []);
+
   return (
     <>
       <TopNav />
@@ -33,7 +38,7 @@ function Home(): JSX.Element {
             <Header as="h2" icon textAlign="center">
               {/* <Icon name="dna" textalign="center" />
               <Header.Content>Landing Page</Header.Content> */}
-              Hello, `[user]!`
+              Hello, {user && user}
             </Header>
             {/* <Segment vertical>Available end points</Segment> */}
             <Segment vertical>
