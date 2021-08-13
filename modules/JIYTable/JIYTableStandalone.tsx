@@ -21,7 +21,7 @@ import JIYTable from "./core/components/JIYTable";
 import TablePlaceholder from "../../components/global/TablePlaceholder";
 import { URLHandler } from "./core/libs/handler";
 
-function JIYTableInstance<T>({
+function JIYTableStandalone<T>({
   title,
   url,
   path,
@@ -120,4 +120,4 @@ function JIYTableInstance<T>({
   );
 }
 
-export default JIYTableInstance;
+export default JIYTableStandalone;

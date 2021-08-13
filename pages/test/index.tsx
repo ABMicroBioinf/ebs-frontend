@@ -368,11 +368,16 @@ function Analysis() {
           </Grid>
         ) : (
           <>
-            <Segment inverted></Segment>
+            {/* <Segment className="ebs-borderless ebs-shadowless"></Segment> */}
             <div className="ebs-scrollable-inner">
-              <Accordion inverted fluid as={Menu} vertical></Accordion>
+              <Accordion
+                className="ebs-borderless ebs-shadowless"
+                fluid
+                as={Menu}
+                vertical
+              ></Accordion>
             </div>
-            <Segment inverted>
+            <Segment className="ebs-borderless ebs-shadowless">
               <Menu.Item
                 onClick={() => {
                   setWideView(!wideView);

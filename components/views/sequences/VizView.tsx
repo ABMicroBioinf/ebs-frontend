@@ -9,7 +9,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { API_SEQUENCE } from "../../../config/apis";
 import React from "react";
-import JIYTableInstance from "../../../modules/JIYTable/JIYTableInstance";
+import JIYTableStandalone from "../../../modules/JIYTable/JIYTableStandalone";
 import {
   RunDataHandler,
   URLHandler,
@@ -23,7 +23,7 @@ import {
 function SequencesVizView({ module }): JSX.Element {
   return (
     <>
-      <JIYTableInstance
+      <JIYTableStandalone
         title={module}
         path={"/sequences"}
         url={URLHandler(API_SEQUENCE)}

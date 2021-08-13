@@ -8,7 +8,7 @@
 import withAuth from "../../../middleware/withAuth";
 import React, { useState } from "react";
 
-import { Grid, Tab } from "semantic-ui-react";
+import { Grid, Icon, Menu, Segment, Tab } from "semantic-ui-react";
 import TopNav from "../../../components/global/TopNav";
 import TabMenu from "../../../components/global/Tab";
 
@@ -50,7 +50,51 @@ function TBAnalysis() {
             : "ebs-left-side-content-frame"
         }`}
       >
-        filter placeholder
+        {wideView ? (
+          <Grid
+            verticalAlign="middle"
+            centered
+            padded
+            className="ebs-left-side-as-button-frame"
+            onClick={() => {
+              setWideView(!wideView);
+            }}
+          >
+            <Grid.Row>
+              <Grid.Column className="ebs-paddingless">
+                <Icon name="angle double right" />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        ) : (
+          <>
+            {/* <Segment className="ebs-borderless ebs-shadowless"></Segment> */}
+            <div className="ebs-scrollable-inner">
+              {/* <Accordion
+                className="ebs-borderless ebs-shadowless"
+                fluid
+                as={Menu}
+                vertical
+              ></Accordion> */}
+            </div>
+            <Segment className="ebs-borderless ebs-shadowless">
+              <Menu.Item
+                onClick={() => {
+                  setWideView(!wideView);
+                }}
+              >
+                <Grid columns={2}>
+                  <Grid.Row>
+                    <Grid.Column>Wide View</Grid.Column>
+                    <Grid.Column textAlign="right">
+                      <Icon name="angle double left" />
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </Menu.Item>
+            </Segment>
+          </>
+        )}
       </div>
       <div
         className={`${
