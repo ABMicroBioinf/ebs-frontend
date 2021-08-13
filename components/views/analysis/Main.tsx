@@ -18,9 +18,9 @@ import {
   Placeholder,
 } from "semantic-ui-react";
 import AnalysisSideMenu from "./SideMenu";
-import { EBSTableStateReducer } from "../../../modules/table/reducers/reducer";
-import { getEBSTableInitialState } from "../../../modules/table/helpers/EBSTableStateHandler";
-import { EBSTabularDataStateContext } from "../../../modules/table/interfaces/EBSContexts";
+import { EBSTableStateReducer } from "../../../modules/table/core/libs/reducer";
+import { getEBSTableInitialState } from "../../../modules/table/core/EBSTableStateHandler";
+import { EBSTabularDataStateContext } from "../../../modules/table/core/models/EBSDataTypes";
 import EBSTable from "../../../modules/table/EBSTable";
 
 function TBMainView({

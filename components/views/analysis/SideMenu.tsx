@@ -17,7 +17,7 @@ import {
   Menu,
   Segment,
 } from "semantic-ui-react";
-import { EBSTableDashboardStateContext } from "../../../modules/table/interfaces/EBSContexts";
+import { EBSTableDashboardStateContext } from "../../../modules/table/core/models/EBSDataTypes";
 
 /**
  * AnalysisSideMen

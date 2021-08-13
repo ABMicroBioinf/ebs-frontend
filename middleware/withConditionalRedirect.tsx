@@ -7,28 +7,10 @@
  */
 import { useRouter } from "next/router";
 
-/**
- * Check if user correctly send a request by using a browser
- * @returns {Boolean} - If window is defined.
- */
 function isBrowser() {
   return typeof window !== "undefined";
 }
 
-/**
- * ConditionalRedirectProps
- * @typedef {Object} ConditionalRedirectProps
- * @property {ReactNode} WrappedComponent - page component wish to go to
- * @property {String} location - fallback page
- * @property {Function} clientCondition - check if a user is authenticated
- * @property {Function} serverCondition - check if backend server responds with valid token
- */
-
-/**
- * HOC function that redirects user depending on clientCondition and serverCondition
- * @param {ConditionalRedirectProps} - See {@link ConditionalRedirectProps}
- * @returns {Component} - WrappedComponent, if authentication is successfully done
- */
 export default function withConditionalRedirect({
   WrappedComponent,
   clientCondition,

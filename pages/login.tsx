@@ -24,6 +24,7 @@ import {
   Modal,
   Header,
 } from "semantic-ui-react";
+import { API, API_LOGIN } from "../config/apis";
 
 /**
  * Login
@@ -32,7 +33,7 @@ import {
 function Login(): JSX.Element {
   const router = useRouter();
 
-  const { setAuthenticated } = useAuth();
+  const { setAccessToken, setAuthenticated } = useAuth();
   const [openAlert, setOpenAlert] = useState(false);
 
   const login = useCallback(async (e) => {
@@ -48,10 +49,11 @@ function Login(): JSX.Element {
     };
 
     await axios
-      .post("http://10.44.113.22/api/account/login", data, config)
+      .post(API + API_LOGIN, data, config)
       .then((res) => {
         if (res.status === 200) {
           setAuthenticated(true);
+          setAccessToken(res.data.access);
           router.push("/");
         } else {
           setOpenAlert(true);

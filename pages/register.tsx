@@ -7,7 +7,7 @@
  */
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import withoutAuth from "../middleware/withoutAuth";
 
 import TopNav from "../components/global/TopNav";
@@ -20,7 +20,9 @@ import {
   Segment,
   Modal,
   Header,
+  Message,
 } from "semantic-ui-react";
+import { API, API_REGISTER } from "../config/apis";
 
 /**
  * Registration
@@ -29,33 +31,58 @@ import {
 function Register(): JSX.Element {
   const router = useRouter();
 
+  const passwordRef = useRef(null);
+
   const [openAlert, setOpenAlert] = useState(false);
+  const [match, setMatch] = useState(false);
+  const [feedback, setFeedback] = useState("");
 
-  const register = useCallback(async (e) => {
-    e.preventDefault();
+  const register = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    const form_data = new FormData();
-    form_data.append("email", e.target.elements.email.value);
-    form_data.append("username", e.target.elements.username.value);
-    form_data.append("password", e.target.elements.password.value);
+      if (match) {
+        const form_data = new FormData();
+        form_data.append("email", e.target.elements.email.value);
+        form_data.append("username", e.target.elements.username.value);
+        form_data.append("password", e.target.elements.password.value);
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
 
-    await axios
-      .post("http://10.44.113.22/api/account/register", form_data, config)
-      .then((res) => {
-        if (res.status === 201) {
-          router.push("/login");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+        await axios
+          .post(API + API_REGISTER, form_data, config)
+          .then((res) => {
+            if (res.status === 201) {
+              setOpenAlert(true);
+              setTimeout(() => {
+                setOpenAlert(false);
+                router.push("/login");
+              }, 2000);
+            }
+          })
+          .catch(() => {
+            setFeedback("Your email is already registered");
+          });
+      } else {
+        setFeedback("Please check register form again");
+      }
+    },
+    [match]
+  );
+
+  const handleMatchingPassword = (e) => {
+    if (
+      e.currentTarget.value === passwordRef.current?.inputRef.current?.value
+    ) {
+      setMatch(true);
+    } else {
+      setMatch(false);
+    }
+  };
 
   return (
     <>
@@ -93,19 +120,27 @@ function Register(): JSX.Element {
                   icon="lock"
                   iconPosition="left"
                   placeholder="Password"
+                  ref={passwordRef}
                   required
                 />
               </Form.Field>
               <Form.Field>
                 <Input
                   name="repeat"
-                  type="password"
-                  icon="check"
                   iconPosition="left"
                   placeholder="Repeat password"
+                  type="password"
+                  onChange={handleMatchingPassword}
                   required
-                />
+                >
+                  <Icon color={match ? "green" : "red"} name="check" />
+                  <input />
+                </Input>
               </Form.Field>
+              <Message negative hidden={feedback === ""}>
+                <Message.Header>Registration Failed</Message.Header>
+                <p>{feedback}</p>
+              </Message>
               <Button primary fluid type="submit">
                 Sign Up
               </Button>
@@ -122,18 +157,18 @@ function Register(): JSX.Element {
         size="small"
         dimmer="blurring"
       >
-        <Header icon>
-          <Icon name="lock" />
-          Registration Failed
+        <Header icon color="green">
+          <Icon name="hand peace outline" />
+          Your account has been successfully registered!
         </Header>
         <Modal.Content>
           <Grid>
             <Grid.Column textAlign="center">
-              <p>Please try again</p>
+              <p>We will redirect you to a login page.</p>
             </Grid.Column>
           </Grid>
         </Modal.Content>
-        <Modal.Actions>
+        {/* <Modal.Actions>
           <Grid>
             <Grid.Column textAlign="center">
               <Button
@@ -145,7 +180,7 @@ function Register(): JSX.Element {
               </Button>
             </Grid.Column>
           </Grid>
-        </Modal.Actions>
+        </Modal.Actions> */}
       </Modal>
     </>
   );

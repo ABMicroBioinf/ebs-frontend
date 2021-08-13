@@ -17,10 +17,10 @@ import {
   Segment,
 } from "semantic-ui-react";
 
-import { swarmPlotData } from "../../api/swamPlotDataExample";
-import { barData } from "../../api/barDataExample";
-import { pieData } from "../../api/pieDataExample";
-import { sunburstData } from "../../api/sunburstDataExample";
+import { swarmPlotData } from "../../temp/swamPlotDataExample";
+import { barData } from "../../temp/barDataExample";
+import { pieData } from "../../temp/pieDataExample";
+import { sunburstData } from "../../temp/sunburstDataExample";
 
 // install (please make sure versions match peerDependencies)
 // yarn add @nivo/core @nivo/swarmplot
@@ -34,7 +34,7 @@ const MyResponsiveSwarmPlot = ({ data /* see data tab */ }) => (
   <ResponsiveSwarmPlot
     data={data}
     groups={["group A", "group B", "group C"]}
-    // identity="id"
+    identity="id"
     value="price"
     valueFormat="$.2f"
     valueScale={{ type: "linear", min: 0, max: 500, reverse: false }}
@@ -50,7 +50,7 @@ const MyResponsiveSwarmPlot = ({ data /* see data tab */ }) => (
     }}
     margin={{ top: 80, right: 100, bottom: 80, left: 100 }}
     axisTop={{
-      // orient: "top",
+      orient: "top",
       tickSize: 10,
       tickPadding: 5,
       tickRotation: 0,
@@ -59,7 +59,7 @@ const MyResponsiveSwarmPlot = ({ data /* see data tab */ }) => (
       legendOffset: -46,
     }}
     axisRight={{
-      // orient: "right",
+      orient: "right",
       tickSize: 10,
       tickPadding: 5,
       tickRotation: 0,
@@ -68,7 +68,7 @@ const MyResponsiveSwarmPlot = ({ data /* see data tab */ }) => (
       legendOffset: 76,
     }}
     axisBottom={{
-      // orient: "bottom",
+      orient: "bottom",
       tickSize: 10,
       tickPadding: 5,
       tickRotation: 0,
@@ -77,7 +77,7 @@ const MyResponsiveSwarmPlot = ({ data /* see data tab */ }) => (
       legendOffset: 46,
     }}
     axisLeft={{
-      // orient: "left",
+      orient: "left",
       tickSize: 10,
       tickPadding: 5,
       tickRotation: 0,
@@ -252,7 +252,7 @@ const MyResponsiveBar = ({ data /* see data tab */ }) => (
     padding={0.3}
     valueScale={{ type: "linear" }}
     indexScale={{ type: "band", round: true }}
-    // valueFormat={{ format: "", enabled: false }}
+    valueFormat={{ format: "", enabled: false }}
     colors={{ scheme: "nivo" }}
     defs={[
       {

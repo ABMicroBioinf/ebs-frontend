@@ -5,35 +5,29 @@
  * @modify date 2021-07-15 15:36:16
  * @desc [description]
  */
-import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 
-/**
- * Interface of AuthContextProps
- */
 interface AuthContextProps {
-  accessToken: String;
-  isAuthenticated: Boolean;
-  setAccessToken: Dispatch<SetStateAction<String>>;
-  setAuthenticated: Dispatch<SetStateAction<boolean>>;
+  accessToken: string;
+  isAuthenticated: boolean;
+  setAccessToken?: Dispatch<SetStateAction<string>>;
+  setAuthenticated?: Dispatch<SetStateAction<boolean>>;
 }
 
-/**
- * Initiate AuthContext with init values
- * @type {Context<AuthContextProps>} - AuthContext with default values
- */
 const AuthContext = createContext<AuthContextProps>({
   accessToken: "",
   isAuthenticated: false,
-  setAccessToken: () => {},
-  setAuthenticated: () => {},
+  setAccessToken: null,
+  setAuthenticated: null,
 });
 
-/**
- * Custom hooks to use AuthContext
- * @throws {Error} - If useAuth hooks is used out of AuthProvider
- * @returns {AuthContext} - The current AuthContext
- */
- export function useAuth() {
+export function useAuth(): AuthContextProps {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
@@ -41,30 +35,16 @@ const AuthContext = createContext<AuthContextProps>({
   return context;
 }
 
-/**
- * User Verification
- * @returns {Boolean} - If the current user is authenticated
- */
-export function useIsAuthenticated() {
+export function useIsAuthenticated(): boolean {
   const context = useAuth();
   return context.isAuthenticated;
 }
 
-/**
- * AuthProviderProps
- * @typedef AuthProviderProps
- * @prop {ReactNode} children - Wrapped component by Provider
- * @prop {Boolean} authenticated - If a user is authenticated
- * @prop {String} token - Access token of JWT key string.
- */
-
-/**
- * AuthProvider
- * @param {AuthProviderProps} AuthProviderProps - Provider contains children node and custom props which are authenticated and token.
- * @returns {ReactElement} - Wrapped component by an AuthContext Provider.
- */
-export const AuthProvider = (AuthProviderProps) => {
-  const { children, authenticated, token } = AuthProviderProps;
+export const AuthProvider = ({
+  children,
+  authenticated,
+  token,
+}): JSX.Element => {
   const [isAuthenticated, setAuthenticated] = useState(authenticated);
   const [accessToken, setAccessToken] = useState(token);
   return (

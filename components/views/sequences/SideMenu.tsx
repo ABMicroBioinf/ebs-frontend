@@ -5,13 +5,11 @@
  * @modify date 2021-07-15 13:20:05
  * @desc [description]
  */
-import _ from "lodash";
-import { useCallback, useReducer, useState } from "react";
-
-import {
-  EBSTableDashboardStateContext,
-  EBSTableInstanceStateContext,
-} from "../../../modules/table/interfaces/EBSContexts";
+import axios from "axios";
+import { useCallback, useEffect, useReducer, useState } from "react";
+import { API, API_SEQUENCE_METADATA } from "../../../config/apis";
+import { useAuth } from "../../../middleware/AuthProvider";
+import { VizViewContext } from "../../../modules/JIYTable/core/models/JIYContexts";
 
 import {
   Accordion,
@@ -29,9 +27,7 @@ import {
  * @param param - See {@link EBSTableInstanceStateContext}
  * @returns - Search Component
  */
-function Search({
-  setEBSTableState,
-}: EBSTableInstanceStateContext): JSX.Element {
+function Search(): JSX.Element {
   const initialSearchState = {
     loading: false,
     searchValue: "",
@@ -60,24 +56,23 @@ function Search({
   const { searchValue } = searchState;
 
   const handleSearchChange = useCallback((e, data) => {
-    dispatchSearch({ searchType: "START_SEARCH", searchQuery: data.value });
-    if (data.value.length === 0) {
-      dispatchSearch({ searchType: "CLEAN_QUERY" });
-      setEBSTableState({
-        type: "SEARCH_KEYWORD",
-        keyword: "",
-      });
-      return;
-    }
-
-    dispatchSearch({
-      searchType: "FINISH_SEARCH",
-      searchQuery: data.value,
-    });
-    setEBSTableState({
-      type: "SEARCH_KEYWORD",
-      keyword: data.value,
-    });
+    // dispatchSearch({ searchType: "START_SEARCH", searchQuery: data.value });
+    // if (data.value.length === 0) {
+    //   dispatchSearch({ searchType: "CLEAN_QUERY" });
+    //   setEBSTableState({
+    //     type: "SEARCH_KEYWORD",
+    //     keyword: "",
+    //   });
+    //   return;
+    // }
+    // dispatchSearch({
+    //   searchType: "FINISH_SEARCH",
+    //   searchQuery: data.value,
+    // });
+    // setEBSTableState({
+    //   type: "SEARCH_KEYWORD",
+    //   keyword: data.value,
+    // });
   }, []);
 
   return (
@@ -97,13 +92,13 @@ function Search({
  * @returns - SideMenu Component
  */
 function SequencesSideMenu({
-  ebsTableState,
+  module,
   wideView,
-  setEBSTableState,
   setWideView,
-}: EBSTableDashboardStateContext): JSX.Element {
-  const { RECORDS_STATE_REF } = ebsTableState;
+}: VizViewContext): JSX.Element {
+  const { accessToken } = useAuth();
 
+  const [filters, setFilters] = useState(null);
   const [activeIndex, setActiveIndex] = useState({
     0: false,
     1: false,
@@ -118,153 +113,71 @@ function SequencesSideMenu({
   };
 
   const handleChange = (e, data) => {
-    setEBSTableState({
-      type: "SEARCH_KEYWORD",
-      keyword: data.value,
+    // setEBSTableState({
+    //   type: "SEARCH_KEYWORD",
+    //   keyword: data.value,
+    // });
+  };
+
+  const getSubMenuItem = (parent, arr) => (
+    <Grid className="ebs-filters-submenu">
+      {arr.map((sub, index) => (
+        <Grid.Row key={index}>
+          <Grid.Column>
+            <Checkbox
+              // className="ebs-inverted"
+              label={sub[parent]}
+              name={sub[parent]}
+              value={sub[parent]}
+              onChange={handleChange}
+            />
+          </Grid.Column>
+          <Grid.Column width={2} floated="right">
+            <Label color="grey">{sub["total"]}</Label>
+          </Grid.Column>
+        </Grid.Row>
+      ))}
+    </Grid>
+  );
+
+  const getFilterMenu = () => {
+    return Object.entries(filters).map(([key, value], index) => {
+      return (
+        <Menu.Item key={index}>
+          <Accordion.Title
+            active={activeIndex[index]}
+            content={key}
+            index={index}
+            onClick={handleClick}
+          />
+          <Accordion.Content
+            key={index}
+            active={activeIndex[index]}
+            content={getSubMenuItem(key, value)}
+          />
+        </Menu.Item>
+      );
     });
   };
 
-  const statisticRef = RECORDS_STATE_REF.slice();
+  const fetchFilters = useCallback(async () => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    };
 
-  // alias names are hardcoded. it needs to be fixed in the future
-  const organism = _.countBy(
-    statisticRef.map((row) => row.data["sample.organism"]).sort()
-  );
-  const instrument = _.countBy(
-    statisticRef.map((row) => row.data["experiment.instrument"]).sort()
-  );
-  const platform = _.countBy(
-    statisticRef.map((row) => row.data["experiment.platform"]).sort()
-  );
-  const libraryLayout = _.countBy(
-    statisticRef.map((row) => row.data["experiment.libraryLayout"]).sort()
-  );
-  const librarySource = _.countBy(
-    statisticRef.map((row) => row.data["experiment.librarySource"]).sort()
-  );
+    await axios
+      .get(API + API_SEQUENCE_METADATA + "?seqtype=" + module, config)
+      .then((res) => {
+        setFilters(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-  const OrganismForm = (
-    <Grid className="ebs-filters-submenu">
-      {organism &&
-        Object.keys(organism).map((key, index) => {
-          return (
-            <Grid.Row key={index}>
-              <Grid.Column>
-                <Checkbox
-                  className="ebs-inverted"
-                  label={key}
-                  name="sample.organism"
-                  value={key}
-                  onChange={handleChange}
-                />
-              </Grid.Column>
-              <Grid.Column width={2} floated="right">
-                <Label color="grey">{organism[key]}</Label>
-              </Grid.Column>
-            </Grid.Row>
-          );
-        })}
-    </Grid>
-  );
-
-  const InstrumentForm = (
-    <Grid className="ebs-filters-submenu">
-      {instrument &&
-        Object.keys(instrument).map((key, index) => {
-          return (
-            <Grid.Row key={index}>
-              <Grid.Column>
-                <Checkbox
-                  className="ebs-inverted"
-                  label={key}
-                  name="experiment.instrument"
-                  value={key}
-                  onChange={handleChange}
-                />
-              </Grid.Column>
-              <Grid.Column width={2} floated="right">
-                <Label color="grey">{instrument[key]}</Label>
-              </Grid.Column>
-            </Grid.Row>
-          );
-        })}
-    </Grid>
-  );
-
-  const PlatformForm = (
-    <Grid className="ebs-filters-submenu">
-      {platform &&
-        Object.keys(platform).map((key, index) => {
-          return (
-            <Grid.Row key={index}>
-              <Grid.Column>
-                <Checkbox
-                  className="ebs-inverted"
-                  label={key}
-                  name="experiment.platform"
-                  value={key}
-                  onChange={handleChange}
-                />
-              </Grid.Column>
-
-              <Grid.Column width={2} floated="right">
-                <Label color="grey">{platform[key]}</Label>
-              </Grid.Column>
-            </Grid.Row>
-          );
-        })}
-    </Grid>
-  );
-
-  const LibraryLayoutForm = (
-    <Grid className="ebs-filters-submenu">
-      {libraryLayout &&
-        Object.keys(libraryLayout).map((key, index) => {
-          return (
-            <Grid.Row key={index}>
-              <Grid.Column>
-                <Checkbox
-                  className="ebs-inverted"
-                  label={key}
-                  name="experiment.libraryLayout"
-                  value={key}
-                  onChange={handleChange}
-                />
-              </Grid.Column>
-
-              <Grid.Column width={2} floated="right">
-                <Label color="grey">{libraryLayout[key]}</Label>
-              </Grid.Column>
-            </Grid.Row>
-          );
-        })}
-    </Grid>
-  );
-
-  const LibrarySourceForm = (
-    <Grid className="ebs-filters-submenu">
-      {librarySource &&
-        Object.keys(librarySource).map((key, index) => {
-          return (
-            <Grid.Row key={index}>
-              <Grid.Column>
-                <Checkbox
-                  className="ebs-inverted"
-                  label={key}
-                  name="experiment.librarySource"
-                  value={key}
-                  onChange={handleChange}
-                />
-              </Grid.Column>
-
-              <Grid.Column width={2} floated="right">
-                <Label color="grey">{librarySource[key]}</Label>
-              </Grid.Column>
-            </Grid.Row>
-          );
-        })}
-    </Grid>
-  );
+  useEffect(() => {
+    fetchFilters();
+  }, []);
 
   return wideView ? (
     <Grid
@@ -284,75 +197,15 @@ function SequencesSideMenu({
     </Grid>
   ) : (
     <>
-      <Segment inverted>
-        <Search
-          ebsTableState={ebsTableState}
-          setEBSTableState={setEBSTableState}
-        />
+      <Segment className="ebs-borderless ebs-shadowless">
+        <Search />
       </Segment>
       <div className="ebs-scrollable-inner">
-        <Accordion inverted fluid as={Menu} vertical>
-          <Menu.Item>
-            <Accordion.Title
-              active={activeIndex[0]}
-              content="Organism"
-              index={0}
-              onClick={handleClick}
-            />
-            <Accordion.Content active={activeIndex[0]} content={OrganismForm} />
-          </Menu.Item>
-
-          <Menu.Item>
-            <Accordion.Title
-              active={activeIndex[1]}
-              content="Instrument"
-              index={1}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              active={activeIndex[1]}
-              content={InstrumentForm}
-            />
-          </Menu.Item>
-
-          <Menu.Item>
-            <Accordion.Title
-              active={activeIndex[2]}
-              content="Platform"
-              index={2}
-              onClick={handleClick}
-            />
-            <Accordion.Content active={activeIndex[2]} content={PlatformForm} />
-          </Menu.Item>
-
-          <Menu.Item>
-            <Accordion.Title
-              active={activeIndex[3]}
-              content="Library Layout"
-              index={3}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              active={activeIndex[3]}
-              content={LibraryLayoutForm}
-            />
-          </Menu.Item>
-
-          <Menu.Item>
-            <Accordion.Title
-              active={activeIndex[4]}
-              content="Library Source"
-              index={4}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              active={activeIndex[4]}
-              content={LibrarySourceForm}
-            />
-          </Menu.Item>
+        <Accordion className="ebs-borderless" fluid as={Menu} vertical>
+          {filters && getFilterMenu()}
         </Accordion>
       </div>
-      <Segment inverted>
+      <Segment className="ebs-borderless ebs-shadowless">
         <Menu.Item
           onClick={() => {
             setWideView(!wideView);

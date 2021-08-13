@@ -7,6 +7,7 @@
  */
 import axios from "axios";
 import { useCallback, useEffect } from "react";
+import { API, API_LOGOUT } from "../config/apis";
 import { useAuth } from "../middleware/AuthProvider";
 import withAuth from "../middleware/withAuth";
 
@@ -24,7 +25,7 @@ function Logout(): JSX.Element {
     };
 
     await axios
-      .get("http://10.44.113.22/api/account/logout", config)
+      .get(API + API_LOGOUT, config)
       .then((res) => {
         if (res.status === 200) {
           setAuthenticated(false);
