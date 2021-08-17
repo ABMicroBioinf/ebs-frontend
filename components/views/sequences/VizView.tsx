@@ -6,39 +6,65 @@
  * @desc [description]
  */
 
-import { v4 as uuidv4 } from "uuid";
-import { API_SEQUENCE } from "../../../config/apis";
 import React from "react";
-import JIYTableStandalone from "../../../modules/JIYTable/JIYTableStandalone";
-import {
-  RunDataHandler,
-  URLHandler,
-} from "../../../modules/JIYTable/core/libs/handler";
+
+import { JIYTableStateContext } from "../../../modules/JIYTable/core/models/JIYContexts";
+import JIYTable from "../../../modules/JIYTable/core/components/JIYTable";
 
 /**
  * Sequences Main View
- * @param param - See {@link EBSTableDataContext}
+ * In case, there are multiple instance of JIYTable, This component will work as a container.
+ * @param param - See
  * @returns - Sequence Main View Components
  */
-function SequencesVizView({ module }): JSX.Element {
+function SequencesVizView<T>({
+  title,
+  path,
+  prev,
+  next,
+  total,
+  page,
+  pageSize,
+  query,
+  search,
+  ordering,
+  headers,
+  records,
+  isLoading,
+  setPage,
+  setPageSize,
+  setQuery,
+  setSearch,
+  setOrdering,
+  setHeaders,
+  setRecords,
+  setLoading,
+}: JIYTableStateContext<T>): JSX.Element {
   return (
     <>
-      <JIYTableStandalone
-        title={module}
-        path={"/sequences"}
-        url={URLHandler(API_SEQUENCE)}
-        module={module}
-        handler={RunDataHandler}
-        key={uuidv4()}
+      <JIYTable
+        title={title}
+        path={path}
+        prev={prev}
+        next={next}
+        total={total}
+        page={page}
+        pageSize={pageSize}
+        query={query}
+        search={search}
+        ordering={ordering}
+        headers={headers}
+        records={records}
+        isLoading={isLoading}
+        setPage={setPage}
+        setPageSize={setPageSize}
+        setQuery={setQuery}
+        setSearch={setSearch}
+        setOrdering={setOrdering}
+        setHeaders={setHeaders}
+        setRecords={setRecords}
+        setLoading={setLoading}
       />
-      {/* <JIYTableInstance
-        title={"Run #2"}
-        path={"/sequences"}
-        url={URLHandler(API_SEQUENCE)}
-        module={module}
-        handler={RunDataHandler}
-        key={uuidv4()}
-      /> */}
     </>
   );
 }

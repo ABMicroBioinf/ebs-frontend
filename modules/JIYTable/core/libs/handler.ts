@@ -18,6 +18,7 @@ import {
 
 export function URLHandler(
   uri: string,
+  query?: string,
   module?: string,
   search?: string,
   page?: number,
@@ -28,6 +29,9 @@ export function URLHandler(
 
   let url = API + URI;
 
+  if (query !== undefined && query !== null && query !== "") {
+    url = url + query;
+  }
   if (module !== undefined && module !== null && module !== "") {
     url = url + "&seqtype=" + module;
   }
@@ -57,7 +61,7 @@ export function URLHandler(
   };
 }
 
-export function RunDataHandler(
+export function SequencesDataHandler(
   results: Array<FlatSequence>
 ): JIYTabularDataContext<FlatSequence> {
   const sample: FlatSequence = results[0];
@@ -76,9 +80,9 @@ export function RunDataHandler(
     }
   );
   const data: Array<JIYRecordContext<FlatSequence>> = results.map(
-    (flatRun: FlatSequence): JIYRecordContext<FlatSequence> => ({
+    (flatSequences: FlatSequence): JIYRecordContext<FlatSequence> => ({
       isSelected: false,
-      data: flatRun,
+      data: flatSequences,
     })
   );
   return {

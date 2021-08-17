@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 
 import TopNav from "../../components/global/TopNav";
 
-import { Accordion, Grid, Icon, Menu, Segment } from "semantic-ui-react";
+import { Grid, Icon, Menu, Segment } from "semantic-ui-react";
 
 function CoreAnalysis() {
   const [wideView, setWideView] = useState(false);
@@ -84,7 +84,7 @@ function CoreAnalysis() {
       >
         <Grid padded>
           <Grid.Row>
-            <Grid.Column>Core Analysis</Grid.Column>
+            <Grid.Column>Comparison Analysis</Grid.Column>
           </Grid.Row>
         </Grid>
       </div>

@@ -6,19 +6,107 @@
  * @desc [description]
  */
 import withAuth from "../../../middleware/withAuth";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import TopNav from "../../../components/global/TopNav";
 import { Grid } from "semantic-ui-react";
 import SequencesVizView from "../../../components/views/sequences/VizView";
 import SequencesSideMenu from "../../../components/views/sequences/SideMenu";
+import { useAuth } from "../../../middleware/AuthProvider";
+import {
+  JIYHeaderContext,
+  JIYOrderingContext,
+  JIYRecordContext,
+} from "../../../modules/JIYTable/core/models/JIYContexts";
+import {
+  URLHandler,
+  SequencesDataHandler as handler,
+} from "../../../modules/JIYTable/core/libs/handler";
+
+import axios from "axios";
+import { API_SEQUENCE } from "../../../config/apis";
+import { FlatSequence } from "../../../models/Sequence";
 
 /**
  * Sequence Page
  * @returns - Sequence Main View Component
  */
-function Sequences(): JSX.Element {
+function SequenceTB(): JSX.Element {
+  const MODULE = "TB";
+  const URL = URLHandler(API_SEQUENCE);
+
+  const { accessToken } = useAuth();
+
+  const [next, setNext] = useState<string>(null);
+  const [prev, setPrev] = useState<string>(null);
+  const [total, setTotal] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(5);
+  const [query, setQuery] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+  const [ordering, setOrdering] = useState<JIYOrderingContext>(null);
+  const [headers, setHeaders] = useState<Array<JIYHeaderContext>>(null);
+  const [records, setRecords] =
+    useState<Array<JIYRecordContext<FlatSequence>>>(null);
+
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [wideView, setWideView] = useState(false);
+
+  const fetchData = useCallback(async (reqURL: string) => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    };
+
+    setLoading(true);
+    await axios
+      .get(reqURL, config)
+      .then((res) => {
+        if (res.status === 200) {
+          const { headers: cols, records: rows } = handler(res.data.results);
+          setNext(res.data.links.next);
+          setPrev(res.data.links.previous);
+          setTotal(Number(res.data.total));
+          setPage(Number(res.data.page));
+          setPageSize(Number(res.data.page_size));
+          setHeaders(cols);
+          setRecords(rows);
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  // useEffect(() => {
+  //   fetchData(URL.url);
+  // }, []);
+
+  useEffect(() => {
+    fetchData(
+      URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
+    );
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    fetchData(
+      URLHandler(URL.uri, query, MODULE, search, page, pageSize, null).url
+    );
+  }, [search]);
+
+  useEffect(() => {
+    fetchData(
+      URLHandler(URL.uri, query, MODULE, null, page, pageSize, ordering).url
+    );
+  }, [ordering]);
+
+  useEffect(() => {
+    fetchData(
+      URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
+    );
+  }, [query]);
 
   return (
     <>
@@ -30,11 +118,15 @@ function Sequences(): JSX.Element {
             : "ebs-left-side-content-frame"
         }`}
       >
-        <SequencesSideMenu
-          module={"TB"}
-          wideView={wideView}
-          setWideView={setWideView}
-        />
+        {headers && records && (
+          <SequencesSideMenu
+            module={MODULE}
+            query={query}
+            wideView={wideView}
+            setQuery={setQuery}
+            setWideView={setWideView}
+          />
+        )}
       </div>
       <div
         className={`${
@@ -43,16 +135,40 @@ function Sequences(): JSX.Element {
             : "ebs-main-content-with-left-side-frame"
         }`}
       >
-        <Grid padded>
-          <Grid.Row>
-            <Grid.Column>
-              <SequencesVizView module={"TB"} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        {headers && records && (
+          <Grid padded>
+            <Grid.Row>
+              <Grid.Column>
+                <SequencesVizView
+                  title={MODULE}
+                  path={"/sequences/tb"}
+                  prev={prev}
+                  next={next}
+                  total={total}
+                  page={page}
+                  pageSize={pageSize}
+                  query={query}
+                  search={search}
+                  ordering={ordering}
+                  headers={headers}
+                  records={records}
+                  isLoading={isLoading}
+                  setPage={setPage}
+                  setPageSize={setPageSize}
+                  setQuery={setQuery}
+                  setSearch={setSearch}
+                  setOrdering={setOrdering}
+                  setHeaders={setHeaders}
+                  setRecords={setRecords}
+                  setLoading={setLoading}
+                />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        )}
       </div>
     </>
   );
 }
 
-export default withAuth(Sequences);
+export default withAuth(SequenceTB);

@@ -21,21 +21,21 @@ function MetagenomeAnalysis(): JSX.Element {
 
   const panes = [
     {
-      menuItem: "Metagenome Analysis 1",
+      menuItem: "Table 1",
       render: function getContent() {
-        return <Tab.Pane>Metagenome Analysis 1 Content</Tab.Pane>;
+        return <Tab.Pane>Metagenome Analysis 1</Tab.Pane>;
       },
     },
     {
-      menuItem: "Metagenome Analysis 2",
+      menuItem: "Table 2",
       render: function getContent() {
-        return <Tab.Pane>Metagenome Analysis 2 Content</Tab.Pane>;
+        return <Tab.Pane>Metagenome Analysis 2</Tab.Pane>;
       },
     },
     {
-      menuItem: "Metagenome Analysis 3",
+      menuItem: "...",
       render: function getContent() {
-        return <Tab.Pane>Metagenome Analysis 3 Content</Tab.Pane>;
+        return <Tab.Pane>...</Tab.Pane>;
       },
     },
   ];

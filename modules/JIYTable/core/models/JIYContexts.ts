@@ -41,6 +41,7 @@ export interface JIYTableStateContext<T> {
   total: number;
   page: number;
   pageSize: number;
+  query: string;
   search: string;
   ordering: JIYOrderingContext;
   headers: Array<JIYHeaderContext>;
@@ -48,6 +49,7 @@ export interface JIYTableStateContext<T> {
   isLoading: boolean;
   setPage: Dispatch<SetStateAction<number>>;
   setPageSize: Dispatch<SetStateAction<number>>;
+  setQuery: Dispatch<SetStateAction<string>>;
   setSearch: Dispatch<SetStateAction<string>>;
   setOrdering: Dispatch<SetStateAction<JIYOrderingContext>>;
   setHeaders: Dispatch<SetStateAction<Array<JIYHeaderContext>>>;
@@ -69,12 +71,16 @@ export interface JIYTableHeaderContext {
   setOrdering: Dispatch<SetStateAction<JIYOrderingContext>>;
 }
 
-export interface JIYTableInstanceContext<T> {
+export interface JIYTableStandaloneContext<T> {
   title: string;
   url: JIYURLContext;
   path: string;
   module: string;
   handler: (x: Array<T>) => JIYTabularDataContext<T>;
+}
+
+export interface JIYTableStandaloneVizViewContext {
+  module: string;
 }
 
 export interface JIYOrderingContext {
@@ -84,7 +90,9 @@ export interface JIYOrderingContext {
 
 export interface VizViewContext {
   module: string;
+  query: string;
   wideView: boolean;
+  setQuery: Dispatch<SetStateAction<string>>;
   setWideView: Dispatch<SetStateAction<boolean>>;
 }
 

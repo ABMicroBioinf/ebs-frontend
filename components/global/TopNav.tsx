@@ -109,7 +109,7 @@ function TopNav(): JSX.Element {
     },
     {
       key: 8,
-      text: "CPO-Analysis",
+      text: "CPO Analysis",
       as: "button",
       to: "/analysis/cpo",
       handler: goLink,
@@ -121,7 +121,7 @@ function TopNav(): JSX.Element {
     },
     {
       key: 9,
-      text: "Metagemnome-Analysis",
+      text: "MG Analysis",
       as: "button",
       to: "/analysis/metagenome",
       handler: goLink,
@@ -133,7 +133,7 @@ function TopNav(): JSX.Element {
     },
     {
       key: 10,
-      text: "TB-Analysis",
+      text: "TB Analysis",
       as: "button",
       to: "/analysis/tb",
       handler: goLink,

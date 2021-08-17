@@ -14,11 +14,10 @@ import {
   JIYHeaderContext,
   JIYOrderingContext,
   JIYRecordContext,
-  JIYTableInstanceContext,
+  JIYTableStandaloneContext,
 } from "./core/models/JIYContexts";
 import JIYTable from "./core/components/JIYTable";
 
-import TablePlaceholder from "../../components/global/TablePlaceholder";
 import { URLHandler } from "./core/libs/handler";
 
 function JIYTableStandalone<T>({
@@ -27,7 +26,7 @@ function JIYTableStandalone<T>({
   path,
   module,
   handler,
-}: JIYTableInstanceContext<T>): JSX.Element {
+}: JIYTableStandaloneContext<T>): JSX.Element {
   const { accessToken } = useAuth();
 
   const [next, setNext] = useState<string>(null);

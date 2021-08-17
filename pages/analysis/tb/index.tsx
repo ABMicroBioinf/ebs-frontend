@@ -23,19 +23,19 @@ function TBAnalysis() {
     {
       menuItem: "Table 1",
       render: function getContent() {
-        return <Tab.Pane>TB Analysis 1 Content</Tab.Pane>;
+        return <Tab.Pane>TB Analysis 1</Tab.Pane>;
       },
     },
     {
       menuItem: "Table 2",
       render: function getContent() {
-        return <Tab.Pane>TB Analysis 2 Content</Tab.Pane>;
+        return <Tab.Pane>TB Analysis 2</Tab.Pane>;
       },
     },
     {
-      menuItem: "Table 3",
+      menuItem: "...",
       render: function getContent() {
-        return <Tab.Pane>TB Analysis 3 Content</Tab.Pane>;
+        return <Tab.Pane>...</Tab.Pane>;
       },
     },
   ];

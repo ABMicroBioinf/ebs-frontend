@@ -5,86 +5,87 @@
  * @modify date 2021-07-15 13:20:05
  * @desc [description]
  */
-import axios from "axios";
-import { useCallback, useEffect, useReducer, useState } from "react";
-import { API, API_SEQUENCE_METADATA } from "../../../config/apis";
-import { useAuth } from "../../../middleware/AuthProvider";
-import { VizViewContext } from "../../../modules/JIYTable/core/models/JIYContexts";
+import React, { useCallback, useEffect, useState } from "react";
 
+import axios from "axios";
 import {
   Accordion,
   Menu,
   Label,
   Checkbox,
   Segment,
-  Input,
   Grid,
   Icon,
+  Header,
 } from "semantic-ui-react";
+
+import { API, API_SEQUENCE_METADATA } from "../../../config/apis";
+import { useAuth } from "../../../middleware/AuthProvider";
+import { VizViewContext } from "../../../modules/JIYTable/core/models/JIYContexts";
 
 /**
  * Search
  * @param param - See {@link EBSTableInstanceStateContext}
  * @returns - Search Component
  */
-function Search(): JSX.Element {
-  const initialSearchState = {
-    loading: false,
-    searchValue: "",
-  };
+// function Search(): JSX.Element {
+//   const initialSearchState = {
+//     loading: false,
+//     searchValue: "",
+//   };
 
-  function searchReducer(state, action) {
-    switch (action.searchType) {
-      case "CLEAN_QUERY":
-        return initialSearchState;
-      case "START_SEARCH":
-        return { ...state, loading: true, searchValue: action.searchQuery };
-      case "FINISH_SEARCH":
-        return { ...state, loading: false, searchValue: action.searchQuery };
-      case "NOT_FOUND":
-        return { ...state, loading: false };
+//   function searchReducer(state, action) {
+//     switch (action.searchType) {
+//       case "CLEAN_QUERY":
+//         return initialSearchState;
+//       case "START_SEARCH":
+//         return { ...state, loading: true, searchValue: action.searchQuery };
+//       case "FINISH_SEARCH":
+//         return { ...state, loading: false, searchValue: action.searchQuery };
+//       case "NOT_FOUND":
+//         return { ...state, loading: false };
 
-      default:
-        throw new Error();
-    }
-  }
+//       default:
+//         throw new Error();
+//     }
+//   }
 
-  const [searchState, dispatchSearch] = useReducer(
-    searchReducer,
-    initialSearchState
-  );
-  const { searchValue } = searchState;
+//   const [searchState, dispatchSearch] = useReducer(
+//     searchReducer,
+//     initialSearchState
+//   );
+//   const { searchValue } = searchState;
 
-  const handleSearchChange = useCallback((e, data) => {
-    // dispatchSearch({ searchType: "START_SEARCH", searchQuery: data.value });
-    // if (data.value.length === 0) {
-    //   dispatchSearch({ searchType: "CLEAN_QUERY" });
-    //   setEBSTableState({
-    //     type: "SEARCH_KEYWORD",
-    //     keyword: "",
-    //   });
-    //   return;
-    // }
-    // dispatchSearch({
-    //   searchType: "FINISH_SEARCH",
-    //   searchQuery: data.value,
-    // });
-    // setEBSTableState({
-    //   type: "SEARCH_KEYWORD",
-    //   keyword: data.value,
-    // });
-  }, []);
+//   const handleSearchChange = useCallback((e, data) => {
+//     // dispatchSearch({ searchType: "START_SEARCH", searchQuery: data.value });
+//     // if (data.value.length === 0) {
+//     //   dispatchSearch({ searchType: "CLEAN_QUERY" });
+//     //   setEBSTableState({
+//     //     type: "SEARCH_KEYWORD",
+//     //     keyword: "",
+//     //   });
+//     //   return;
+//     // }
+//     // dispatchSearch({
+//     //   searchType: "FINISH_SEARCH",
+//     //   searchQuery: data.value,
+//     // });
+//     // setEBSTableState({
+//     //   type: "SEARCH_KEYWORD",
+//     //   keyword: data.value,
+//     // });
+//   }, []);
 
-  return (
-    <Input
-      onChange={handleSearchChange}
-      value={searchValue}
-      icon="search"
-      placeholder="Search..."
-      type="text"
-    />
-  );
-}
+//   return (
+//     <Input
+//       onChange={handleSearchChange}
+//       value={searchValue}
+//       icon="search"
+//       placeholder="Search..."
+//       type="text"
+//     />
+//   );
+// }
 
 /**
  * SequencesSideMenu
@@ -93,31 +94,47 @@ function Search(): JSX.Element {
  */
 function SequencesSideMenu({
   module,
+  query,
   wideView,
+  setQuery,
   setWideView,
 }: VizViewContext): JSX.Element {
   const { accessToken } = useAuth();
 
+  const [queryset, setQueryset] = useState([]);
   const [filters, setFilters] = useState(null);
-  const [activeIndex, setActiveIndex] = useState({
-    0: false,
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-  });
+  const [activeIndex, setActiveIndex] = useState({});
 
   const handleClick = (e, data) => {
     const { index, active } = data;
     setActiveIndex({ ...activeIndex, [index]: !active });
   };
 
-  const handleChange = (e, data) => {
-    // setEBSTableState({
-    //   type: "SEARCH_KEYWORD",
-    //   keyword: data.value,
-    // });
-  };
+  const handleChange = useCallback(
+    // {field: key, keywords: value}
+    (e, data) => {
+      const [key, value] = data.value.split(".");
+      setQueryset(
+        queryset.length > 0
+          ? queryset.find((obj) => obj.field === key)
+            ? queryset.map((obj) =>
+                obj.field === key
+                  ? {
+                      ...obj,
+                      keywords: obj.keywords.includes(value)
+                        ? obj.keywords.filter(
+                            (_, i) => i !== obj.keywords.indexOf(value)
+                          )
+                        : [...obj.keywords, value],
+                    }
+                  : { ...obj }
+              )
+            : [...queryset, { field: key, keywords: [value] }]
+          : [{ field: key, keywords: [value] }]
+      );
+    },
+    [queryset]
+  );
 
   const getSubMenuItem = (parent, arr) => (
     <Grid className="ebs-filters-submenu">
@@ -125,10 +142,9 @@ function SequencesSideMenu({
         <Grid.Row key={index}>
           <Grid.Column>
             <Checkbox
-              // className="ebs-inverted"
               label={sub[parent]}
               name={sub[parent]}
-              value={sub[parent]}
+              value={parent + "." + sub[parent]}
               onChange={handleChange}
             />
           </Grid.Column>
@@ -179,6 +195,21 @@ function SequencesSideMenu({
     fetchFilters();
   }, []);
 
+  useEffect(() => {
+    console.log(
+      queryset
+        .filter((obj) => obj.keywords.length > 0)
+        .map((obj) => obj.field + "=" + obj.keywords.join(","))
+        .join("&")
+    );
+    setQuery(
+      queryset
+        .filter((obj) => obj.keywords.length > 0)
+        .map((obj) => obj.field + "=" + obj.keywords.join(","))
+        .join("&")
+    );
+  }, [queryset]);
+
   return wideView ? (
     <Grid
       verticalAlign="middle"
@@ -198,7 +229,7 @@ function SequencesSideMenu({
   ) : (
     <>
       <Segment className="ebs-borderless ebs-shadowless">
-        <Search />
+        <Header>{module} Filter</Header>
       </Segment>
       <div className="ebs-scrollable-inner">
         <Accordion className="ebs-borderless" fluid as={Menu} vertical>
