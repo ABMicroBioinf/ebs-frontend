@@ -132,12 +132,12 @@ function SequencesSideMenu({
   }, []);
 
   useEffect(() => {
-    console.log(
-      queryset
-        .filter((obj) => obj.keywords.length > 0)
-        .map((obj) => obj.field + "=" + obj.keywords.join(","))
-        .join("&")
-    );
+    // console.log(
+    //   queryset
+    //     .filter((obj) => obj.keywords.length > 0)
+    //     .map((obj) => obj.field + "=" + obj.keywords.join(","))
+    //     .join("&")
+    // );
     setQuery(
       queryset
         .filter((obj) => obj.keywords.length > 0)

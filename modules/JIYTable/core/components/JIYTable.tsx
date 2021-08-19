@@ -6,13 +6,13 @@
  * @desc [description]
  */
 
-import React, { useCallback } from "react";
+import React, { useCallback, useRef, useState } from "react";
 
 import { JIYTableStateContext } from "../models/JIYContexts";
 import JIYTableHeader from "./JIYTableHeader";
 import JIYCellRow from "./JIYCellRow";
 
-import { Grid, Table } from "semantic-ui-react";
+import { Grid, Ref, Sticky, Table } from "semantic-ui-react";
 import { pick } from "../libs/gizmos";
 import JIYTableTools from "./JIYTableTools";
 import JIYTableCustomHead from "../plugins/JIYTableCustomHead";
@@ -46,6 +46,12 @@ function JIYTable<T>({
   setRecords,
   setLoading,
 }: JIYTableStateContext<T>): JSX.Element {
+  const [mouseDown, setMouseDown] = useState(false);
+  const [startX, setStartX] = useState(null);
+  const [scrollLeft, setScrollLeft] = useState(null);
+
+  const draggableWrapperRef = useRef(null);
+
   const getCellRows = useCallback(() => {
     if (headers.length > 0) {
       if (records.length > 0) {
@@ -79,6 +85,30 @@ function JIYTable<T>({
       );
     }
   }, [records]);
+
+  const handleHorizontalScrolling = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!mouseDown) {
+        return;
+      }
+
+      const x = e.pageX - draggableWrapperRef.current?.offsetLeft;
+      const scroll = x - startX;
+      draggableWrapperRef.current.scrollLeft = scrollLeft - scroll;
+    },
+    [mouseDown]
+  );
+
+  const startDragging = useCallback((e) => {
+    setMouseDown(true);
+    setStartX(e.pageX - draggableWrapperRef.current?.offsetLeft);
+    setScrollLeft(draggableWrapperRef.current?.scrollLeft);
+  }, []);
+
+  const stopDragging = useCallback((e) => {
+    setMouseDown(false);
+  }, []);
 
   return (
     <Grid padded>
@@ -117,17 +147,37 @@ function JIYTable<T>({
             />
           </Grid.Row>
           {!isLoading && (
-            <Grid.Row className="ebs-table-temporary">
-              <Table sortable celled collapsing striped size="small">
-                <JIYTableHeader
-                  headers={headers}
-                  ordering={ordering}
-                  setHeaders={setHeaders}
-                  setOrdering={setOrdering}
-                />
-                <Table.Body>{getCellRows()}</Table.Body>
-              </Table>
-            </Grid.Row>
+            <Ref innerRef={draggableWrapperRef}>
+              <Grid.Row
+                className="ebs-table-draggable-wrapper"
+                onMouseMove={handleHorizontalScrolling}
+                onMouseUp={stopDragging}
+                onMouseDown={startDragging}
+                onMouseLeave={stopDragging}
+              >
+                <Table
+                  className={`${
+                    mouseDown
+                      ? "ebs-table-draggable-inner-grabbing"
+                      : "ebs-table-draggable-inner"
+                  }`}
+                  singleLine
+                  sortable
+                  celled
+                  collapsing
+                  striped
+                  size="small"
+                >
+                  <JIYTableHeader
+                    headers={headers}
+                    ordering={ordering}
+                    setHeaders={setHeaders}
+                    setOrdering={setOrdering}
+                  />
+                  <Table.Body>{getCellRows()}</Table.Body>
+                </Table>
+              </Grid.Row>
+            </Ref>
           )}
         </Grid>
       </Grid.Column>

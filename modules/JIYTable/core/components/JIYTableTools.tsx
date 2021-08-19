@@ -7,7 +7,6 @@
  */
 
 import React, { useCallback, useState } from "react";
-import { CSVLink } from "react-csv";
 
 import {
   Menu,
@@ -17,10 +16,6 @@ import {
   Dropdown,
   Grid,
   Icon,
-  Modal,
-  Header,
-  Table,
-  TableBody,
 } from "semantic-ui-react";
 import { JIYTableStateContext } from "../models/JIYContexts";
 
@@ -168,7 +163,7 @@ function JIYTableTools<T>({
 
   return (
     <>
-      <Menu attached="top" tabular fluid>
+      <Menu className="ebs-sticky" attached="top" tabular fluid>
         <Menu.Item>
           <Button onClick={handleExport}>Export as CSV</Button>
         </Menu.Item>
