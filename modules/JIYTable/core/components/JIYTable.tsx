@@ -15,7 +15,7 @@ import JIYCellRow from "./JIYCellRow";
 import { Grid, Table } from "semantic-ui-react";
 import { pick } from "../libs/gizmos";
 import JIYTableTools from "./JIYTableTools";
-import TablePlaceholder from "../../../../components/global/TablePlaceholder";
+import JIYTableCustomHead from "../plugins/JIYTableCustomHead";
 
 /**
  * JIYTable
@@ -31,6 +31,7 @@ function JIYTable<T>({
   total,
   page,
   pageSize,
+  query,
   search,
   ordering,
   headers,
@@ -38,6 +39,7 @@ function JIYTable<T>({
   isLoading,
   setPage,
   setPageSize,
+  setQuery,
   setSearch,
   setOrdering,
   setHeaders,
@@ -82,9 +84,13 @@ function JIYTable<T>({
     <Grid padded>
       <Grid.Column>
         <Grid padded>
-          <Grid.Row>
-            <h2>{title}</h2>
-          </Grid.Row>
+          <JIYTableCustomHead
+            title={title}
+            search={search}
+            isLoading={isLoading}
+            setSearch={setSearch}
+            setLoading={setLoading}
+          />
           <Grid.Row>
             <JIYTableTools
               title={title}
@@ -94,6 +100,7 @@ function JIYTable<T>({
               total={total}
               page={page}
               pageSize={pageSize}
+              query={query}
               search={search}
               ordering={ordering}
               headers={headers}
@@ -101,6 +108,7 @@ function JIYTable<T>({
               isLoading={isLoading}
               setPage={setPage}
               setPageSize={setPageSize}
+              setQuery={setQuery}
               setSearch={setSearch}
               setOrdering={setOrdering}
               setHeaders={setHeaders}

@@ -92,13 +92,13 @@ function SequenceTB(): JSX.Element {
 
   useEffect(() => {
     fetchData(
-      URLHandler(URL.uri, query, MODULE, search, page, pageSize, null).url
+      URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
     );
   }, [search]);
 
   useEffect(() => {
     fetchData(
-      URLHandler(URL.uri, query, MODULE, null, page, pageSize, ordering).url
+      URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
     );
   }, [ordering]);
 
