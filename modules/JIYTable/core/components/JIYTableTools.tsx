@@ -163,7 +163,7 @@ function JIYTableTools<T>({
 
   return (
     <>
-      <Menu className="ebs-sticky" attached="top" tabular fluid>
+      <Menu attached="top" tabular fluid>
         <Menu.Item>
           <Button onClick={handleExport}>Export as CSV</Button>
         </Menu.Item>

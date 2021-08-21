@@ -6,7 +6,7 @@
  * @desc [description]
  */
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { JIYTableStateContext } from "../models/JIYContexts";
 import JIYTableHeader from "./JIYTableHeader";
@@ -49,8 +49,28 @@ function JIYTable<T>({
   const [mouseDown, setMouseDown] = useState(false);
   const [startX, setStartX] = useState(null);
   const [scrollLeft, setScrollLeft] = useState(null);
+  const [headerOnTop, setHeaderOnTop] = useState(false);
 
   const draggableWrapperRef = useRef(null);
+  const stickyNodeMountPointRef = useRef(null);
+  const tableHeaderObserver = useRef<IntersectionObserver>();
+  const options = {
+    root: null,
+    rootMargin: "-160px 0px 0px 0px",
+    threshold: 0,
+  };
+  const stickyTableHeaderRef = useCallback(
+    (node: HTMLElement | null) => {
+      if (tableHeaderObserver.current) tableHeaderObserver.current.disconnect();
+      tableHeaderObserver.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          entries[0].target.classList.add("ebs-table-header");
+        }
+      }, options);
+      if (node) tableHeaderObserver.current.observe(node);
+    },
+    [headerOnTop]
+  );
 
   const getCellRows = useCallback(() => {
     if (headers.length > 0) {
@@ -110,76 +130,98 @@ function JIYTable<T>({
     setMouseDown(false);
   }, []);
 
+  useEffect(() => {
+    headerOnTop && console.log("scrolling forward");
+  }, [headerOnTop]);
+
   return (
     <Grid padded>
       <Grid.Column>
-        <Grid padded>
-          <JIYTableCustomHead
-            title={title}
-            search={search}
-            isLoading={isLoading}
-            setSearch={setSearch}
-            setLoading={setLoading}
-          />
-          <Grid.Row>
-            <JIYTableTools
-              title={title}
-              path={path}
-              prev={prev}
-              next={next}
-              total={total}
-              page={page}
-              pageSize={pageSize}
-              query={query}
-              search={search}
-              ordering={ordering}
-              headers={headers}
-              records={records}
-              isLoading={isLoading}
-              setPage={setPage}
-              setPageSize={setPageSize}
-              setQuery={setQuery}
-              setSearch={setSearch}
-              setOrdering={setOrdering}
-              setHeaders={setHeaders}
-              setRecords={setRecords}
-              setLoading={setLoading}
-            />
-          </Grid.Row>
-          {!isLoading && (
-            <Ref innerRef={draggableWrapperRef}>
-              <Grid.Row
-                className="ebs-table-draggable-wrapper"
-                onMouseMove={handleHorizontalScrolling}
-                onMouseUp={stopDragging}
-                onMouseDown={startDragging}
-                onMouseLeave={stopDragging}
-              >
-                <Table
-                  className={`${
-                    mouseDown
-                      ? "ebs-table-draggable-inner-grabbing"
-                      : "ebs-table-draggable-inner"
-                  }`}
-                  singleLine
-                  sortable
-                  celled
-                  collapsing
-                  striped
-                  size="small"
-                >
-                  <JIYTableHeader
-                    headers={headers}
-                    ordering={ordering}
-                    setHeaders={setHeaders}
-                    setOrdering={setOrdering}
-                  />
-                  <Table.Body>{getCellRows()}</Table.Body>
-                </Table>
+        <div ref={stickyNodeMountPointRef}>
+          <Grid padded>
+            <Grid.Row>
+              <JIYTableCustomHead
+                title={title}
+                search={search}
+                isLoading={isLoading}
+                setSearch={setSearch}
+                setLoading={setLoading}
+              />
+            </Grid.Row>
+            <Sticky
+              className="ebs-sticky-node"
+              offset={40}
+              context={stickyNodeMountPointRef}
+              onStick={() => {
+                setHeaderOnTop(true);
+              }}
+              onUnstick={() => {
+                setHeaderOnTop(false);
+              }}
+            >
+              <Grid.Row>
+                <JIYTableTools
+                  title={title}
+                  path={path}
+                  prev={prev}
+                  next={next}
+                  total={total}
+                  page={page}
+                  pageSize={pageSize}
+                  query={query}
+                  search={search}
+                  ordering={ordering}
+                  headers={headers}
+                  records={records}
+                  isLoading={isLoading}
+                  setPage={setPage}
+                  setPageSize={setPageSize}
+                  setQuery={setQuery}
+                  setSearch={setSearch}
+                  setOrdering={setOrdering}
+                  setHeaders={setHeaders}
+                  setRecords={setRecords}
+                  setLoading={setLoading}
+                />
               </Grid.Row>
-            </Ref>
-          )}
-        </Grid>
+            </Sticky>
+            {!isLoading && (
+              <Ref innerRef={draggableWrapperRef}>
+                <Grid.Row
+                  className="ebs-table-draggable-wrapper ebs-header-anchor"
+                  onMouseMove={handleHorizontalScrolling}
+                  onMouseUp={stopDragging}
+                  onMouseDown={startDragging}
+                  onMouseLeave={stopDragging}
+                >
+                  <Table
+                    className={`${
+                      mouseDown
+                        ? "ebs-table-draggable-inner-grabbing"
+                        : "ebs-table-draggable-inner"
+                    }`}
+                    singleLine
+                    sortable
+                    celled
+                    collapsing
+                    striped
+                    size="small"
+                  >
+                    <Ref innerRef={stickyTableHeaderRef}>
+                      <JIYTableHeader
+                        headers={headers}
+                        ordering={ordering}
+                        setHeaders={setHeaders}
+                        setOrdering={setOrdering}
+                      />
+                    </Ref>
+                    <Table.Body>{getCellRows()}</Table.Body>
+                  </Table>
+                </Grid.Row>
+              </Ref>
+            )}
+          </Grid>
+        </div>
       </Grid.Column>
     </Grid>
   );

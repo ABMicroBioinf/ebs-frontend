@@ -70,14 +70,14 @@ function JIYTableCustomHead({
   setLoading,
 }): JSX.Element {
   return (
-    <Grid.Row>
+    <>
       <Grid.Column width={8} textAlign="left">
         <h2>{title}</h2>
       </Grid.Column>
       <Grid.Column width={8} textAlign="right">
         <Search keyword={search} setKeyword={setSearch} />
       </Grid.Column>
-    </Grid.Row>
+    </>
   );
 }
 export default JIYTableCustomHead;

@@ -41,7 +41,7 @@ function SequenceTB(): JSX.Element {
   const [prev, setPrev] = useState<string>(null);
   const [total, setTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(5);
+  const [pageSize, setPageSize] = useState<number>(20);
   const [query, setQuery] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const [ordering, setOrdering] = useState<JIYOrderingContext>(null);
