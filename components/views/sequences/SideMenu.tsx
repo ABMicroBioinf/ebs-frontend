@@ -22,6 +22,7 @@ import {
 import { API, API_SEQUENCE_METADATA } from "../../../config/apis";
 import { useAuth } from "../../../middleware/AuthProvider";
 import { VizViewContext } from "../../../modules/JIYTable/core/models/JIYContexts";
+import SemanticDatepicker from "react-semantic-ui-datepickers";
 
 /**
  * SequencesSideMenu
@@ -40,6 +41,7 @@ function SequencesSideMenu({
   const [queryset, setQueryset] = useState([]);
   const [filters, setFilters] = useState(null);
   const [activeIndex, setActiveIndex] = useState({});
+  const [currentRange, setNewRange] = useState([]);
 
   const handleClick = (e, data) => {
     const { index, active } = data;
@@ -72,25 +74,66 @@ function SequencesSideMenu({
     [queryset]
   );
 
-  const getSubMenuItem = (parent, arr) => (
-    <Grid className="ebs-filters-submenu">
-      {arr.map((sub, index) => (
-        <Grid.Row key={index}>
-          <Grid.Column>
-            <Checkbox
-              label={sub[parent]}
-              name={sub[parent]}
-              value={parent + "." + sub[parent]}
-              onChange={handleChange}
-            />
-          </Grid.Column>
-          <Grid.Column width={2} floated="right">
-            <Label color="grey">{sub["total"]}</Label>
-          </Grid.Column>
-        </Grid.Row>
-      ))}
-    </Grid>
-  );
+  const handleDateChange = (event, data) => setNewRange(data.value);
+
+  /**
+   * Temporary
+   * Need for Redesign the structure of response
+   */
+  const getSubMenuItem = (parent, obj) => {
+    // Please consider redesign the structure of response
+    // following is temporary
+    const DATE_FIELDS = [
+      "DateCreated__min",
+      "DateCreated__max",
+      "LastUpdate__min",
+      "LastUpdate__max",
+    ];
+
+    if (Array.isArray(obj)) {
+      return (
+        <Grid className="ebs-filters-submenu">
+          {obj.map((sub, index) => (
+            <Grid.Row key={index}>
+              <Grid.Column>
+                <Checkbox
+                  label={sub[parent]}
+                  name={sub[parent]}
+                  value={parent + "." + sub[parent]}
+                  onChange={handleChange}
+                />
+              </Grid.Column>
+              <Grid.Column width={2} floated="right">
+                <Label color="grey">{sub["total"]}</Label>
+              </Grid.Column>
+            </Grid.Row>
+          ))}
+        </Grid>
+      );
+    } else {
+      if (DATE_FIELDS.includes(Object.keys(obj)[0])) {
+        const col = Object.keys(obj)[0].split("__")[0];
+        console.log(obj[col + "__min"]);
+        console.log(obj[col + "__max"]);
+        return (
+          <Grid className="ebs-filters-submenu">
+            <Grid.Row>
+              <SemanticDatepicker
+                inline={true}
+                minDate={obj[col + "__min"]}
+                maxDate={obj[col + "__max"]}
+                showToday={false}
+                onChange={handleDateChange}
+                type="range"
+              />
+            </Grid.Row>
+          </Grid>
+        );
+      } else {
+        return null;
+      }
+    }
+  };
 
   const getFilterMenu = () => {
     return Object.entries(filters).map(([key, value], index) => {

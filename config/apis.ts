@@ -15,3 +15,10 @@ export const API_REGISTER = "/api/account/register";
 // Sequence
 export const API_SEQUENCE = "/api/seq/sequence";
 export const API_SEQUENCE_METADATA = "/api/seq/sequence/metadata";
+
+// Isolate
+export const API_ASSEMBLY = "/api/isolate/gbase/assembly";
+export const API_ANNOTATION = "/api/isolate/gbase/annot";
+export const API_MLST = "/api/isolate/gbase/mlst";
+export const API_RESISTOME = "/api/isolate/gbase/resistome";
+export const API_VIRULOME = "/api/isolate/gbase/virulome";

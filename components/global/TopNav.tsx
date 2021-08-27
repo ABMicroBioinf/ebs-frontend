@@ -123,7 +123,7 @@ function TopNav(): JSX.Element {
       key: 9,
       text: "MG Analysis",
       as: "button",
-      to: "/analysis/metagenome",
+      to: "/analysis/mg",
       handler: goLink,
       depth: 2,
       has_children: false,

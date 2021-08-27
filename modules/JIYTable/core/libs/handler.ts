@@ -7,6 +7,13 @@
  */
 
 import { API } from "../../../../config/apis";
+import {
+  FlatAnnotation,
+  FlatAssembly,
+  FlatMLST,
+  FlatResistome,
+  FlatVirulome,
+} from "../../../../models/Isolate";
 import { FlatSequence } from "../../../../models/Sequence";
 import {
   JIYHeaderContext,
@@ -91,30 +98,153 @@ export function SequencesDataHandler(
   };
 }
 
-// export function RunDataHandler(
-//   results: Array<Run>
-// ): JIYTabularDataContext<Run> {
-//   const flatResults = results.map((run) => Object.fromEntries(pull(run)));
-//   const sample: Run = flatResults[0];
-//   const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
-//     (key, index): JIYHeaderContext => {
-//       const path = key.split("__");
-//       const name = path.pop();
-//       return {
-//         parent: path.join("__"),
-//         name: name,
-//         value: key,
-//         alias: null,
-//         display: true,
-//         primary: index === 0,
-//       };
-//     }
-//   );
-//   const data: Array<JIYRecordContext<Run>> = flatResults.map(
-//     (run: Run): JIYRecordContext<Run> => ({ isSelected: false, data: run })
-//   );
-//   return {
-//     headers: schema,
-//     records: data,
-//   };
-// }
+export function AssemblyDataHandler(
+  results: Array<FlatAssembly>
+): JIYTabularDataContext<FlatAssembly> {
+  const sample: FlatAssembly = results[0];
+  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
+    (key, index): JIYHeaderContext => {
+      const path = key.split("__");
+      const name = path.pop();
+      return {
+        parent: path.join("__"),
+        name: name,
+        value: key,
+        alias: null,
+        display: true,
+        primary: index === 0,
+      };
+    }
+  );
+  const data: Array<JIYRecordContext<FlatAssembly>> = results.map(
+    (flatSequences: FlatAssembly): JIYRecordContext<FlatAssembly> => ({
+      isSelected: false,
+      data: flatSequences,
+    })
+  );
+  return {
+    headers: schema,
+    records: data,
+  };
+}
+
+export function AnnotationDataHandler(
+  results: Array<FlatAnnotation>
+): JIYTabularDataContext<FlatAnnotation> {
+  const sample: FlatAnnotation = results[0];
+  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
+    (key, index): JIYHeaderContext => {
+      const path = key.split("__");
+      const name = path.pop();
+      return {
+        parent: path.join("__"),
+        name: name,
+        value: key,
+        alias: null,
+        display: true,
+        primary: index === 0,
+      };
+    }
+  );
+  const data: Array<JIYRecordContext<FlatAnnotation>> = results.map(
+    (flatSequences: FlatAnnotation): JIYRecordContext<FlatAnnotation> => ({
+      isSelected: false,
+      data: flatSequences,
+    })
+  );
+  return {
+    headers: schema,
+    records: data,
+  };
+}
+
+export function MLSTDataHandler(
+  results: Array<FlatMLST>
+): JIYTabularDataContext<FlatMLST> {
+  const sample: FlatMLST = results[0];
+  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
+    (key, index): JIYHeaderContext => {
+      const path = key.split("__");
+      const name = path.pop();
+      return {
+        parent: path.join("__"),
+        name: name,
+        value: key,
+        alias: null,
+        display: true,
+        primary: index === 0,
+      };
+    }
+  );
+  const data: Array<JIYRecordContext<FlatMLST>> = results.map(
+    (flatSequences: FlatMLST): JIYRecordContext<FlatMLST> => ({
+      isSelected: false,
+      data: flatSequences,
+    })
+  );
+  return {
+    headers: schema,
+    records: data,
+  };
+}
+
+export function ResistomeDataHandler(
+  results: Array<FlatResistome>
+): JIYTabularDataContext<FlatResistome> {
+  const sample: FlatResistome = results[0];
+  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
+    (key, index): JIYHeaderContext => {
+      const path = key.split("__");
+      const name = path.pop();
+      return {
+        parent: path.join("__"),
+        name: name,
+        value: key,
+        alias: null,
+        display: true,
+        primary: index === 0,
+      };
+    }
+  );
+  const data: Array<JIYRecordContext<FlatResistome>> = results.map(
+    (flatSequences: FlatResistome): JIYRecordContext<FlatResistome> => ({
+      isSelected: false,
+      data: flatSequences,
+    })
+  );
+  return {
+    headers: schema,
+    records: data,
+  };
+}
+
+export function VirulomeDataHandler(
+  results: Array<FlatVirulome>
+): JIYTabularDataContext<FlatVirulome> {
+  const sample: FlatVirulome = results[0];
+  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
+    (key, index): JIYHeaderContext => {
+      const path = key.split("__");
+      const name = path.pop();
+      return {
+        parent: path.join("__"),
+        name: name,
+        value: key,
+        alias: null,
+        display: true,
+        primary: index === 0,
+      };
+    }
+  );
+  const data: Array<JIYRecordContext<FlatVirulome>> = results.map(
+    (flatSequences: FlatVirulome): JIYRecordContext<FlatVirulome> => ({
+      isSelected: false,
+      //
+      data: flatSequences,
+    })
+  );
+  return {
+    headers: schema,
+    records: data,
+  };
+}
