@@ -76,25 +76,7 @@ function TBSummaryView(): JSX.Element {
     fetchData(
       URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
     );
-  }, [page, pageSize]);
-
-  useEffect(() => {
-    fetchData(
-      URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
-    );
-  }, [search]);
-
-  useEffect(() => {
-    fetchData(
-      URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
-    );
-  }, [ordering]);
-
-  useEffect(() => {
-    fetchData(
-      URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
-    );
-  }, [query]);
+  }, [page, pageSize, search, ordering, query]);
 
   return (
     <Tab.Pane>

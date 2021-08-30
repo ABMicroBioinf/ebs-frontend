@@ -30,14 +30,10 @@ Open [http://YOURDOMAIN] with your browser to see the result.
 Conflict issue between CSRF (backend) and JWT (frontend).
 When the issue occurs, users must clean up caches and cookies of their browser.
 
-### 2. API Request Optimization needed
-
-Multiple requests are sent when connection is established between the backend and the frontend.
-
-### 3. 'AND' join issue on the Filters in the side menu
+### 2. 'AND' join issue on the Filters in the side menu
 
 Multiple selection is not working, when user select more than 1 item in different category.
 
-### 4. Global Search is not properly working
+### 3. Global Search is not properly working
 
 When search field is used, partial keyword matching doesn't work properly. It might be caused by a custom filter definition in the backend.
