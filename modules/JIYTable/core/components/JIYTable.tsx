@@ -13,9 +13,9 @@ import JIYTableHeader from "./JIYTableHeader";
 import JIYCellRow from "./JIYCellRow";
 
 import { Grid, Ref, Sticky, Table } from "semantic-ui-react";
-import { pick } from "../libs/gizmos";
 import JIYTableTools from "./JIYTableTools";
 import JIYTableCustomHead from "../plugins/JIYTableCustomHead";
+import { pick } from "../libs/gizmos";
 
 /**
  * JIYTable

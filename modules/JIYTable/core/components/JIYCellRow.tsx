@@ -28,8 +28,8 @@ function JIYCellRow<T>({
         <JIYCellHeading record={record} setRecords={setRecords} />
       </Table.Cell>
       {record &&
-        Object.entries(record.data).map(([key, value], index) => {
-          return (
+        Object.entries(record.data).map(
+          ([key, value], index) => (
             <Table.Cell key={index}>
               {/* {primaryField !== undefined &&
               primaryField !== null &&
@@ -40,8 +40,9 @@ function JIYCellRow<T>({
               )} */}
               {value}
             </Table.Cell>
-          );
-        })}
+          )
+          // <Table.Cell key={index}>{value}</Table.Cell>
+        )}
     </Table.Row>
   );
 }
