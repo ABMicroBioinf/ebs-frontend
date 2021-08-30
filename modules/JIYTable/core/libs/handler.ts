@@ -11,6 +11,7 @@ import {
   FlatAnnotation,
   FlatAssembly,
   FlatMLST,
+  FlatPsummary,
   FlatResistome,
   FlatVirulome,
 } from "../../../../models/Isolate";
@@ -238,6 +239,37 @@ export function VirulomeDataHandler(
   );
   const data: Array<JIYRecordContext<FlatVirulome>> = results.map(
     (flatSequences: FlatVirulome): JIYRecordContext<FlatVirulome> => ({
+      isSelected: false,
+      //
+      data: flatSequences,
+    })
+  );
+  return {
+    headers: schema,
+    records: data,
+  };
+}
+
+export function ProfileSummaryDataHandler(
+  results: Array<FlatPsummary>
+): JIYTabularDataContext<FlatPsummary> {
+  const sample: FlatPsummary = results[0];
+  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
+    (key, index): JIYHeaderContext => {
+      const path = key.split("__");
+      const name = path.pop();
+      return {
+        parent: path.join("__"),
+        name: name,
+        value: key,
+        alias: null,
+        display: true,
+        primary: index === 0,
+      };
+    }
+  );
+  const data: Array<JIYRecordContext<FlatPsummary>> = results.map(
+    (flatSequences: FlatPsummary): JIYRecordContext<FlatPsummary> => ({
       isSelected: false,
       //
       data: flatSequences,

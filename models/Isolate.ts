@@ -297,9 +297,18 @@ export interface FlatAnnotation {
   attr__value_4: string;
 }
 
-export interface Psummary {
+export interface FlatPsummary {
   id: string;
   sequence: string;
+  owner: string;
+
+  project__id: string;
+  project__title: string;
+  sequence__LibrarySource: string;
+  sequence__LibraryLayout: string;
+  sequence__SequencerModel: string;
+  sequence__CenterName: string;
+
   pct_reads_mapped: number;
   num_reads_mapped: number;
   main_lin: string;
@@ -307,6 +316,8 @@ export interface Psummary {
   num_dr_variants: number;
   num_other_variants: number;
   drtype: string;
+
+  //Drugs
   rifampicin: string;
   isoniazid: string;
   pyrazinamide: string;
@@ -328,7 +339,7 @@ export interface Psummary {
   bedaquiline: string;
   clofazimine: string;
   delamanid: string;
-  owner: string;
+
   DateCreated: Date;
   LastUpdate: Date;
   Description: string;

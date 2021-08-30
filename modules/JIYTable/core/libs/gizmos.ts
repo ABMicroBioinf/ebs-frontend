@@ -1,23 +1,10 @@
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
- * @create date 2021-07-16 16:42:17
- * @modify date 2021-07-16 16:42:17
+ * @create date 2021-08-30 09:34:15
+ * @modify date 2021-08-30 09:34:15
  * @desc [description]
  */
-
-/**
- * Pull properties out from multi dimensioned array
- */
-export function pull(obj, prefix = "") {
-  return Object.entries(obj).flatMap(([key, value]) => {
-    if (value === Object(value) && value !== null && value !== undefined) {
-      return pull(value, `${prefix}${key}__`);
-    } else {
-      return [[`${prefix}${key}`, value]];
-    }
-  });
-}
 
 /**
  * Pick an item if the item is a member of array of second argument

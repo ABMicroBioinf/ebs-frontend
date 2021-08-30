@@ -16,6 +16,7 @@ import AnnotationView from "../../../components/views/analysis/AnnotationView";
 import MLSTView from "../../../components/views/analysis/MLSTView";
 import ResistomeView from "../../../components/views/analysis/ResistomeView";
 import VirulomeView from "../../../components/views/analysis/VirulomeView";
+import TBSummaryView from "../../../components/views/analysis/TBSummaryView";
 
 /**
  * TBAnalysis
@@ -58,7 +59,7 @@ function TBAnalysis() {
     {
       menuItem: "TBProfile",
       render: function getContent() {
-        return <Tab.Pane>...</Tab.Pane>;
+        return <TBSummaryView />;
       },
     },
   ];
