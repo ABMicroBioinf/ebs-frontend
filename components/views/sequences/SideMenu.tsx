@@ -93,21 +93,24 @@ function SequencesSideMenu({
     if (Array.isArray(obj)) {
       return (
         <Grid className="ebs-filters-submenu">
-          {obj.map((sub, index) => (
-            <Grid.Row key={index}>
-              <Grid.Column>
-                <Checkbox
-                  label={sub[parent]}
-                  name={sub[parent]}
-                  value={parent + "." + sub[parent]}
-                  onChange={handleChange}
-                />
-              </Grid.Column>
-              <Grid.Column width={2} floated="right">
-                <Label color="grey">{sub["total"]}</Label>
-              </Grid.Column>
-            </Grid.Row>
-          ))}
+          {obj.map((sub, index) => {
+            // console.log(sub[parent]);
+            return (
+              <Grid.Row key={index}>
+                <Grid.Column>
+                  <Checkbox
+                    label={sub[parent]}
+                    name={sub[parent]}
+                    value={parent + "." + sub[parent]}
+                    onChange={handleChange}
+                  />
+                </Grid.Column>
+                <Grid.Column width={2} floated="right">
+                  <Label color="grey">{sub["total"]}</Label>
+                </Grid.Column>
+              </Grid.Row>
+            );
+          })}
         </Grid>
       );
     } else {
@@ -136,6 +139,7 @@ function SequencesSideMenu({
   };
 
   const getFilterMenu = () => {
+    console.log(filters);
     return Object.entries(filters).map(([key, value], index) => {
       return (
         <Menu.Item key={index}>

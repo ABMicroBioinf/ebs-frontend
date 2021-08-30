@@ -22,3 +22,4 @@ export const API_ANNOTATION = "/api/isolate/gbase/annot";
 export const API_MLST = "/api/isolate/gbase/mlst";
 export const API_RESISTOME = "/api/isolate/gbase/resistome";
 export const API_VIRULOME = "/api/isolate/gbase/virulome";
+// export const API_TBPROFILE= "/api/isolate/gbase/";
