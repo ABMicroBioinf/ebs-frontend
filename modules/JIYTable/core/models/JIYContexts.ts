@@ -14,12 +14,13 @@ export interface JIYURLContext {
   url: string;
 }
 
+export type JIYHeaderDisplay = "visible" | "hidden" | "none";
+
 export interface JIYHeaderContext {
-  parent: string;
   name: string;
   value: string;
   alias: string;
-  display: boolean;
+  display: JIYHeaderDisplay;
   primary: boolean;
 }
 

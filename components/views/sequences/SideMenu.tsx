@@ -49,7 +49,6 @@ function SequencesSideMenu({
   };
 
   const handleChange = useCallback(
-    // {field: key, keywords: value}
     (e, data) => {
       const [key, value] = data.value.split(".");
       setQueryset(
@@ -76,10 +75,6 @@ function SequencesSideMenu({
 
   const handleDateChange = (event, data) => setNewRange(data.value);
 
-  /**
-   * Temporary
-   * Need for Redesign the structure of response
-   */
   const getSubMenuItem = (parent, obj) => {
     // Please consider redesign the structure of response
     // following is temporary
@@ -139,7 +134,6 @@ function SequencesSideMenu({
   };
 
   const getFilterMenu = () => {
-    console.log(filters);
     return Object.entries(filters).map(([key, value], index) => {
       return (
         <Menu.Item key={index}>

@@ -11,7 +11,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Tab } from "semantic-ui-react";
 import { API_MLST } from "../../../config/apis";
 import { useAuth } from "../../../middleware/AuthProvider";
-import { FlatAssembly } from "../../../models/Isolate";
+import { FlatMLST } from "../../../models/Isolate";
 import {
   JIYHeaderContext,
   JIYOrderingContext,
@@ -20,7 +20,7 @@ import {
 import IsolatesVizView from "./VizView";
 import {
   URLHandler,
-  AssemblyDataHandler as handler,
+  MLSTDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
 
 function MLSTView(): JSX.Element {
@@ -39,7 +39,7 @@ function MLSTView(): JSX.Element {
   const [ordering, setOrdering] = useState<JIYOrderingContext>(null);
   const [headers, setHeaders] = useState<Array<JIYHeaderContext>>(null);
   const [records, setRecords] =
-    useState<Array<JIYRecordContext<FlatAssembly>>>(null);
+    useState<Array<JIYRecordContext<FlatMLST>>>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -55,7 +55,6 @@ function MLSTView(): JSX.Element {
       .get(reqURL, config)
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data);
           const { headers: cols, records: rows } = handler(res.data.results);
           setNext(res.data.links.next);
           setPrev(res.data.links.previous);

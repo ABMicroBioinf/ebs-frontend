@@ -35,7 +35,7 @@ function JIYTableHeader({
         </Table.HeaderCell>
         {headers.length > 0 &&
           headers
-            .filter((colState) => colState.display && colState)
+            .filter((colState) => colState.display === "visible")
             .map((colState, index) => (
               <Table.HeaderCell
                 sorted={

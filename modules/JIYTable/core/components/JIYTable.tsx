@@ -6,7 +6,7 @@
  * @desc [description]
  */
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 
 import { JIYTableStateContext } from "../models/JIYContexts";
 import JIYTableHeader from "./JIYTableHeader";
@@ -75,7 +75,9 @@ function JIYTable<T>({
   const getCellRows = useCallback(() => {
     if (headers.length > 0) {
       if (records.length > 0) {
-        const keys = headers.filter((colState) => colState.display);
+        const keys = headers.filter(
+          (colState) => colState.display === "visible"
+        );
         return records.map((record, index) => {
           const rowObj = { ...record, data: pick(record.data, keys) };
           return (
@@ -129,10 +131,6 @@ function JIYTable<T>({
   const stopDragging = useCallback((e) => {
     setMouseDown(false);
   }, []);
-
-  useEffect(() => {
-    headerOnTop && console.log("scrolling forward");
-  }, [headerOnTop]);
 
   return (
     <Grid padded>

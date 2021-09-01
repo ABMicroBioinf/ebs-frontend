@@ -8,6 +8,15 @@
 
 import { API } from "../../../../config/apis";
 import {
+  CUSTOM_HEADER_ANNOTATION,
+  CUSTOM_HEADER_ASSEMBLY,
+  CUSTOM_HEADER_MLST,
+  CUSTOM_HEADER_PSUMMARY,
+  CUSTOM_HEADER_RESISTOME,
+  CUSTOM_HEADER_SEQUENCE,
+  CUSTOM_HEADER_VIRULOME,
+} from "../../../../config/headers";
+import {
   FlatAnnotation,
   FlatAssembly,
   FlatMLST,
@@ -18,6 +27,7 @@ import {
 import { FlatSequence } from "../../../../models/Sequence";
 import {
   JIYHeaderContext,
+  JIYHeaderDisplay,
   JIYOrderingContext,
   JIYRecordContext,
   JIYTabularDataContext,
@@ -53,7 +63,6 @@ export function URLHandler(
     url = url + "&page_size=" + pageSize;
   }
   if (ordering !== undefined && ordering !== null) {
-    // const orderingOn = ordering.column.replace(".", "__");
     const orderingOn = ordering.column;
     if (ordering.direction === "ascending") {
       url = url + "&ordering=" + orderingOn;
@@ -72,57 +81,98 @@ export function URLHandler(
 export function SequencesDataHandler(
   results: Array<FlatSequence>
 ): JIYTabularDataContext<FlatSequence> {
-  const sample: FlatSequence = results[0];
-  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
-    (key, index): JIYHeaderContext => {
-      const path = key.split("__");
-      const name = path.pop();
-      return {
-        parent: path.join("__"),
-        name: name,
-        value: key,
-        alias: null,
-        display: true,
-        primary: index === 0,
-      };
-    }
+  const schema: Array<JIYHeaderContext> = Object.entries(
+    CUSTOM_HEADER_SEQUENCE
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
+
+  // This is important to match the position of table header and data.
+  const standard = schema.map((obj) => obj.value);
+  const rearranged = results.map((obj) =>
+    Object.fromEntries(
+      Object.entries(obj).sort(
+        (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
+      )
+    )
   );
-  const data: Array<JIYRecordContext<FlatSequence>> = results.map(
+
+  const data: Array<JIYRecordContext<FlatSequence>> = rearranged.map(
     (flatSequences: FlatSequence): JIYRecordContext<FlatSequence> => ({
       isSelected: false,
       data: flatSequences,
     })
   );
+
   return {
     headers: schema,
     records: data,
   };
+  // const sample: FlatSequence = results[0];
+  // const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
+  //   (key, index): JIYHeaderContext => {
+  //     const path = key.split("__");
+  //     const name = path.pop();
+  //     return {
+  //       // parent: path.join("__"),
+  //       name: name,
+  //       value: key,
+  //       alias: null,
+  //       display: true,
+  //       primary: index === 0,
+  //     };
+  //   }
+  // );
+  // const data: Array<JIYRecordContext<FlatSequence>> = results.map(
+  //   (flatSequences: FlatSequence): JIYRecordContext<FlatSequence> => ({
+  //     isSelected: false,
+  //     data: flatSequences,
+  //   })
+  // );
+  // return {
+  //   headers: schema,
+  //   records: data,
+  // };
 }
 
 export function AssemblyDataHandler(
   results: Array<FlatAssembly>
 ): JIYTabularDataContext<FlatAssembly> {
-  const sample: FlatAssembly = results[0];
-  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
-    (key, index): JIYHeaderContext => {
-      const path = key.split("__");
-      const name = path.pop();
-      return {
-        parent: path.join("__"),
-        name: name,
-        value: key,
-        alias: null,
-        display: true,
-        primary: index === 0,
-      };
-    }
+  const schema: Array<JIYHeaderContext> = Object.entries(
+    CUSTOM_HEADER_ASSEMBLY
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
+
+  // This is important to match the position of table header and data.
+  const standard = schema.map((obj) => obj.value);
+  const rearranged = results.map((obj) =>
+    Object.fromEntries(
+      Object.entries(obj).sort(
+        (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
+      )
+    )
   );
-  const data: Array<JIYRecordContext<FlatAssembly>> = results.map(
-    (flatSequences: FlatAssembly): JIYRecordContext<FlatAssembly> => ({
+
+  const data: Array<JIYRecordContext<FlatAssembly>> = rearranged.map(
+    (flatAssembly: FlatAssembly): JIYRecordContext<FlatAssembly> => ({
       isSelected: false,
-      data: flatSequences,
+      data: flatAssembly,
     })
   );
+
   return {
     headers: schema,
     records: data,
@@ -132,27 +182,35 @@ export function AssemblyDataHandler(
 export function AnnotationDataHandler(
   results: Array<FlatAnnotation>
 ): JIYTabularDataContext<FlatAnnotation> {
-  const sample: FlatAnnotation = results[0];
-  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
-    (key, index): JIYHeaderContext => {
-      const path = key.split("__");
-      const name = path.pop();
-      return {
-        parent: path.join("__"),
-        name: name,
-        value: key,
-        alias: null,
-        display: true,
-        primary: index === 0,
-      };
-    }
+  const schema: Array<JIYHeaderContext> = Object.entries(
+    CUSTOM_HEADER_ANNOTATION
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
+
+  // This is important to match the position of table header and data.
+  const standard = schema.map((obj) => obj.value);
+  const rearranged = results.map((obj) =>
+    Object.fromEntries(
+      Object.entries(obj).sort(
+        (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
+      )
+    )
   );
-  const data: Array<JIYRecordContext<FlatAnnotation>> = results.map(
-    (flatSequences: FlatAnnotation): JIYRecordContext<FlatAnnotation> => ({
+
+  const data: Array<JIYRecordContext<FlatAnnotation>> = rearranged.map(
+    (flatAnnotation: FlatAnnotation): JIYRecordContext<FlatAnnotation> => ({
       isSelected: false,
-      data: flatSequences,
+      data: flatAnnotation,
     })
   );
+
   return {
     headers: schema,
     records: data,
@@ -162,27 +220,35 @@ export function AnnotationDataHandler(
 export function MLSTDataHandler(
   results: Array<FlatMLST>
 ): JIYTabularDataContext<FlatMLST> {
-  const sample: FlatMLST = results[0];
-  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
-    (key, index): JIYHeaderContext => {
-      const path = key.split("__");
-      const name = path.pop();
-      return {
-        parent: path.join("__"),
-        name: name,
-        value: key,
-        alias: null,
-        display: true,
-        primary: index === 0,
-      };
-    }
+  const schema: Array<JIYHeaderContext> = Object.entries(
+    CUSTOM_HEADER_MLST
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
+
+  // This is important to match the position of table header and data.
+  const standard = schema.map((obj) => obj.value);
+  const rearranged = results.map((obj) =>
+    Object.fromEntries(
+      Object.entries(obj).sort(
+        (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
+      )
+    )
   );
-  const data: Array<JIYRecordContext<FlatMLST>> = results.map(
-    (flatSequences: FlatMLST): JIYRecordContext<FlatMLST> => ({
+
+  const data: Array<JIYRecordContext<FlatMLST>> = rearranged.map(
+    (flatMLST: FlatMLST): JIYRecordContext<FlatMLST> => ({
       isSelected: false,
-      data: flatSequences,
+      data: flatMLST,
     })
   );
+
   return {
     headers: schema,
     records: data,
@@ -192,27 +258,35 @@ export function MLSTDataHandler(
 export function ResistomeDataHandler(
   results: Array<FlatResistome>
 ): JIYTabularDataContext<FlatResistome> {
-  const sample: FlatResistome = results[0];
-  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
-    (key, index): JIYHeaderContext => {
-      const path = key.split("__");
-      const name = path.pop();
-      return {
-        parent: path.join("__"),
-        name: name,
-        value: key,
-        alias: null,
-        display: true,
-        primary: index === 0,
-      };
-    }
+  const schema: Array<JIYHeaderContext> = Object.entries(
+    CUSTOM_HEADER_RESISTOME
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
+
+  // This is important to match the position of table header and data.
+  const standard = schema.map((obj) => obj.value);
+  const rearranged = results.map((obj) =>
+    Object.fromEntries(
+      Object.entries(obj).sort(
+        (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
+      )
+    )
   );
-  const data: Array<JIYRecordContext<FlatResistome>> = results.map(
-    (flatSequences: FlatResistome): JIYRecordContext<FlatResistome> => ({
+
+  const data: Array<JIYRecordContext<FlatResistome>> = rearranged.map(
+    (flatResistome: FlatResistome): JIYRecordContext<FlatResistome> => ({
       isSelected: false,
-      data: flatSequences,
+      data: flatResistome,
     })
   );
+
   return {
     headers: schema,
     records: data,
@@ -222,28 +296,35 @@ export function ResistomeDataHandler(
 export function VirulomeDataHandler(
   results: Array<FlatVirulome>
 ): JIYTabularDataContext<FlatVirulome> {
-  const sample: FlatVirulome = results[0];
-  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
-    (key, index): JIYHeaderContext => {
-      const path = key.split("__");
-      const name = path.pop();
-      return {
-        parent: path.join("__"),
-        name: name,
-        value: key,
-        alias: null,
-        display: true,
-        primary: index === 0,
-      };
-    }
+  const schema: Array<JIYHeaderContext> = Object.entries(
+    CUSTOM_HEADER_VIRULOME
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
+
+  // This is important to match the position of table header and data.
+  const standard = schema.map((obj) => obj.value);
+  const rearranged = results.map((obj) =>
+    Object.fromEntries(
+      Object.entries(obj).sort(
+        (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
+      )
+    )
   );
-  const data: Array<JIYRecordContext<FlatVirulome>> = results.map(
-    (flatSequences: FlatVirulome): JIYRecordContext<FlatVirulome> => ({
+
+  const data: Array<JIYRecordContext<FlatVirulome>> = rearranged.map(
+    (flatVirulome: FlatVirulome): JIYRecordContext<FlatVirulome> => ({
       isSelected: false,
-      //
-      data: flatSequences,
+      data: flatVirulome,
     })
   );
+
   return {
     headers: schema,
     records: data,
@@ -253,28 +334,35 @@ export function VirulomeDataHandler(
 export function ProfileSummaryDataHandler(
   results: Array<FlatPsummary>
 ): JIYTabularDataContext<FlatPsummary> {
-  const sample: FlatPsummary = results[0];
-  const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
-    (key, index): JIYHeaderContext => {
-      const path = key.split("__");
-      const name = path.pop();
-      return {
-        parent: path.join("__"),
-        name: name,
-        value: key,
-        alias: null,
-        display: true,
-        primary: index === 0,
-      };
-    }
+  const schema: Array<JIYHeaderContext> = Object.entries(
+    CUSTOM_HEADER_PSUMMARY
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
+
+  // This is important to match the position of table header and data.
+  const standard = schema.map((obj) => obj.value);
+  const rearranged = results.map((obj) =>
+    Object.fromEntries(
+      Object.entries(obj).sort(
+        (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
+      )
+    )
   );
-  const data: Array<JIYRecordContext<FlatPsummary>> = results.map(
-    (flatSequences: FlatPsummary): JIYRecordContext<FlatPsummary> => ({
+
+  const data: Array<JIYRecordContext<FlatPsummary>> = rearranged.map(
+    (flatPsummary: FlatPsummary): JIYRecordContext<FlatPsummary> => ({
       isSelected: false,
-      //
-      data: flatSequences,
+      data: flatPsummary,
     })
   );
+
   return {
     headers: schema,
     records: data,

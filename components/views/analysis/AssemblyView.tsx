@@ -55,7 +55,6 @@ function AssemblyView(): JSX.Element {
       .get(reqURL, config)
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data);
           const { headers: cols, records: rows } = handler(res.data.results);
           setNext(res.data.links.next);
           setPrev(res.data.links.previous);
