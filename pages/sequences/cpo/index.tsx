@@ -119,7 +119,7 @@ function SequenceTB(): JSX.Element {
               <Grid.Column>
                 <SequencesVizView
                   title={MODULE}
-                  path={"/sequences/tb"}
+                  path={"/sequences/cpo"}
                   prev={prev}
                   next={next}
                   total={total}

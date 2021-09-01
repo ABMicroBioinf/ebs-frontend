@@ -785,7 +785,7 @@ export const CUSTOM_HEADER_VIRULOME = {
   assembly__sequence__project__title: {
     name: "id",
     value: "assembly__sequence__project__title",
-    alias: "Project ID",
+    alias: "Project Title",
     display: "visible",
     primary: false,
   },

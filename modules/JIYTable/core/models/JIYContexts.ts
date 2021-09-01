@@ -61,6 +61,7 @@ export interface JIYTableStateContext<T> {
 export interface JIYCellRowContext<T> {
   primaryField: JIYHeaderContext;
   path: string;
+  headers: Array<JIYHeaderContext>;
   record: JIYRecordContext<T>;
   setRecords: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
 }

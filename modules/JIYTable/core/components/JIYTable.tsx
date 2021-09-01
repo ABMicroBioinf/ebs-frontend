@@ -75,15 +75,14 @@ function JIYTable<T>({
   const getCellRows = useCallback(() => {
     if (headers.length > 0) {
       if (records.length > 0) {
-        const keys = headers.filter(
-          (colState) => colState.display === "visible"
-        );
+        const keys = headers.filter((colState) => colState.display !== "none");
         return records.map((record, index) => {
           const rowObj = { ...record, data: pick(record.data, keys) };
           return (
             <JIYCellRow
               primaryField={headers.find((header) => header.primary)}
               path={path}
+              headers={headers}
               record={rowObj}
               setRecords={setRecords}
               key={index}

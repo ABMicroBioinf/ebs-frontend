@@ -14,6 +14,7 @@ export const API_REGISTER = "/api/account/register";
 
 // Sequence
 export const API_SEQUENCE = "/api/seq/sequence";
+export const API_SEQUENCE_DETAIL = "/api/seq/sequence/";
 export const API_SEQUENCE_METADATA = "/api/seq/sequence/metadata";
 
 // Isolate
