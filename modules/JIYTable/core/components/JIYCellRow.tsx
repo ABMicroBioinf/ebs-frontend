@@ -21,14 +21,14 @@ function JIYCellRow<T>({
   primaryField,
   path,
   headers,
+  records,
   record,
+  index,
   setRecords,
 }: JIYCellRowContext<T>): JSX.Element {
   const [row, setRow] = useState(record.data);
 
   const getValue = (key, value) => {
-    //temporary
-    // if (primaryField.value === key && record.data.sequence) {
     if (primaryField.value === key) {
       return <Link href={`${path}/${value}`}>{value}</Link>;
     } else {
@@ -37,7 +37,6 @@ function JIYCellRow<T>({
   };
 
   useEffect(() => {
-    console.log(record);
     const keys = headers.filter((colState) => colState.display === "visible");
     setRow(pick(record.data, keys));
   }, []);
@@ -45,7 +44,12 @@ function JIYCellRow<T>({
   return (
     <Table.Row>
       <Table.Cell>
-        <JIYCellHeading record={record} setRecords={setRecords} />
+        <JIYCellHeading
+          record={record}
+          records={records}
+          index={index}
+          setRecords={setRecords}
+        />
       </Table.Cell>
       {row &&
         Object.entries(row).map(([key, value], index) => (

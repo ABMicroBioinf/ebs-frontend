@@ -62,14 +62,25 @@ export interface JIYCellRowContext<T> {
   primaryField: JIYHeaderContext;
   path: string;
   headers: Array<JIYHeaderContext>;
+  records: Array<JIYRecordContext<T>>;
   record: JIYRecordContext<T>;
+  index: number;
   setRecords: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
 }
 
-export interface JIYTableHeaderContext {
+export interface JIYCellHeadingContext<T> {
+  record: JIYRecordContext<T>;
+  records: Array<JIYRecordContext<T>>;
+  index: number;
+  setRecords: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
+}
+
+export interface JIYTableHeaderContext<T> {
   headers: Array<JIYHeaderContext>;
+  records: Array<JIYRecordContext<T>>;
   ordering: JIYOrderingContext;
   setHeaders: Dispatch<SetStateAction<Array<JIYHeaderContext>>>;
+  setRecords: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
   setOrdering: Dispatch<SetStateAction<JIYOrderingContext>>;
 }
 

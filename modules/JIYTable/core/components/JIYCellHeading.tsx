@@ -6,19 +6,36 @@
  * @desc [description]
  */
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Checkbox } from "semantic-ui-react";
+import { JIYCellHeadingContext } from "../models/JIYContexts";
 
 /**
  * @param param - See {@link EBSTableRecordContext}
  * @returns - Cell Heading Component
  */
-function JIYCellHeading({ record, setRecords }): JSX.Element {
+function JIYCellHeading<T>({
+  record,
+  records,
+  index,
+  setRecords,
+}: JIYCellHeadingContext<T>): JSX.Element {
+  const [isSelected, setSelected] = useState(record.isSelected);
+
   const handleChange = useCallback(() => {
-    console.log("selected");
+    setSelected(!isSelected);
+  }, [isSelected]);
+
+  useEffect(() => {
+    records[index].isSelected = !isSelected;
+    setRecords(records);
+  }, [isSelected]);
+
+  useEffect(() => {
+    setSelected(record.isSelected);
   }, [record]);
 
-  return <Checkbox checked={record.isSelected} onChange={handleChange} />;
+  return <Checkbox checked={isSelected} onChange={handleChange} />;
 }
 
 export default JIYCellHeading;

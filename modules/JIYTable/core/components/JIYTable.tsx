@@ -83,7 +83,9 @@ function JIYTable<T>({
               primaryField={headers.find((header) => header.primary)}
               path={path}
               headers={headers}
+              records={records}
               record={rowObj}
+              index={index}
               setRecords={setRecords}
               key={index}
             />
@@ -207,8 +209,10 @@ function JIYTable<T>({
                     <Ref innerRef={stickyTableHeaderRef}>
                       <JIYTableHeader
                         headers={headers}
+                        records={records}
                         ordering={ordering}
                         setHeaders={setHeaders}
+                        setRecords={setRecords}
                         setOrdering={setOrdering}
                       />
                     </Ref>

@@ -6,7 +6,7 @@
  * @desc [description]
  */
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { Checkbox, Table } from "semantic-ui-react";
 import { JIYTableHeaderContext } from "../models/JIYContexts";
@@ -15,17 +15,23 @@ import { JIYTableHeaderContext } from "../models/JIYContexts";
  * @param param - See {@link EBSTableInstanceStateContext}
  * @returns - Table Header Component
  */
-function JIYTableHeader({
+function JIYTableHeader<T>({
   headers,
+  records,
   ordering,
   setHeaders,
+  setRecords,
   setOrdering,
-}: JIYTableHeaderContext): JSX.Element {
-  const [selectAll, setSelectAll] = useState(null);
+}: JIYTableHeaderContext<T>): JSX.Element {
+  const [selectAll, setSelectAll] = useState(false);
 
   const handleChange = useCallback(() => {
-    console.log("Select All");
-  }, []);
+    setSelectAll(!selectAll);
+  }, [selectAll]);
+
+  useEffect(() => {
+    setRecords(records.map((obj) => ({ ...obj, isSelected: selectAll })));
+  }, [selectAll]);
 
   return (
     <Table.Header>

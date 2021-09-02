@@ -1,0 +1,4 @@
+"test" page is a temporary page component of NEXT.js for showing chart example.
+
+Once you have "Chart" for the project, the "Chart" needs to be placed in proper place.
+Please make sure to delete "test" page after you have "Chart" page.
