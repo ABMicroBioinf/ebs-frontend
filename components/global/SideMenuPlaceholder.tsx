@@ -9,6 +9,10 @@
 import React from "react";
 import { Dimmer, Loader } from "semantic-ui-react";
 
+/**
+ * SideMenuPlaceholder
+ * @returns - Dimmer Component
+ */
 function SideMenuPlaceholder(): JSX.Element {
   return (
     <Dimmer active inverted>

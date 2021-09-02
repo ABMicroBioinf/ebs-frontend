@@ -9,6 +9,10 @@
 import React from "react";
 import { Dimmer, Loader, Segment } from "semantic-ui-react";
 
+/**
+ * TablePlaceholder
+ * @returns - Table Placeholder Component
+ */
 function TablePlaceholder(): JSX.Element {
   return (
     <>

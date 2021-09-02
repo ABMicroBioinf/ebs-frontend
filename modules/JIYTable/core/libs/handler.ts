@@ -34,6 +34,17 @@ import {
   JIYURLContext,
 } from "../models/JIYContexts";
 
+/**
+ * URLHandler
+ * @param uri - URI
+ * @param query - field
+ * @param module - seqtype
+ * @param search - search
+ * @param page - page
+ * @param pageSize - page_size
+ * @param ordering - ordering
+ * @returns - See {@link JIYURLContext}
+ */
 export function URLHandler(
   uri: string,
   query?: string,
@@ -78,6 +89,11 @@ export function URLHandler(
   };
 }
 
+/**
+ * SequenceDataHandler
+ * @param results - Array of FlatSequence. See {@link FlatSequence}
+ * @returns - See {@link JIYTabularDataContext}
+ */
 export function SequencesDataHandler(
   results: Array<FlatSequence>
 ): JIYTabularDataContext<FlatSequence> {
@@ -93,7 +109,6 @@ export function SequencesDataHandler(
     };
   });
 
-  // This is important to match the position of table header and data.
   const standard = schema.map((obj) => obj.value);
   const rearranged = results.map((obj) =>
     Object.fromEntries(
@@ -114,33 +129,13 @@ export function SequencesDataHandler(
     headers: schema,
     records: data,
   };
-  // const sample: FlatSequence = results[0];
-  // const schema: Array<JIYHeaderContext> = Object.keys(sample).map(
-  //   (key, index): JIYHeaderContext => {
-  //     const path = key.split("__");
-  //     const name = path.pop();
-  //     return {
-  //       // parent: path.join("__"),
-  //       name: name,
-  //       value: key,
-  //       alias: null,
-  //       display: true,
-  //       primary: index === 0,
-  //     };
-  //   }
-  // );
-  // const data: Array<JIYRecordContext<FlatSequence>> = results.map(
-  //   (flatSequences: FlatSequence): JIYRecordContext<FlatSequence> => ({
-  //     isSelected: false,
-  //     data: flatSequences,
-  //   })
-  // );
-  // return {
-  //   headers: schema,
-  //   records: data,
-  // };
 }
 
+/**
+ * AssemblyDataHandler
+ * @param results - Array of FlatAssembly. See {@link FlatAssembly}
+ * @returns - See {@link JIYTabularDataContext}
+ */
 export function AssemblyDataHandler(
   results: Array<FlatAssembly>
 ): JIYTabularDataContext<FlatAssembly> {
@@ -156,7 +151,6 @@ export function AssemblyDataHandler(
     };
   });
 
-  // This is important to match the position of table header and data.
   const standard = schema.map((obj) => obj.value);
   const rearranged = results.map((obj) =>
     Object.fromEntries(
@@ -179,6 +173,11 @@ export function AssemblyDataHandler(
   };
 }
 
+/**
+ * AnnotationDataHandler
+ * @param results - Array of FlatAnnotation. See {@link FlatAnnotation}
+ * @returns - See {@link JIYTabularDataContext}
+ */
 export function AnnotationDataHandler(
   results: Array<FlatAnnotation>
 ): JIYTabularDataContext<FlatAnnotation> {
@@ -194,7 +193,6 @@ export function AnnotationDataHandler(
     };
   });
 
-  // This is important to match the position of table header and data.
   const standard = schema.map((obj) => obj.value);
   const rearranged = results.map((obj) =>
     Object.fromEntries(
@@ -217,6 +215,11 @@ export function AnnotationDataHandler(
   };
 }
 
+/**
+ *MLSTDataHandler
+ * @param results - Array of FlatMLST. See {@link FlatMLST}
+ * @returns - See {@link JIYTabularDataContext}
+ */
 export function MLSTDataHandler(
   results: Array<FlatMLST>
 ): JIYTabularDataContext<FlatMLST> {
@@ -232,7 +235,6 @@ export function MLSTDataHandler(
     };
   });
 
-  // This is important to match the position of table header and data.
   const standard = schema.map((obj) => obj.value);
   const rearranged = results.map((obj) =>
     Object.fromEntries(
@@ -255,6 +257,11 @@ export function MLSTDataHandler(
   };
 }
 
+/**
+ *
+ * @param results - Array of FlatResistome. See {@link FlatResistome}
+ * @returns - See {@link JIYTabularDataContext}
+ */
 export function ResistomeDataHandler(
   results: Array<FlatResistome>
 ): JIYTabularDataContext<FlatResistome> {
@@ -270,7 +277,6 @@ export function ResistomeDataHandler(
     };
   });
 
-  // This is important to match the position of table header and data.
   const standard = schema.map((obj) => obj.value);
   const rearranged = results.map((obj) =>
     Object.fromEntries(
@@ -293,6 +299,11 @@ export function ResistomeDataHandler(
   };
 }
 
+/**
+ * VirulomeDataHandler
+ * @param results Array of FlatVirulome. See {@link FlatVirulome}
+ * @returns - See {@link JIYTabularDataContext}
+ */
 export function VirulomeDataHandler(
   results: Array<FlatVirulome>
 ): JIYTabularDataContext<FlatVirulome> {
@@ -308,7 +319,6 @@ export function VirulomeDataHandler(
     };
   });
 
-  // This is important to match the position of table header and data.
   const standard = schema.map((obj) => obj.value);
   const rearranged = results.map((obj) =>
     Object.fromEntries(
@@ -331,6 +341,11 @@ export function VirulomeDataHandler(
   };
 }
 
+/**
+ * ProfileSummaryDataHandler
+ * @param results - Array of FlatPSummary. See {@link FlatPSummary}
+ * @returns - See {@link JIYTabularDataContext}
+ */
 export function ProfileSummaryDataHandler(
   results: Array<FlatPsummary>
 ): JIYTabularDataContext<FlatPsummary> {
@@ -346,7 +361,6 @@ export function ProfileSummaryDataHandler(
     };
   });
 
-  // This is important to match the position of table header and data.
   const standard = schema.map((obj) => obj.value);
   const rearranged = results.map((obj) =>
     Object.fromEntries(

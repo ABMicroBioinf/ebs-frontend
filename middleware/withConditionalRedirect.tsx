@@ -7,10 +7,19 @@
  */
 import { useRouter } from "next/router";
 
+/**
+ * isBrowser
+ * @returns - Boolean Value if request is sent from user's browser
+ */
 function isBrowser() {
   return typeof window !== "undefined";
 }
 
+/**
+ * withConditionalRedirect
+ * @param param0 - WrappedComponent, clientCondition, serverCondition, location
+ * @returns - WrappedComponent
+ */
 export default function withConditionalRedirect({
   WrappedComponent,
   clientCondition,

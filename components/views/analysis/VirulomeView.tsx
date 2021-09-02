@@ -23,6 +23,10 @@ import {
   VirulomeDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
 
+/**
+ * VirulomeView
+ * @returns - Virulome View Component
+ */
 function VirulomeView(): JSX.Element {
   const MODULE = "TB";
   const URL = URLHandler(API_VIRULOME);

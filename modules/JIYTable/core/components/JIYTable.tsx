@@ -20,7 +20,7 @@ import { pick } from "../libs/gizmos";
 /**
  * JIYTable
  * A top level table component layouts entire structure of data table
- * @param param - See {@link EBSTableInstanceStateContext}
+ * @param param0 - See {@link JIYTableStateContext}
  * @returns - Table Component
  */
 function JIYTable<T>({

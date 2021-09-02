@@ -23,6 +23,10 @@ import {
   AssemblyDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
 
+/**
+ * AssemblyView
+ * @returns - AssemblyView Component
+ */
 function AssemblyView(): JSX.Element {
   const MODULE = "TB";
   const URL = URLHandler(API_ASSEMBLY);

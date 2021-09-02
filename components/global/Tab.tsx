@@ -7,6 +7,11 @@
  */
 import { Tab } from "semantic-ui-react";
 
+/**
+ * TabMenu
+ * @param param0 - panes
+ * @returns - Tab Component
+ */
 function TabMenu({ panes }): JSX.Element {
   return <Tab panes={panes} />;
 }

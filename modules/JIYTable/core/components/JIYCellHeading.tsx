@@ -11,8 +11,9 @@ import { Checkbox } from "semantic-ui-react";
 import { JIYCellHeadingContext } from "../models/JIYContexts";
 
 /**
- * @param param - See {@link EBSTableRecordContext}
- * @returns - Cell Heading Component
+ * JIYCellHeading
+ * @param param0 - See {@link JIYCellHeadingContext}
+ * @returns Cell Heading Component
  */
 function JIYCellHeading<T>({
   record,

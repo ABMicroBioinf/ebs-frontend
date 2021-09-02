@@ -23,6 +23,10 @@ import {
   ProfileSummaryDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
 
+/**
+ * TBSummaryView
+ * @returns - TB Summary View Component
+ */
 function TBSummaryView(): JSX.Element {
   const MODULE = "TB";
   const URL = URLHandler(API_TB_SUMMARY);

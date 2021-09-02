@@ -24,8 +24,8 @@ import { VizViewContext } from "../../../modules/JIYTable/core/models/JIYContext
 
 /**
  * AnalysisSideMen
- * @param param -
- * @returns -
+ * @param param - See {@link VizViewContext}
+ * @returns - Analysis Side Menu Component
  */
 function AnalysisSideMenu({
   module,

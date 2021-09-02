@@ -11,7 +11,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Tab } from "semantic-ui-react";
 import { API_ANNOTATION } from "../../../config/apis";
 import { useAuth } from "../../../middleware/AuthProvider";
-import { FlatAnnotation, FlatAssembly } from "../../../models/Isolate";
+import { FlatAnnotation } from "../../../models/Isolate";
 import {
   JIYHeaderContext,
   JIYOrderingContext,
@@ -23,6 +23,10 @@ import {
   AnnotationDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
 
+/**
+ * AnnotationView
+ * @returns - AnnotationView Component
+ */
 function AnnotationView(): JSX.Element {
   const MODULE = "TB";
   const URL = URLHandler(API_ANNOTATION);

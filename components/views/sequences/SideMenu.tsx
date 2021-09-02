@@ -26,8 +26,8 @@ import SemanticDatepicker from "react-semantic-ui-datepickers";
 
 /**
  * SequencesSideMenu
- * @param param - See {@link EBSTableDashboardStateContext}
- * @returns - SideMenu Component
+ * @param param - See {@link VizViewContext}
+ * @returns - Sequence SideMenu Component
  */
 function SequencesSideMenu({
   module,

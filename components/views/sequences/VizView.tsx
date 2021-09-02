@@ -12,10 +12,9 @@ import { JIYTableStateContext } from "../../../modules/JIYTable/core/models/JIYC
 import JIYTable from "../../../modules/JIYTable/core/components/JIYTable";
 
 /**
- * Sequences Main View
- * In case, there are multiple instance of JIYTable, This component will work as a container.
- * @param param - See
- * @returns - Sequence Main View Components
+ * SequencesVizView
+ * @param param0 - See {@link JIYTableStateContext}
+ * @returns - Sequences Visualization View Component
  */
 function SequencesVizView<T>({
   title,

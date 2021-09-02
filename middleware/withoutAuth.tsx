@@ -9,19 +9,10 @@ import { useIsAuthenticated } from "./AuthProvider";
 import withConditionalRedirect from "./withConditionalRedirect";
 
 /**
- * ConditionalRedirectProps
- * @typedef {Object} ConditionalRedirectProps
- * @property {ReactNode} WrappedComponent - page component wish to go to
- * @property {String} location - fallback page
- * @property {Function} clientCondition - check if a user is authenticated
- * @property {Function} serverCondition - check if backend server responds with valid token
- */
-
-/**
- * HOC function that sets necessary variables ahead of conditional routing
- * @param {ReactNode} WrappedComponent - See {@link ConditionalRedirectProps}
- * @param {String} location - See {@link ConditionalRedirectProps}
- * @returns {ConditionalRedirectProps} - See {@link ConditionalRedirectProps}
+ * withoutAuth (HOC)
+ * @param WrappedComponent - A child component depending on Authentication middleware
+ * @param location - An URI for redirection in case the user is not authenticated
+ * @returns - Authentication Provider
  */
 export default function withoutAuth(WrappedComponent, location = "/") {
   return withConditionalRedirect({

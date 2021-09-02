@@ -23,6 +23,10 @@ import {
   ResistomeDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
 
+/**
+ * ResistomeView
+ * @returns - ResistomeView Component
+ */
 function ResistomeView(): JSX.Element {
   const MODULE = "TB";
   const URL = URLHandler(API_RESISTOME);

@@ -12,10 +12,9 @@ import { JIYTableStateContext } from "../../../modules/JIYTable/core/models/JIYC
 import JIYTable from "../../../modules/JIYTable/core/components/JIYTable";
 
 /**
- * Isolates Main View
- * In case, there are multiple instance of JIYTable, This component will work as a container.
- * @param param - See
- * @returns - Sequence Main View Components
+ * IsolateVizView
+ * @param param0 - See {@link JIYTableStateContext}
+ * @returns - Isolate Visualization View Component
  */
 function IsolatesVizView<T>({
   title,

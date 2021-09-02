@@ -27,6 +27,10 @@ const AuthContext = createContext<AuthContextProps>({
   setAuthenticated: null,
 });
 
+/**
+ * useAuth
+ * @returns - See {@link AuthContextProps}
+ */
 export function useAuth(): AuthContextProps {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -35,11 +39,20 @@ export function useAuth(): AuthContextProps {
   return context;
 }
 
+/**
+ * useIsAuthenticated
+ * @returns - Boolean value, if the user is authenticated
+ */
 export function useIsAuthenticated(): boolean {
   const context = useAuth();
   return context.isAuthenticated;
 }
 
+/**
+ * AuthProvider
+ * @param param0 - children, authenticated, token
+ * @returns - AuthContext Provider Component
+ */
 export const AuthProvider = ({
   children,
   authenticated,

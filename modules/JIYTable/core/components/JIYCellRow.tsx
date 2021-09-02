@@ -14,7 +14,8 @@ import { JIYCellRowContext } from "../models/JIYContexts";
 import JIYCellHeading from "./JIYCellHeading";
 
 /**
- * @param param - See {@link EBSTableRecordContext}
+ * JIYCellRow
+ * @param param0 - See {@link JIYCellRowContext}
  * @returns - Cell Row Component
  */
 function JIYCellRow<T>({

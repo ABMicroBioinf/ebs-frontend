@@ -12,7 +12,8 @@ import { Checkbox, Table } from "semantic-ui-react";
 import { JIYTableHeaderContext } from "../models/JIYContexts";
 
 /**
- * @param param - See {@link EBSTableInstanceStateContext}
+ * JIYTableHeader
+ * @param param - See {@link JIYTableHeaderContext}
  * @returns - Table Header Component
  */
 function JIYTableHeader<T>({

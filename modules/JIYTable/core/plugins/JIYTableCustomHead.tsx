@@ -1,9 +1,17 @@
+/**
+ * @author Jongil Yoon
+ * @email jiysait@gmail.com
+ * @create date 2021-09-02 10:07:30
+ * @modify date 2021-09-02 10:07:30
+ * @desc [description]
+ */
+
 import React, { useCallback, useReducer } from "react";
 import { Grid, Input } from "semantic-ui-react";
 
 /**
  * Search
- * @param param - See {@link EBSTableInstanceStateContext}
+ * @param param - keyword, setKeyword
  * @returns - Search Component
  */
 function Search({ keyword, setKeyword }): JSX.Element {
@@ -62,6 +70,11 @@ function Search({ keyword, setKeyword }): JSX.Element {
   );
 }
 
+/**
+ * JIYTableCustomHead
+ * @param param0 - title, search, isLoading, setSearch, setLoading
+ * @returns - Custom Head Component
+ */
 function JIYTableCustomHead({
   title,
   search,

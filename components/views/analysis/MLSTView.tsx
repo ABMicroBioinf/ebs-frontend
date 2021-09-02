@@ -23,6 +23,10 @@ import {
   MLSTDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
 
+/**
+ * MLSTView
+ * @returns - MLSTView Component
+ */
 function MLSTView(): JSX.Element {
   const MODULE = "TB";
   const URL = URLHandler(API_MLST);

@@ -21,7 +21,7 @@ import { JIYTableStateContext } from "../models/JIYContexts";
 
 /**
  * ColumnSelector
- * @param param - See {@link EBSTableInstanceStateContext}
+ * @param param0 - headers, setHeaders
  * @returns - Column Selector component
  */
 function ColumnSelector({ headers, setHeaders }): JSX.Element {
