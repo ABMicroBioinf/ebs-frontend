@@ -50,6 +50,9 @@ function SequenceTB(): JSX.Element {
     useState<Array<JIYRecordContext<FlatSequence>>>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isSelectedAll, setSelectedAll] = useState<boolean>(false);
+  const [selectedItems, setSelectedItems] =
+    useState<Array<JIYRecordContext<FlatSequence>>>(null);
   const [wideView, setWideView] = useState(false);
 
   const fetchData = useCallback(async (reqURL: string) => {
@@ -131,6 +134,8 @@ function SequenceTB(): JSX.Element {
                   headers={headers}
                   records={records}
                   isLoading={isLoading}
+                  isSelectedAll={isSelectedAll}
+                  selectedItems={selectedItems}
                   setPage={setPage}
                   setPageSize={setPageSize}
                   setQuery={setQuery}
@@ -139,6 +144,8 @@ function SequenceTB(): JSX.Element {
                   setHeaders={setHeaders}
                   setRecords={setRecords}
                   setLoading={setLoading}
+                  setSelectedAll={setSelectedAll}
+                  setSelectedItems={setSelectedItems}
                 />
               </Grid.Column>
             </Grid.Row>

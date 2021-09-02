@@ -37,6 +37,8 @@ function JIYTable<T>({
   headers,
   records,
   isLoading,
+  isSelectedAll,
+  selectedItems,
   setPage,
   setPageSize,
   setQuery,
@@ -45,6 +47,8 @@ function JIYTable<T>({
   setHeaders,
   setRecords,
   setLoading,
+  setSelectedAll,
+  setSelectedItems,
 }: JIYTableStateContext<T>): JSX.Element {
   const [mouseDown, setMouseDown] = useState(false);
   const [startX, setStartX] = useState(null);
@@ -173,6 +177,8 @@ function JIYTable<T>({
                   headers={headers}
                   records={records}
                   isLoading={isLoading}
+                  isSelectedAll={isSelectedAll}
+                  selectedItems={selectedItems}
                   setPage={setPage}
                   setPageSize={setPageSize}
                   setQuery={setQuery}
@@ -181,6 +187,8 @@ function JIYTable<T>({
                   setHeaders={setHeaders}
                   setRecords={setRecords}
                   setLoading={setLoading}
+                  setSelectedAll={setSelectedAll}
+                  setSelectedItems={setSelectedItems}
                 />
               </Grid.Row>
             </Sticky>
@@ -211,9 +219,13 @@ function JIYTable<T>({
                         headers={headers}
                         records={records}
                         ordering={ordering}
+                        isSelectedAll={isSelectedAll}
+                        selectedItems={selectedItems}
                         setHeaders={setHeaders}
                         setRecords={setRecords}
                         setOrdering={setOrdering}
+                        setSelectedAll={setSelectedAll}
+                        setSelectedItems={setSelectedItems}
                       />
                     </Ref>
                     <Table.Body>{getCellRows()}</Table.Body>

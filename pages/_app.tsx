@@ -11,7 +11,9 @@ import "semantic-ui-css/semantic.min.css";
 
 import type { AppProps, AppContext } from "next/app";
 
+import React from "react";
 import App from "next/app";
+import Head from "next/head";
 import cookie from "cookie";
 import { AuthProvider } from "../middleware/AuthProvider";
 
@@ -31,9 +33,14 @@ interface EBSAppProps extends AppProps {
 function EBSApp(EBSAppProps: EBSAppProps): JSX.Element {
   const { Component, pageProps, authenticated, token } = EBSAppProps;
   return (
-    <AuthProvider authenticated={authenticated} token={token}>
-      <Component {...pageProps} />
-    </AuthProvider>
+    <>
+      <Head>
+        <title>EBS Project</title>
+      </Head>
+      <AuthProvider authenticated={authenticated} token={token}>
+        <Component {...pageProps} />
+      </AuthProvider>
+    </>
   );
 }
 

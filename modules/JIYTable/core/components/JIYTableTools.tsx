@@ -107,6 +107,8 @@ function JIYTableTools<T>({
   headers,
   records,
   isLoading,
+  isSelectedAll,
+  selectedItems,
   setPage,
   setPageSize,
   setSearch,
@@ -114,6 +116,8 @@ function JIYTableTools<T>({
   setHeaders,
   setRecords,
   setLoading,
+  setSelectedAll,
+  setSelectedItems,
 }: JIYTableStateContext<T>): JSX.Element {
   const [activeItem, setActiveItem] = useState("");
   const [openAlert, setOpenAlert] = useState(false);

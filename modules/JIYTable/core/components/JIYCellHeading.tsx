@@ -32,11 +32,12 @@ function JIYCellHeading<T>({
     setRecords(records);
   }, [isSelected]);
 
-  useEffect(() => {
-    setSelected(record.isSelected);
-  }, [record]);
+  // useEffect(() => {
+  //   setSelected(record.isSelected);
+  // }, [record]);
 
-  return <Checkbox checked={isSelected} onChange={handleChange} />;
+  // return <Checkbox checked={isSelected} onChange={handleChange} />;
+  return <Checkbox checked={record.isSelected} onChange={handleChange} />;
 }
 
 export default JIYCellHeading;

@@ -22,18 +22,3 @@ yarn start
 ```
 
 Open [http://YOURDOMAIN] with your browser to see the result.
-
-## Dev Notes
-
-### 1. User Authentication Conflict
-
-Conflict issue between CSRF (backend) and JWT (frontend).
-When the issue occurs, users must clean up caches and cookies of their browser.
-
-### 2. 'AND' join issue on the Filters in the side menu
-
-Multiple selection is not working, when user select more than 1 item in different category.
-
-### 3. Global Search is not properly working
-
-When search field is used, partial keyword matching doesn't work properly. It might be caused by a custom filter definition in the backend.

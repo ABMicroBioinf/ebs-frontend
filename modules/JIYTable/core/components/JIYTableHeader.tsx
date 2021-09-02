@@ -20,13 +20,17 @@ function JIYTableHeader<T>({
   headers,
   records,
   ordering,
+  isSelectedAll,
+  selectedItems,
   setHeaders,
   setRecords,
   setOrdering,
+  setSelectedAll,
+  setSelectedItems,
 }: JIYTableHeaderContext<T>): JSX.Element {
   const [selectAll, setSelectAll] = useState(false);
 
-  const handleChange = useCallback(() => {
+  const handleSelectAll = useCallback(() => {
     setSelectAll(!selectAll);
   }, [selectAll]);
 
@@ -38,7 +42,7 @@ function JIYTableHeader<T>({
     <Table.Header>
       <Table.Row>
         <Table.HeaderCell>
-          <Checkbox checked={selectAll} onChange={handleChange} />
+          <Checkbox checked={selectAll} onChange={handleSelectAll} />
         </Table.HeaderCell>
         {headers.length > 0 &&
           headers

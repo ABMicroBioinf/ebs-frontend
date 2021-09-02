@@ -30,6 +30,8 @@ function SequencesVizView<T>({
   headers,
   records,
   isLoading,
+  isSelectedAll,
+  selectedItems,
   setPage,
   setPageSize,
   setQuery,
@@ -38,6 +40,8 @@ function SequencesVizView<T>({
   setHeaders,
   setRecords,
   setLoading,
+  setSelectedAll,
+  setSelectedItems,
 }: JIYTableStateContext<T>): JSX.Element {
   return (
     <>
@@ -55,6 +59,8 @@ function SequencesVizView<T>({
         headers={headers}
         records={records}
         isLoading={isLoading}
+        isSelectedAll={isSelectedAll}
+        selectedItems={selectedItems}
         setPage={setPage}
         setPageSize={setPageSize}
         setQuery={setQuery}
@@ -63,6 +69,8 @@ function SequencesVizView<T>({
         setHeaders={setHeaders}
         setRecords={setRecords}
         setLoading={setLoading}
+        setSelectedAll={setSelectedAll}
+        setSelectedItems={setSelectedItems}
       />
     </>
   );

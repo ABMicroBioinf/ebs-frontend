@@ -48,6 +48,8 @@ export interface JIYTableStateContext<T> {
   headers: Array<JIYHeaderContext>;
   records: Array<JIYRecordContext<T>>;
   isLoading: boolean;
+  isSelectedAll: boolean;
+  selectedItems: Array<JIYRecordContext<T>>;
   setPage: Dispatch<SetStateAction<number>>;
   setPageSize: Dispatch<SetStateAction<number>>;
   setQuery: Dispatch<SetStateAction<string>>;
@@ -56,6 +58,8 @@ export interface JIYTableStateContext<T> {
   setHeaders: Dispatch<SetStateAction<Array<JIYHeaderContext>>>;
   setRecords: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  setSelectedAll: Dispatch<SetStateAction<boolean>>;
+  setSelectedItems: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
 }
 
 export interface JIYCellRowContext<T> {
@@ -79,9 +83,13 @@ export interface JIYTableHeaderContext<T> {
   headers: Array<JIYHeaderContext>;
   records: Array<JIYRecordContext<T>>;
   ordering: JIYOrderingContext;
+  isSelectedAll: boolean;
+  selectedItems: Array<JIYRecordContext<T>>;
   setHeaders: Dispatch<SetStateAction<Array<JIYHeaderContext>>>;
   setRecords: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
   setOrdering: Dispatch<SetStateAction<JIYOrderingContext>>;
+  setSelectedAll: Dispatch<SetStateAction<boolean>>;
+  setSelectedItems: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
 }
 
 export interface JIYTableStandaloneContext<T> {
