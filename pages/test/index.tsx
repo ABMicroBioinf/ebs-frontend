@@ -17,10 +17,10 @@ import {
   Segment,
 } from "semantic-ui-react";
 
-import { swarmPlotData } from "./chart/swamPlotDataExample";
-import { barData } from "./chart/barDataExample";
-import { pieData } from "./chart/pieDataExample";
-import { sunburstData } from "./chart/sunburstDataExample";
+import { swarmPlotData } from "../../temp/chart/swamPlotDataExample";
+import { barData } from "../../temp/chart/barDataExample";
+import { pieData } from "../../temp/chart/pieDataExample";
+import { sunburstData } from "../../temp/chart/sunburstDataExample";
 
 // install (please make sure versions match peerDependencies)
 // yarn add @nivo/core @nivo/swarmplot

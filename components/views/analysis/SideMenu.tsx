@@ -5,8 +5,10 @@
  * @modify date 2021-07-15 13:20:56
  * @desc [description]
  */
+import axios from "axios";
 import _ from "lodash";
-import { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import SemanticDatepicker from "react-semantic-ui-datepickers";
 import {
   Accordion,
   Checkbox,
@@ -17,7 +19,8 @@ import {
   Menu,
   Segment,
 } from "semantic-ui-react";
-import { EBSTableDashboardStateContext } from "../../../modules/table/core/models/EBSDataTypes";
+import { useAuth } from "../../../middleware/AuthProvider";
+import { VizViewContext } from "../../../modules/JIYTable/core/models/JIYContexts";
 
 /**
  * AnalysisSideMen
@@ -25,140 +28,156 @@ import { EBSTableDashboardStateContext } from "../../../modules/table/core/model
  * @returns -
  */
 function AnalysisSideMenu({
-  ebsTableState,
+  module,
+  query,
   wideView,
-  setEBSTableState,
+  setQuery,
   setWideView,
-}: EBSTableDashboardStateContext): JSX.Element {
-  const { RECORDS_STATE_REF } = ebsTableState;
-  const [activeIndex, setActiveIndex] = useState({
-    0: false,
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-  });
-  const [activeRadio, setActiveRadio] = useState("");
+}: VizViewContext): JSX.Element {
+  const { accessToken } = useAuth();
+
+  const [queryset, setQueryset] = useState([]);
+  const [filters, setFilters] = useState(null);
+  const [activeIndex, setActiveIndex] = useState({});
+  const [currentRange, setNewRange] = useState([]);
 
   const handleClick = (e, data) => {
     const { index, active } = data;
     setActiveIndex({ ...activeIndex, [index]: !active });
   };
 
-  const handleChange = (e, data) => {
-    // Temporary
-    setActiveRadio(data.value);
+  const handleChange = useCallback(
+    (e, data) => {
+      const [key, value] = data.value.split(".");
+      setQueryset(
+        queryset.length > 0
+          ? queryset.find((obj) => obj.field === key)
+            ? queryset.map((obj) =>
+                obj.field === key
+                  ? {
+                      ...obj,
+                      keywords: obj.keywords.includes(value)
+                        ? obj.keywords.filter(
+                            (_, i) => i !== obj.keywords.indexOf(value)
+                          )
+                        : [...obj.keywords, value],
+                    }
+                  : { ...obj }
+              )
+            : [...queryset, { field: key, keywords: [value] }]
+          : [{ field: key, keywords: [value] }]
+      );
+    },
+    [queryset]
+  );
+
+  const handleDateChange = (event, data) => setNewRange(data.value);
+
+  const getSubMenuItem = (parent, obj) => {
+    // Please consider redesign the structure of response
+    // following is temporary
+    const DATE_FIELDS = [
+      "DateCreated__min",
+      "DateCreated__max",
+      "LastUpdate__min",
+      "LastUpdate__max",
+    ];
+
+    if (Array.isArray(obj)) {
+      return (
+        <Grid className="ebs-filters-submenu">
+          {obj.map((sub, index) => {
+            // console.log(sub[parent]);
+            return (
+              <Grid.Row key={index}>
+                <Grid.Column>
+                  <Checkbox
+                    label={sub[parent]}
+                    name={sub[parent]}
+                    value={parent + "." + sub[parent]}
+                    onChange={handleChange}
+                  />
+                </Grid.Column>
+                <Grid.Column width={2} floated="right">
+                  <Label color="grey">{sub["total"]}</Label>
+                </Grid.Column>
+              </Grid.Row>
+            );
+          })}
+        </Grid>
+      );
+    } else {
+      if (DATE_FIELDS.includes(Object.keys(obj)[0])) {
+        const col = Object.keys(obj)[0].split("__")[0];
+        console.log(obj[col + "__min"]);
+        console.log(obj[col + "__max"]);
+        return (
+          <Grid className="ebs-filters-submenu">
+            <Grid.Row>
+              <SemanticDatepicker
+                inline={true}
+                minDate={obj[col + "__min"]}
+                maxDate={obj[col + "__max"]}
+                showToday={false}
+                onChange={handleDateChange}
+                type="range"
+              />
+            </Grid.Row>
+          </Grid>
+        );
+      } else {
+        return null;
+      }
+    }
   };
 
-  const statisticRef = RECORDS_STATE_REF.slice();
-  const notDrugCol = [
-    "main_lin",
-    "sub_lin",
-    "DR_type",
-    "num_dr_variants",
-    "num_other_variants",
-  ];
+  const getFilterMenu = () => {
+    return Object.entries(filters).map(([key, value], index) => {
+      return (
+        <Menu.Item key={index}>
+          <Accordion.Title
+            active={activeIndex[index]}
+            content={key}
+            index={index}
+            onClick={handleClick}
+          />
+          <Accordion.Content
+            key={index}
+            active={activeIndex[index]}
+            content={getSubMenuItem(key, value)}
+          />
+        </Menu.Item>
+      );
+    });
+  };
 
-  const analysis_1_rifampicin = _.countBy(
-    statisticRef.map((row) => row.data["rifampicin"]).sort()
-  );
+  const fetchFilters = useCallback(async () => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    };
 
-  const analysis_1_isoniazid = _.countBy(
-    statisticRef.map((row) => row.data["isoniazid"]).sort()
-  );
+    // await axios
+    //   .get(API + API_SEQUENCE_METADATA + "?seqtype=" + module, config)
+    //   .then((res) => {
+    //     setFilters(res.data);
+    //   })
+    //   .catch((err) => console.log(err));
+  }, []);
 
-  const analysis_1_pyrazinamide = _.countBy(
-    statisticRef.map((row) => row.data["pyrazinamide"]).sort()
-  );
+  useEffect(() => {
+    fetchFilters();
+  }, []);
 
-  const analysis_1_ethambutol = _.countBy(
-    statisticRef.map((row) => row.data["ethambutol"]).sort()
-  );
-
-  const Analysis_1 = (
-    <Grid className="ebs-filters-submenu">
-      <Grid.Row>
-        <Header inverted as="h4">
-          rifampicin
-        </Header>
-      </Grid.Row>
-      {analysis_1_rifampicin &&
-        Object.keys(analysis_1_rifampicin).map((key, index) => {
-          return (
-            <Grid.Row key={index}>
-              <Grid.Column>
-                <Checkbox
-                  className="ebs-inverted"
-                  radio
-                  label={key}
-                  name="rifampicin"
-                  value={key}
-                  checked={activeRadio === key}
-                  onChange={handleChange}
-                />
-              </Grid.Column>
-              <Grid.Column width={2} floated="right">
-                <Label color="grey">{analysis_1_rifampicin[key]}</Label>
-              </Grid.Column>
-            </Grid.Row>
-          );
-        })}
-
-      <Grid.Row>
-        <Header inverted as="h4">
-          isoniazid
-        </Header>
-      </Grid.Row>
-      {analysis_1_isoniazid &&
-        Object.keys(analysis_1_isoniazid).map((key, index) => {
-          return (
-            <Grid.Row key={index}>
-              <Grid.Column>
-                <Checkbox
-                  className="ebs-inverted"
-                  radio
-                  label={key}
-                  name="isoniazid"
-                  value={key}
-                  checked={activeRadio === key}
-                  onChange={handleChange}
-                />
-              </Grid.Column>
-              <Grid.Column width={2} floated="right">
-                <Label color="grey">{analysis_1_isoniazid[key]}</Label>
-              </Grid.Column>
-            </Grid.Row>
-          );
-        })}
-
-      <Grid.Row>
-        <Header inverted as="h4">
-          ethambutol
-        </Header>
-      </Grid.Row>
-      {analysis_1_ethambutol &&
-        Object.keys(analysis_1_ethambutol).map((key, index) => {
-          return (
-            <Grid.Row key={index}>
-              <Grid.Column>
-                <Checkbox
-                  className="ebs-inverted"
-                  radio
-                  label={key}
-                  name="isoniazid"
-                  value={key}
-                  checked={activeRadio === key}
-                  onChange={handleChange}
-                />
-              </Grid.Column>
-              <Grid.Column width={2} floated="right">
-                <Label color="grey">{analysis_1_ethambutol[key]}</Label>
-              </Grid.Column>
-            </Grid.Row>
-          );
-        })}
-    </Grid>
-  );
+  useEffect(() => {
+    setQuery(
+      queryset
+        .filter((obj) => obj.keywords.length > 0)
+        .map((obj) => obj.field + "=" + obj.keywords.join(","))
+        .join("&")
+    );
+  }, [queryset]);
 
   return wideView ? (
     <Grid
@@ -178,58 +197,15 @@ function AnalysisSideMenu({
     </Grid>
   ) : (
     <>
-      <Segment inverted>{/* <Search setRowData={setRowData} /> */}</Segment>
+      <Segment className="ebs-borderless ebs-shadowless">
+        <Header>{module} Filter</Header>
+      </Segment>
       <div className="ebs-scrollable-inner">
-        {/* <List>
-          <List.Item>
-            <List.Icon name="flask" />
-            <List.Content>Analysis_1</List.Content>
-          </List.Item>
-          <List.Item>
-            <List.Icon name="flask" />
-            <List.Content>Analysis_2</List.Content>
-          </List.Item>
-          <List.Item>
-            <List.Icon name="flask" />
-            <List.Content>Analysis_3</List.Content>
-          </List.Item>
-        </List> */}
-        <Accordion inverted fluid as={Menu} vertical>
-          <Menu.Item>
-            <Accordion.Title
-              active={activeIndex[0]}
-              content="Analysis 1"
-              index={0}
-              onClick={handleClick}
-            />
-            <Accordion.Content active={activeIndex[0]} content={Analysis_1} />
-          </Menu.Item>
-
-          <Menu.Item>
-            <Accordion.Title
-              active={activeIndex[1]}
-              content="Analysis 2"
-              index={1}
-              onClick={handleClick}
-            />
-            {/* <Accordion.Content
-              active={activeIndex[1]}
-              content={InstrumentForm}
-            /> */}
-          </Menu.Item>
-
-          <Menu.Item>
-            <Accordion.Title
-              active={activeIndex[2]}
-              content="Analysis 3"
-              index={2}
-              onClick={handleClick}
-            />
-            {/* <Accordion.Content active={activeIndex[2]} content={PlatformForm} /> */}
-          </Menu.Item>
+        <Accordion className="ebs-borderless" fluid as={Menu} vertical>
+          {filters && getFilterMenu()}
         </Accordion>
       </div>
-      <Segment inverted>
+      <Segment className="ebs-borderless ebs-shadowless">
         <Menu.Item
           onClick={() => {
             setWideView(!wideView);
