@@ -6,7 +6,7 @@
  * @desc [description]
  */
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { Checkbox } from "semantic-ui-react";
 import { JIYCellHeadingContext } from "../models/JIYContexts";
 
@@ -16,27 +16,40 @@ import { JIYCellHeadingContext } from "../models/JIYContexts";
  * @returns Cell Heading Component
  */
 function JIYCellHeading<T>({
+  isSelectedAll,
+  selectedItems,
   record,
   records,
   index,
   setRecords,
+  setSelectedAll,
+  setSelectedItems,
 }: JIYCellHeadingContext<T>): JSX.Element {
-  const [isSelected, setSelected] = useState(record.isSelected);
-
   const handleChange = useCallback(() => {
-    setSelected(!isSelected);
-  }, [isSelected]);
+    if (isSelectedAll) {
+      setSelectedAll(false);
+      setRecords(
+        records.map((record, i) => {
+          if (i === index) {
+            return { ...record, isSelected: false };
+          } else {
+            return record;
+          }
+        })
+      );
+    } else {
+      setRecords(
+        records.map((record, i) => {
+          if (i === index) {
+            return { ...record, isSelected: !record.isSelected };
+          } else {
+            return record;
+          }
+        })
+      );
+    }
+  }, [isSelectedAll, records, record]);
 
-  useEffect(() => {
-    records[index].isSelected = !isSelected;
-    setRecords(records);
-  }, [isSelected]);
-
-  // useEffect(() => {
-  //   setSelected(record.isSelected);
-  // }, [record]);
-
-  // return <Checkbox checked={isSelected} onChange={handleChange} />;
   return <Checkbox checked={record.isSelected} onChange={handleChange} />;
 }
 

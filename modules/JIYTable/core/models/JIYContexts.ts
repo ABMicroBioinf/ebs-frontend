@@ -65,18 +65,26 @@ export interface JIYTableStateContext<T> {
 export interface JIYCellRowContext<T> {
   primaryField: JIYHeaderContext;
   path: string;
+  isSelectedAll: boolean;
+  selectedItems: Array<JIYRecordContext<T>>;
   headers: Array<JIYHeaderContext>;
   records: Array<JIYRecordContext<T>>;
   record: JIYRecordContext<T>;
   index: number;
   setRecords: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
+  setSelectedAll: Dispatch<SetStateAction<boolean>>;
+  setSelectedItems: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
 }
 
 export interface JIYCellHeadingContext<T> {
+  isSelectedAll: boolean;
+  selectedItems: Array<JIYRecordContext<T>>;
   record: JIYRecordContext<T>;
   records: Array<JIYRecordContext<T>>;
   index: number;
   setRecords: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
+  setSelectedAll: Dispatch<SetStateAction<boolean>>;
+  setSelectedItems: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
 }
 
 export interface JIYTableHeaderContext<T> {

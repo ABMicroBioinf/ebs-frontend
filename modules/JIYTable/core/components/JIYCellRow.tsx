@@ -21,11 +21,15 @@ import JIYCellHeading from "./JIYCellHeading";
 function JIYCellRow<T>({
   primaryField,
   path,
+  isSelectedAll,
+  selectedItems,
   headers,
   records,
   record,
   index,
   setRecords,
+  setSelectedAll,
+  setSelectedItems,
 }: JIYCellRowContext<T>): JSX.Element {
   const [row, setRow] = useState(record.data);
 
@@ -46,10 +50,14 @@ function JIYCellRow<T>({
     <Table.Row>
       <Table.Cell>
         <JIYCellHeading
+          isSelectedAll={isSelectedAll}
+          selectedItems={selectedItems}
           record={record}
           records={records}
           index={index}
           setRecords={setRecords}
+          setSelectedAll={setSelectedAll}
+          setSelectedItems={setSelectedItems}
         />
       </Table.Cell>
       {row &&

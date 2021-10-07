@@ -51,8 +51,9 @@ function SequenceTB(): JSX.Element {
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isSelectedAll, setSelectedAll] = useState<boolean>(false);
-  const [selectedItems, setSelectedItems] =
-    useState<Array<JIYRecordContext<FlatSequence>>>(null);
+  const [selectedItems, setSelectedItems] = useState<
+    Array<JIYRecordContext<FlatSequence>>
+  >([]);
   const [wideView, setWideView] = useState(false);
 
   const fetchData = useCallback(async (reqURL: string) => {
@@ -88,6 +89,11 @@ function SequenceTB(): JSX.Element {
       URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
     );
   }, [page, pageSize, search, ordering, query]);
+
+  useEffect(() => {
+    records &&
+      setSelectedAll(records.every((record) => record.isSelected === true));
+  }, [records]);
 
   return (
     <>

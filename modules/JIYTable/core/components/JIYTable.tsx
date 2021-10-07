@@ -86,11 +86,15 @@ function JIYTable<T>({
             <JIYCellRow
               primaryField={headers.find((header) => header.primary)}
               path={path}
+              isSelectedAll={isSelectedAll}
+              selectedItems={selectedItems}
               headers={headers}
               records={records}
               record={rowObj}
               index={index}
               setRecords={setRecords}
+              setSelectedAll={setSelectedAll}
+              setSelectedItems={setSelectedItems}
               key={index}
             />
           );
@@ -111,7 +115,7 @@ function JIYTable<T>({
         </Table.Row>
       );
     }
-  }, [records]);
+  }, [records, isSelectedAll]);
 
   const handleHorizontalScrolling = useCallback(
     (e) => {

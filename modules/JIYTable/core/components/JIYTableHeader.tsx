@@ -6,8 +6,7 @@
  * @desc [description]
  */
 
-import { useCallback, useEffect } from "react";
-import { useState } from "react";
+import { useCallback } from "react";
 import { Checkbox, Table } from "semantic-ui-react";
 import { JIYTableHeaderContext } from "../models/JIYContexts";
 
@@ -28,21 +27,24 @@ function JIYTableHeader<T>({
   setSelectedAll,
   setSelectedItems,
 }: JIYTableHeaderContext<T>): JSX.Element {
-  const [selectAll, setSelectAll] = useState(false);
-
   const handleSelectAll = useCallback(() => {
-    setSelectAll(!selectAll);
-  }, [selectAll]);
-
-  useEffect(() => {
-    setRecords(records.map((obj) => ({ ...obj, isSelected: selectAll })));
-  }, [selectAll]);
+    if (!isSelectedAll) {
+      // all of rows will be selected
+      records &&
+        setRecords(records.map((record) => ({ ...record, isSelected: true })));
+    } else {
+      // all of rows will be deselected
+      records &&
+        setRecords(records.map((record) => ({ ...record, isSelected: false })));
+    }
+    setSelectedAll(!isSelectedAll);
+  }, [isSelectedAll]);
 
   return (
     <Table.Header>
       <Table.Row>
         <Table.HeaderCell>
-          <Checkbox checked={selectAll} onChange={handleSelectAll} />
+          <Checkbox checked={isSelectedAll} onChange={handleSelectAll} />
         </Table.HeaderCell>
         {headers.length > 0 &&
           headers
