@@ -27,7 +27,17 @@ import { JIYTableStateContext } from "../models/JIYContexts";
 function ColumnSelector({ headers, setHeaders }): JSX.Element {
   const handleChange = useCallback(
     (e) => {
-      console.log(e.currentTarget.value);
+      console.log(headers);
+      setHeaders(
+        headers.map((colState) => {
+          return colState.value === e.currentTarget.value
+            ? {
+                ...colState,
+                display: colState.display === "visible" ? "hidden" : "visible",
+              }
+            : colState;
+        })
+      );
     },
     [headers]
   );
@@ -35,19 +45,21 @@ function ColumnSelector({ headers, setHeaders }): JSX.Element {
   return (
     <Grid columns={5}>
       {headers &&
-        headers.map((column, index) => (
-          <Grid.Column key={index}>
-            <input
-              disabled={column.primary}
-              // label={column.value}
-              value={column.value}
-              onChange={handleChange}
-              defaultChecked={column.display}
-              type="checkbox"
-            />
-            <label>{column.value}</label>
-          </Grid.Column>
-        ))}
+        headers
+          .filter((colState) => colState.display === "visible" || "hidden")
+          .map((column, index) => (
+            <Grid.Column key={index}>
+              <input
+                disabled={column.primary}
+                // label={column.value}
+                value={column.value}
+                onChange={handleChange}
+                defaultChecked={column.display === "visible"}
+                type="checkbox"
+              />
+              <label>{column.value}</label>
+            </Grid.Column>
+          ))}
     </Grid>
   );
 }

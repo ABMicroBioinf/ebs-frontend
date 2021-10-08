@@ -31,7 +31,7 @@ import { FlatSequence } from "../../../models/Sequence";
  * Sequence Page
  * @returns - Sequence Main View Component
  */
-function SequenceTB(): JSX.Element {
+function SequenceMG(): JSX.Element {
   const MODULE = "MG";
   const URL = URLHandler(API_SEQUENCE);
 
@@ -55,39 +55,50 @@ function SequenceTB(): JSX.Element {
     useState<Array<JIYRecordContext<FlatSequence>>>(null);
   const [wideView, setWideView] = useState(false);
 
-  const fetchData = useCallback(async (reqURL: string) => {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    };
+  const fetchData = useCallback(
+    async (reqURL: string) => {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      };
 
-    setLoading(true);
-    await axios
-      .get(reqURL, config)
-      .then((res) => {
-        if (res.status === 200) {
-          const { headers: cols, records: rows } = handler(res.data.results);
-          setNext(res.data.links.next);
-          setPrev(res.data.links.previous);
-          setTotal(Number(res.data.total));
-          setPage(Number(res.data.page));
-          setPageSize(Number(res.data.page_size));
-          setHeaders(cols);
-          setRecords(rows);
-        }
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+      setLoading(true);
+      await axios
+        .get(reqURL, config)
+        .then((res) => {
+          if (res.status === 200) {
+            const { headers: cols, records: rows } = handler(
+              res.data.results,
+              isSelectedAll
+            );
+            setNext(res.data.links.next);
+            setPrev(res.data.links.previous);
+            setTotal(Number(res.data.total));
+            setPage(Number(res.data.page));
+            setPageSize(Number(res.data.page_size));
+            setHeaders(cols);
+            setRecords(rows);
+          }
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+    [isSelectedAll]
+  );
 
   useEffect(() => {
     fetchData(
       URLHandler(URL.uri, query, MODULE, search, page, pageSize, ordering).url
     );
   }, [page, pageSize, search, ordering, query]);
+
+  useEffect(() => {
+    records &&
+      setSelectedAll(records.every((record) => record.isSelected === true));
+  }, [records]);
 
   return (
     <>
@@ -156,4 +167,4 @@ function SequenceTB(): JSX.Element {
   );
 }
 
-export default withAuth(SequenceTB);
+export default withAuth(SequenceMG);

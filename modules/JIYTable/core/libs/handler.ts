@@ -95,7 +95,8 @@ export function URLHandler(
  * @returns - See {@link JIYTabularDataContext}
  */
 export function SequencesDataHandler(
-  results: Array<FlatSequence>
+  results: Array<FlatSequence>,
+  isSelected: boolean
 ): JIYTabularDataContext<FlatSequence> {
   const schema: Array<JIYHeaderContext> = Object.entries(
     CUSTOM_HEADER_SEQUENCE
@@ -120,7 +121,7 @@ export function SequencesDataHandler(
 
   const data: Array<JIYRecordContext<FlatSequence>> = rearranged.map(
     (flatSequences: FlatSequence): JIYRecordContext<FlatSequence> => ({
-      isSelected: false,
+      isSelected: isSelected,
       data: flatSequences,
     })
   );
@@ -137,7 +138,8 @@ export function SequencesDataHandler(
  * @returns - See {@link JIYTabularDataContext}
  */
 export function AssemblyDataHandler(
-  results: Array<FlatAssembly>
+  results: Array<FlatAssembly>,
+  isSelected: boolean
 ): JIYTabularDataContext<FlatAssembly> {
   const schema: Array<JIYHeaderContext> = Object.entries(
     CUSTOM_HEADER_ASSEMBLY
@@ -162,7 +164,7 @@ export function AssemblyDataHandler(
 
   const data: Array<JIYRecordContext<FlatAssembly>> = rearranged.map(
     (flatAssembly: FlatAssembly): JIYRecordContext<FlatAssembly> => ({
-      isSelected: false,
+      isSelected: isSelected,
       data: flatAssembly,
     })
   );
@@ -179,7 +181,8 @@ export function AssemblyDataHandler(
  * @returns - See {@link JIYTabularDataContext}
  */
 export function AnnotationDataHandler(
-  results: Array<FlatAnnotation>
+  results: Array<FlatAnnotation>,
+  isSelected: boolean
 ): JIYTabularDataContext<FlatAnnotation> {
   const schema: Array<JIYHeaderContext> = Object.entries(
     CUSTOM_HEADER_ANNOTATION
@@ -204,7 +207,7 @@ export function AnnotationDataHandler(
 
   const data: Array<JIYRecordContext<FlatAnnotation>> = rearranged.map(
     (flatAnnotation: FlatAnnotation): JIYRecordContext<FlatAnnotation> => ({
-      isSelected: false,
+      isSelected: isSelected,
       data: flatAnnotation,
     })
   );
@@ -221,7 +224,8 @@ export function AnnotationDataHandler(
  * @returns - See {@link JIYTabularDataContext}
  */
 export function MLSTDataHandler(
-  results: Array<FlatMLST>
+  results: Array<FlatMLST>,
+  isSelected: boolean
 ): JIYTabularDataContext<FlatMLST> {
   const schema: Array<JIYHeaderContext> = Object.entries(
     CUSTOM_HEADER_MLST
@@ -246,7 +250,7 @@ export function MLSTDataHandler(
 
   const data: Array<JIYRecordContext<FlatMLST>> = rearranged.map(
     (flatMLST: FlatMLST): JIYRecordContext<FlatMLST> => ({
-      isSelected: false,
+      isSelected: isSelected,
       data: flatMLST,
     })
   );
@@ -263,7 +267,8 @@ export function MLSTDataHandler(
  * @returns - See {@link JIYTabularDataContext}
  */
 export function ResistomeDataHandler(
-  results: Array<FlatResistome>
+  results: Array<FlatResistome>,
+  isSelected: boolean
 ): JIYTabularDataContext<FlatResistome> {
   const schema: Array<JIYHeaderContext> = Object.entries(
     CUSTOM_HEADER_RESISTOME
@@ -288,7 +293,7 @@ export function ResistomeDataHandler(
 
   const data: Array<JIYRecordContext<FlatResistome>> = rearranged.map(
     (flatResistome: FlatResistome): JIYRecordContext<FlatResistome> => ({
-      isSelected: false,
+      isSelected: isSelected,
       data: flatResistome,
     })
   );
@@ -301,11 +306,12 @@ export function ResistomeDataHandler(
 
 /**
  * VirulomeDataHandler
- * @param results Array of FlatVirulome. See {@link FlatVirulome}
+ * @param results - Array of FlatVirulome. See {@link FlatVirulome}
  * @returns - See {@link JIYTabularDataContext}
  */
 export function VirulomeDataHandler(
-  results: Array<FlatVirulome>
+  results: Array<FlatVirulome>,
+  isSelected: boolean
 ): JIYTabularDataContext<FlatVirulome> {
   const schema: Array<JIYHeaderContext> = Object.entries(
     CUSTOM_HEADER_VIRULOME
@@ -330,7 +336,7 @@ export function VirulomeDataHandler(
 
   const data: Array<JIYRecordContext<FlatVirulome>> = rearranged.map(
     (flatVirulome: FlatVirulome): JIYRecordContext<FlatVirulome> => ({
-      isSelected: false,
+      isSelected: isSelected,
       data: flatVirulome,
     })
   );
@@ -347,7 +353,8 @@ export function VirulomeDataHandler(
  * @returns - See {@link JIYTabularDataContext}
  */
 export function ProfileSummaryDataHandler(
-  results: Array<FlatPsummary>
+  results: Array<FlatPsummary>,
+  isSelected: boolean
 ): JIYTabularDataContext<FlatPsummary> {
   const schema: Array<JIYHeaderContext> = Object.entries(
     CUSTOM_HEADER_PSUMMARY
@@ -372,7 +379,7 @@ export function ProfileSummaryDataHandler(
 
   const data: Array<JIYRecordContext<FlatPsummary>> = rearranged.map(
     (flatPsummary: FlatPsummary): JIYRecordContext<FlatPsummary> => ({
-      isSelected: false,
+      isSelected: isSelected,
       data: flatPsummary,
     })
   );
