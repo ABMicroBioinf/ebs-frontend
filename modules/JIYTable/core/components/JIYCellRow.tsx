@@ -44,7 +44,7 @@ function JIYCellRow<T>({
   useEffect(() => {
     const keys = headers.filter((colState) => colState.display === "visible");
     setRow(pick(record.data, keys));
-  }, []);
+  }, [headers]);
 
   return (
     <Table.Row>

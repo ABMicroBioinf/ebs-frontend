@@ -27,7 +27,6 @@ import { JIYTableStateContext } from "../models/JIYContexts";
 function ColumnSelector({ headers, setHeaders }): JSX.Element {
   const handleChange = useCallback(
     (e) => {
-      console.log(headers);
       setHeaders(
         headers.map((colState) => {
           return colState.value === e.currentTarget.value

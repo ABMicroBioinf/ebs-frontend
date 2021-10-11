@@ -115,7 +115,7 @@ function JIYTable<T>({
         </Table.Row>
       );
     }
-  }, [records, isSelectedAll]);
+  }, [headers, records, isSelectedAll]);
 
   const handleHorizontalScrolling = useCallback(
     (e) => {

@@ -77,7 +77,7 @@ function SequenceCPO(): JSX.Element {
             setTotal(Number(res.data.total));
             setPage(Number(res.data.page));
             setPageSize(Number(res.data.page_size));
-            setHeaders(cols);
+            headers || setHeaders(cols);
             setRecords(rows);
           }
         })
@@ -86,7 +86,7 @@ function SequenceCPO(): JSX.Element {
           setLoading(false);
         });
     },
-    [isSelectedAll]
+    [headers, isSelectedAll]
   );
 
   useEffect(() => {
