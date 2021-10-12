@@ -12,7 +12,7 @@ import { JIYTableStateContext } from "../models/JIYContexts";
 import JIYTableHeader from "./JIYTableHeader";
 import JIYCellRow from "./JIYCellRow";
 
-import { Grid, Ref, Sticky, Table } from "semantic-ui-react";
+import { Grid, Item, Ref, Sticky, Table } from "semantic-ui-react";
 import JIYTableTools from "./JIYTableTools";
 import JIYTableCustomHead from "../plugins/JIYTableCustomHead";
 import { pick } from "../libs/gizmos";
@@ -37,8 +37,8 @@ function JIYTable<T>({
   headers,
   records,
   isLoading,
-  isSelectedAll,
-  selectedItems,
+  invertSelection,
+  excludedItems,
   setPage,
   setPageSize,
   setQuery,
@@ -47,8 +47,8 @@ function JIYTable<T>({
   setHeaders,
   setRecords,
   setLoading,
-  setSelectedAll,
-  setSelectedItems,
+  setInvertSelection,
+  setExcludedItems,
 }: JIYTableStateContext<T>): JSX.Element {
   const [mouseDown, setMouseDown] = useState(false);
   const [startX, setStartX] = useState(null);
@@ -81,20 +81,32 @@ function JIYTable<T>({
       if (records.length > 0) {
         const keys = headers.filter((colState) => colState.display !== "none");
         return records.map((record, index) => {
-          const rowObj = { ...record, data: pick(record.data, keys) };
+          // console.log(
+          // excludedItems.find((item) => item.data["id"] === record.data["id"])
+          // excludedItems.includes(record)
+          // excludedItems.find((item) => item === record)
+          // );
+          let rowObj = record;
+          const excludedItem = excludedItems.find((item) => item === record);
+          excludedItem
+            ? (rowObj = {
+                isSelected: excludedItem.isSelected,
+                data: pick(record.data, keys),
+              })
+            : (rowObj = { ...record, data: pick(record.data, keys) });
           return (
             <JIYCellRow
               primaryField={headers.find((header) => header.primary)}
               path={path}
-              isSelectedAll={isSelectedAll}
-              selectedItems={selectedItems}
+              invertSelection={invertSelection}
+              excludedItems={excludedItems}
               headers={headers}
               records={records}
               record={rowObj}
               index={index}
               setRecords={setRecords}
-              setSelectedAll={setSelectedAll}
-              setSelectedItems={setSelectedItems}
+              setInvertSelection={setInvertSelection}
+              setExcludedItems={setExcludedItems}
               key={index}
             />
           );
@@ -115,7 +127,7 @@ function JIYTable<T>({
         </Table.Row>
       );
     }
-  }, [headers, records, isSelectedAll]);
+  }, [headers, records, invertSelection, excludedItems]);
 
   const handleHorizontalScrolling = useCallback(
     (e) => {
@@ -181,8 +193,8 @@ function JIYTable<T>({
                   headers={headers}
                   records={records}
                   isLoading={isLoading}
-                  isSelectedAll={isSelectedAll}
-                  selectedItems={selectedItems}
+                  invertSelection={invertSelection}
+                  excludedItems={excludedItems}
                   setPage={setPage}
                   setPageSize={setPageSize}
                   setQuery={setQuery}
@@ -191,8 +203,8 @@ function JIYTable<T>({
                   setHeaders={setHeaders}
                   setRecords={setRecords}
                   setLoading={setLoading}
-                  setSelectedAll={setSelectedAll}
-                  setSelectedItems={setSelectedItems}
+                  setInvertSelection={setInvertSelection}
+                  setExcludedItems={setExcludedItems}
                 />
               </Grid.Row>
             </Sticky>
@@ -223,13 +235,13 @@ function JIYTable<T>({
                         headers={headers}
                         records={records}
                         ordering={ordering}
-                        isSelectedAll={isSelectedAll}
-                        selectedItems={selectedItems}
+                        invertSelection={invertSelection}
+                        excludedItems={excludedItems}
                         setHeaders={setHeaders}
                         setRecords={setRecords}
                         setOrdering={setOrdering}
-                        setSelectedAll={setSelectedAll}
-                        setSelectedItems={setSelectedItems}
+                        setInvertSelection={setInvertSelection}
+                        setExcludedItems={setExcludedItems}
                       />
                     </Ref>
                     <Table.Body>{getCellRows()}</Table.Body>

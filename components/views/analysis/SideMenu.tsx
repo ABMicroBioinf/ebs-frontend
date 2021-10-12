@@ -5,7 +5,6 @@
  * @modify date 2021-07-15 13:20:56
  * @desc [description]
  */
-import axios from "axios";
 import _ from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
 import SemanticDatepicker from "react-semantic-ui-datepickers";

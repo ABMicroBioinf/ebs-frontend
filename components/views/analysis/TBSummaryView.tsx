@@ -46,8 +46,8 @@ function TBSummaryView(): JSX.Element {
     useState<Array<JIYRecordContext<FlatPsummary>>>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [isSelectedAll, setSelectedAll] = useState<boolean>(false);
-  const [selectedItems, setSelectedItems] =
+  const [invertSelection, setInvertSelection] = useState<boolean>(false);
+  const [excludedItems, setExcludedItems] =
     useState<Array<JIYRecordContext<FlatPsummary>>>(null);
 
   const fetchData = useCallback(async (reqURL: string) => {
@@ -62,7 +62,10 @@ function TBSummaryView(): JSX.Element {
       .get(reqURL, config)
       .then((res) => {
         if (res.status === 200) {
-          const { headers: cols, records: rows } = handler(res.data.results);
+          const { headers: cols, records: rows } = handler(
+            res.data.results,
+            invertSelection
+          );
           setNext(res.data.links.next);
           setPrev(res.data.links.previous);
           setTotal(Number(res.data.total));
@@ -104,8 +107,8 @@ function TBSummaryView(): JSX.Element {
                 headers={headers}
                 records={records}
                 isLoading={isLoading}
-                isSelectedAll={isSelectedAll}
-                selectedItems={selectedItems}
+                invertSelection={invertSelection}
+                excludedItems={excludedItems}
                 setPage={setPage}
                 setPageSize={setPageSize}
                 setQuery={setQuery}
@@ -114,8 +117,8 @@ function TBSummaryView(): JSX.Element {
                 setHeaders={setHeaders}
                 setRecords={setRecords}
                 setLoading={setLoading}
-                setSelectedAll={setSelectedAll}
-                setSelectedItems={setSelectedItems}
+                setInvertSelection={setInvertSelection}
+                setExcludedItems={setExcludedItems}
               />
             )}
           </Grid.Column>

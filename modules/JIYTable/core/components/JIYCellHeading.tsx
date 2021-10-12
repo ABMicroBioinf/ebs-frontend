@@ -16,39 +16,45 @@ import { JIYCellHeadingContext } from "../models/JIYContexts";
  * @returns Cell Heading Component
  */
 function JIYCellHeading<T>({
-  isSelectedAll,
-  selectedItems,
+  invertSelection,
+  excludedItems,
   record,
   records,
   index,
   setRecords,
-  setSelectedAll,
-  setSelectedItems,
+  setInvertSelection,
+  setExcludedItems,
 }: JIYCellHeadingContext<T>): JSX.Element {
   const handleChange = useCallback(() => {
-    if (isSelectedAll) {
-      setSelectedAll(false);
-      setRecords(
-        records.map((record, i) => {
-          if (i === index) {
-            return { ...record, isSelected: false };
-          } else {
-            return record;
-          }
-        })
-      );
-    } else {
-      setRecords(
-        records.map((record, i) => {
-          if (i === index) {
-            return { ...record, isSelected: !record.isSelected };
-          } else {
-            return record;
-          }
-        })
-      );
-    }
-  }, [isSelectedAll, records, record]);
+    // Excluded Item Handling
+    invertSelection === !record.isSelected
+      ? setExcludedItems(
+          excludedItems.filter((item) => item.data["id"] !== record.data["id"])
+        )
+      : setExcludedItems([
+          ...excludedItems,
+          { ...record, isSelected: !record.isSelected },
+        ]);
+    // if (invertSelection) {
+    //   // setInvertSelection(false);
+    //   setRecords(
+    //     records.map((record, i) =>
+    //       i === index ? { ...record, isSelected: false } : record
+    //     )
+    //   );
+    // } else {
+    //   setRecords(
+    //     records.map((record, i) =>
+    //       i === index ? { ...record, isSelected: !record.isSelected } : record
+    //     )
+    //   );
+    // }
+    setRecords(
+      records.map((record, i) =>
+        i === index ? { ...record, isSelected: !record.isSelected } : record
+      )
+    );
+  }, [invertSelection, records, record]);
 
   return <Checkbox checked={record.isSelected} onChange={handleChange} />;
 }

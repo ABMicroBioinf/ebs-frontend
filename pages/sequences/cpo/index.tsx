@@ -50,8 +50,8 @@ function SequenceCPO(): JSX.Element {
     useState<Array<JIYRecordContext<FlatSequence>>>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [isSelectedAll, setSelectedAll] = useState<boolean>(false);
-  const [selectedItems, setSelectedItems] =
+  const [invertSelection, setInvertSelection] = useState<boolean>(false);
+  const [excludedItems, setExcludedItems] =
     useState<Array<JIYRecordContext<FlatSequence>>>(null);
   const [wideView, setWideView] = useState(false);
 
@@ -70,7 +70,7 @@ function SequenceCPO(): JSX.Element {
           if (res.status === 200) {
             const { headers: cols, records: rows } = handler(
               res.data.results,
-              isSelectedAll
+              invertSelection
             );
             setNext(res.data.links.next);
             setPrev(res.data.links.previous);
@@ -86,7 +86,7 @@ function SequenceCPO(): JSX.Element {
           setLoading(false);
         });
     },
-    [headers, isSelectedAll]
+    [headers, invertSelection]
   );
 
   useEffect(() => {
@@ -97,7 +97,7 @@ function SequenceCPO(): JSX.Element {
 
   useEffect(() => {
     records &&
-      setSelectedAll(records.every((record) => record.isSelected === true));
+      setInvertSelection(records.every((record) => record.isSelected === true));
   }, [records]);
 
   return (
@@ -145,8 +145,8 @@ function SequenceCPO(): JSX.Element {
                   headers={headers}
                   records={records}
                   isLoading={isLoading}
-                  isSelectedAll={isSelectedAll}
-                  selectedItems={selectedItems}
+                  invertSelection={invertSelection}
+                  excludedItems={excludedItems}
                   setPage={setPage}
                   setPageSize={setPageSize}
                   setQuery={setQuery}
@@ -155,8 +155,8 @@ function SequenceCPO(): JSX.Element {
                   setHeaders={setHeaders}
                   setRecords={setRecords}
                   setLoading={setLoading}
-                  setSelectedAll={setSelectedAll}
-                  setSelectedItems={setSelectedItems}
+                  setInvertSelection={setInvertSelection}
+                  setExcludedItems={setExcludedItems}
                 />
               </Grid.Column>
             </Grid.Row>

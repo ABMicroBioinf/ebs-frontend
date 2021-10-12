@@ -19,16 +19,16 @@ function JIYTableHeader<T>({
   headers,
   records,
   ordering,
-  isSelectedAll,
-  selectedItems,
+  invertSelection,
+  excludedItems,
   setHeaders,
   setRecords,
   setOrdering,
-  setSelectedAll,
-  setSelectedItems,
+  setInvertSelection,
+  setExcludedItems,
 }: JIYTableHeaderContext<T>): JSX.Element {
-  const handleSelectAll = useCallback(() => {
-    if (!isSelectedAll) {
+  const handleInvertSelection = useCallback(() => {
+    if (!invertSelection) {
       // all of rows will be selected
       records &&
         setRecords(records.map((record) => ({ ...record, isSelected: true })));
@@ -37,14 +37,17 @@ function JIYTableHeader<T>({
       records &&
         setRecords(records.map((record) => ({ ...record, isSelected: false })));
     }
-    setSelectedAll(!isSelectedAll);
-  }, [isSelectedAll]);
+    setInvertSelection(!invertSelection);
+  }, [invertSelection]);
 
   return (
     <Table.Header>
       <Table.Row>
         <Table.HeaderCell>
-          <Checkbox checked={isSelectedAll} onChange={handleSelectAll} />
+          <Checkbox
+            checked={records.every((record) => record.isSelected === true)}
+            onChange={handleInvertSelection}
+          />
         </Table.HeaderCell>
         {headers.length > 0 &&
           headers

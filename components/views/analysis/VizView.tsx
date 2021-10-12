@@ -30,8 +30,8 @@ function IsolatesVizView<T>({
   headers,
   records,
   isLoading,
-  isSelectedAll,
-  selectedItems,
+  invertSelection,
+  excludedItems,
   setPage,
   setPageSize,
   setQuery,
@@ -40,8 +40,8 @@ function IsolatesVizView<T>({
   setHeaders,
   setRecords,
   setLoading,
-  setSelectedAll,
-  setSelectedItems,
+  setInvertSelection,
+  setExcludedItems,
 }: JIYTableStateContext<T>): JSX.Element {
   return (
     <>
@@ -59,8 +59,8 @@ function IsolatesVizView<T>({
         headers={headers}
         records={records}
         isLoading={isLoading}
-        isSelectedAll={isSelectedAll}
-        selectedItems={selectedItems}
+        invertSelection={invertSelection}
+        excludedItems={excludedItems}
         setPage={setPage}
         setPageSize={setPageSize}
         setQuery={setQuery}
@@ -69,8 +69,8 @@ function IsolatesVizView<T>({
         setHeaders={setHeaders}
         setRecords={setRecords}
         setLoading={setLoading}
-        setSelectedAll={setSelectedAll}
-        setSelectedItems={setSelectedItems}
+        setInvertSelection={setInvertSelection}
+        setExcludedItems={setExcludedItems}
       />
     </>
   );
