@@ -49,8 +49,9 @@ function MLSTView(): JSX.Element {
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
   const [invertSelection, setInvertSelection] = useState<boolean>(false);
-  const [excludedItems, setExcludedItems] =
-    useState<Array<JIYRecordContext<FlatMLST>>>(null);
+  const [excludedItems, setExcludedItems] = useState<
+    Array<JIYRecordContext<FlatMLST>>
+  >([]);
 
   const fetchData = useCallback(
     async (reqURL: string) => {
@@ -74,7 +75,7 @@ function MLSTView(): JSX.Element {
             setTotal(Number(res.data.total));
             setPage(Number(res.data.page));
             setPageSize(Number(res.data.page_size));
-            setHeaders(cols);
+            headers || setHeaders(cols);
             setRecords(rows);
           }
         })
@@ -93,8 +94,10 @@ function MLSTView(): JSX.Element {
   }, [page, pageSize, search, ordering, query]);
 
   useEffect(() => {
-    isRefreshing &&
+    if (isRefreshing) {
       fetchData(URLHandler(URL.uri, "", MODULE, "", 1, 20, null).url);
+      setRefreshing(false);
+    }
   }, [isRefreshing]);
 
   return (

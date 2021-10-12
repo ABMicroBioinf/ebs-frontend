@@ -105,11 +105,6 @@ function SequenceMG(): JSX.Element {
 
   useEffect(() => {
     if (isRefreshing) {
-      // setInvertSelection(false);
-      // setQuery("");
-      // setSearch("");
-      // setOrdering(null);
-      // setExcludedItems([]);
       fetchData(URLHandler(URL.uri, "", MODULE, "", 1, 20, null).url);
       setRefreshing(false);
     }
