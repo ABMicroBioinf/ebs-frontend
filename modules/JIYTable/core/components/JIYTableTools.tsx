@@ -118,15 +118,18 @@ function JIYTableTools<T>({
   headers,
   records,
   isLoading,
+  isRefreshing,
   invertSelection,
   excludedItems,
   setPage,
   setPageSize,
+  setQuery,
   setSearch,
   setOrdering,
   setHeaders,
   setRecords,
   setLoading,
+  setRefreshing,
   setInvertSelection,
   setExcludedItems,
 }: JIYTableStateContext<T>): JSX.Element {
@@ -158,7 +161,14 @@ function JIYTableTools<T>({
 
   const handleRefresh = useCallback((e) => {
     e.preventDefault();
-    console.log("refresh");
+    setInvertSelection(false);
+    setQuery("");
+    setSearch("");
+    setOrdering(null);
+    setExcludedItems([]);
+    setHeaders(null);
+    setRecords(null);
+    setRefreshing(true);
   }, []);
 
   const getSubMenu = useCallback(() => {

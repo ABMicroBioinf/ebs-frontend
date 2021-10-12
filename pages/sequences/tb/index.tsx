@@ -50,6 +50,7 @@ function SequenceTB(): JSX.Element {
     useState<Array<JIYRecordContext<FlatSequence>>>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isRefreshing, setRefreshing] = useState<boolean>(false);
   const [invertSelection, setInvertSelection] = useState<boolean>(false);
   const [excludedItems, setExcludedItems] = useState<
     Array<JIYRecordContext<FlatSequence>>
@@ -146,6 +147,7 @@ function SequenceTB(): JSX.Element {
                   headers={headers}
                   records={records}
                   isLoading={isLoading}
+                  isRefreshing={isRefreshing}
                   invertSelection={invertSelection}
                   excludedItems={excludedItems}
                   setPage={setPage}
@@ -156,6 +158,7 @@ function SequenceTB(): JSX.Element {
                   setHeaders={setHeaders}
                   setRecords={setRecords}
                   setLoading={setLoading}
+                  setRefreshing={setRefreshing}
                   setInvertSelection={setInvertSelection}
                   setExcludedItems={setExcludedItems}
                 />

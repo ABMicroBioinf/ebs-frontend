@@ -50,6 +50,7 @@ function SequenceMG(): JSX.Element {
     useState<Array<JIYRecordContext<FlatSequence>>>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isRefreshing, setRefreshing] = useState<boolean>(false);
   const [invertSelection, setInvertSelection] = useState<boolean>(false);
   const [excludedItems, setExcludedItems] = useState<
     Array<JIYRecordContext<FlatSequence>>
@@ -96,15 +97,23 @@ function SequenceMG(): JSX.Element {
     );
   }, [page, pageSize, search, ordering, query]);
 
-  useEffect(() => {
-    //   records &&
-    //     setInvertSelection(records.every((record) => record.isSelected === true));
-    console.log(excludedItems);
-  }, [records]);
+  // useEffect(() => {
+  //   records &&
+  //     setInvertSelection(records.every((record) => record.isSelected === true));
+  // console.log(excludedItems);
+  // }, [records]);
 
   useEffect(() => {
-    console.log(excludedItems);
-  }, [excludedItems]);
+    if (isRefreshing) {
+      // setInvertSelection(false);
+      // setQuery("");
+      // setSearch("");
+      // setOrdering(null);
+      // setExcludedItems([]);
+      fetchData(URLHandler(URL.uri, "", MODULE, "", 1, 20, null).url);
+      setRefreshing(false);
+    }
+  }, [isRefreshing]);
 
   return (
     <>
@@ -151,6 +160,7 @@ function SequenceMG(): JSX.Element {
                   headers={headers}
                   records={records}
                   isLoading={isLoading}
+                  isRefreshing={isRefreshing}
                   invertSelection={invertSelection}
                   excludedItems={excludedItems}
                   setPage={setPage}
@@ -161,6 +171,7 @@ function SequenceMG(): JSX.Element {
                   setHeaders={setHeaders}
                   setRecords={setRecords}
                   setLoading={setLoading}
+                  setRefreshing={setRefreshing}
                   setInvertSelection={setInvertSelection}
                   setExcludedItems={setExcludedItems}
                 />

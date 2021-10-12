@@ -28,6 +28,7 @@ function JIYTableHeader<T>({
   setExcludedItems,
 }: JIYTableHeaderContext<T>): JSX.Element {
   const handleInvertSelection = useCallback(() => {
+    setExcludedItems([]);
     if (!invertSelection) {
       // all of rows will be selected
       records &&
@@ -45,7 +46,10 @@ function JIYTableHeader<T>({
       <Table.Row>
         <Table.HeaderCell>
           <Checkbox
-            checked={records.every((record) => record.isSelected === true)}
+            checked={records.every(
+              (record) =>
+                record.isSelected === true && excludedItems.length === 0
+            )}
             onChange={handleInvertSelection}
           />
         </Table.HeaderCell>

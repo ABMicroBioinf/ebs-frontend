@@ -48,6 +48,7 @@ export interface JIYTableStateContext<T> {
   headers: Array<JIYHeaderContext>;
   records: Array<JIYRecordContext<T>>;
   isLoading: boolean;
+  isRefreshing: boolean;
   invertSelection: boolean;
   excludedItems: Array<JIYRecordContext<T>>;
   setPage: Dispatch<SetStateAction<number>>;
@@ -58,6 +59,7 @@ export interface JIYTableStateContext<T> {
   setHeaders: Dispatch<SetStateAction<Array<JIYHeaderContext>>>;
   setRecords: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  setRefreshing: Dispatch<SetStateAction<boolean>>;
   setInvertSelection: Dispatch<SetStateAction<boolean>>;
   setExcludedItems: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
 }

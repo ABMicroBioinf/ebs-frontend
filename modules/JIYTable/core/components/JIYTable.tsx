@@ -37,6 +37,7 @@ function JIYTable<T>({
   headers,
   records,
   isLoading,
+  isRefreshing,
   invertSelection,
   excludedItems,
   setPage,
@@ -47,6 +48,7 @@ function JIYTable<T>({
   setHeaders,
   setRecords,
   setLoading,
+  setRefreshing,
   setInvertSelection,
   setExcludedItems,
 }: JIYTableStateContext<T>): JSX.Element {
@@ -81,19 +83,17 @@ function JIYTable<T>({
       if (records.length > 0) {
         const keys = headers.filter((colState) => colState.display !== "none");
         return records.map((record, index) => {
-          // console.log(
-          // excludedItems.find((item) => item.data["id"] === record.data["id"])
-          // excludedItems.includes(record)
-          // excludedItems.find((item) => item === record)
-          // );
           let rowObj = record;
-          const excludedItem = excludedItems.find((item) => item === record);
+          const excludedItem = excludedItems.find(
+            (item) => item.data["id"] === record.data["id"]
+          );
           excludedItem
             ? (rowObj = {
                 isSelected: excludedItem.isSelected,
                 data: pick(record.data, keys),
               })
             : (rowObj = { ...record, data: pick(record.data, keys) });
+          // const rowObj = { ...record, data: pick(record.data, keys) };
           return (
             <JIYCellRow
               primaryField={headers.find((header) => header.primary)}
@@ -193,6 +193,7 @@ function JIYTable<T>({
                   headers={headers}
                   records={records}
                   isLoading={isLoading}
+                  isRefreshing={isRefreshing}
                   invertSelection={invertSelection}
                   excludedItems={excludedItems}
                   setPage={setPage}
@@ -203,6 +204,7 @@ function JIYTable<T>({
                   setHeaders={setHeaders}
                   setRecords={setRecords}
                   setLoading={setLoading}
+                  setRefreshing={setRefreshing}
                   setInvertSelection={setInvertSelection}
                   setExcludedItems={setExcludedItems}
                 />
