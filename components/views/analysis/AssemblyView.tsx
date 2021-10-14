@@ -109,6 +109,7 @@ function AssemblyView(): JSX.Element {
               <IsolatesVizView
                 title={MODULE}
                 path={"/analysis/tb"}
+                url={URL}
                 prev={prev}
                 next={next}
                 total={total}
@@ -134,6 +135,7 @@ function AssemblyView(): JSX.Element {
                 setRefreshing={setRefreshing}
                 setInvertSelection={setInvertSelection}
                 setExcludedItems={setExcludedItems}
+                handler={handler}
               />
             )}
           </Grid.Column>

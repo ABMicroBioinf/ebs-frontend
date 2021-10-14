@@ -108,6 +108,7 @@ function VirulomeView(): JSX.Element {
               <IsolatesVizView
                 title={MODULE}
                 path={"/analysis/tb"}
+                url={URL}
                 prev={prev}
                 next={next}
                 total={total}
@@ -133,6 +134,7 @@ function VirulomeView(): JSX.Element {
                 setRefreshing={setRefreshing}
                 setInvertSelection={setInvertSelection}
                 setExcludedItems={setExcludedItems}
+                handler={handler}
               />
             )}
           </Grid.Column>

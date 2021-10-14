@@ -135,6 +135,7 @@ function SequenceCPO(): JSX.Element {
                 <SequencesVizView
                   title={MODULE}
                   path={"/sequences/cpo"}
+                  url={URL}
                   prev={prev}
                   next={next}
                   total={total}
@@ -160,6 +161,7 @@ function SequenceCPO(): JSX.Element {
                   setRefreshing={setRefreshing}
                   setInvertSelection={setInvertSelection}
                   setExcludedItems={setExcludedItems}
+                  handler={handler}
                 />
               </Grid.Column>
             </Grid.Row>

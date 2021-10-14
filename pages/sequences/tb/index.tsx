@@ -136,6 +136,7 @@ function SequenceTB(): JSX.Element {
                 <SequencesVizView
                   title={MODULE}
                   path={"/sequences/tb"}
+                  url={URL}
                   prev={prev}
                   next={next}
                   total={total}
@@ -161,6 +162,7 @@ function SequenceTB(): JSX.Element {
                   setRefreshing={setRefreshing}
                   setInvertSelection={setInvertSelection}
                   setExcludedItems={setExcludedItems}
+                  handler={handler}
                 />
               </Grid.Column>
             </Grid.Row>

@@ -144,6 +144,7 @@ function SequenceMG(): JSX.Element {
                 <SequencesVizView
                   title={MODULE}
                   path={"/sequences/mg"}
+                  url={URL}
                   prev={prev}
                   next={next}
                   total={total}
@@ -169,6 +170,7 @@ function SequenceMG(): JSX.Element {
                   setRefreshing={setRefreshing}
                   setInvertSelection={setInvertSelection}
                   setExcludedItems={setExcludedItems}
+                  handler={handler}
                 />
               </Grid.Column>
             </Grid.Row>

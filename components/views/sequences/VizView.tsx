@@ -19,6 +19,7 @@ import JIYTable from "../../../modules/JIYTable/core/components/JIYTable";
 function SequencesVizView<T>({
   title,
   path,
+  url,
   prev,
   next,
   total,
@@ -44,12 +45,14 @@ function SequencesVizView<T>({
   setRefreshing,
   setInvertSelection,
   setExcludedItems,
+  handler,
 }: JIYTableStateContext<T>): JSX.Element {
   return (
     <>
       <JIYTable
         title={title}
         path={path}
+        url={url}
         prev={prev}
         next={next}
         total={total}
@@ -75,6 +78,7 @@ function SequencesVizView<T>({
         setRefreshing={setRefreshing}
         setInvertSelection={setInvertSelection}
         setExcludedItems={setExcludedItems}
+        handler={handler}
       />
     </>
   );

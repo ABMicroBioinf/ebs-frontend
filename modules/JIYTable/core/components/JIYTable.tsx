@@ -26,6 +26,7 @@ import { pick } from "../libs/gizmos";
 function JIYTable<T>({
   title,
   path,
+  url,
   prev,
   next,
   total,
@@ -51,6 +52,7 @@ function JIYTable<T>({
   setRefreshing,
   setInvertSelection,
   setExcludedItems,
+  handler,
 }: JIYTableStateContext<T>): JSX.Element {
   const [mouseDown, setMouseDown] = useState(false);
   const [startX, setStartX] = useState(null);
@@ -182,6 +184,7 @@ function JIYTable<T>({
                 <JIYTableTools
                   title={title}
                   path={path}
+                  url={url}
                   prev={prev}
                   next={next}
                   total={total}
@@ -207,6 +210,7 @@ function JIYTable<T>({
                   setRefreshing={setRefreshing}
                   setInvertSelection={setInvertSelection}
                   setExcludedItems={setExcludedItems}
+                  handler={handler}
                 />
               </Grid.Row>
             </Sticky>

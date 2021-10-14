@@ -6,7 +6,9 @@
  * @desc [description]
  */
 
-import React, { useCallback, useState } from "react";
+import axios from "axios";
+import React, { useCallback, useEffect, useState } from "react";
+import { CSVLink } from "react-csv";
 
 import {
   Menu,
@@ -16,7 +18,14 @@ import {
   Dropdown,
   Grid,
   Icon,
+  Modal,
+  Header,
+  Table,
+  TableBody,
 } from "semantic-ui-react";
+import { useAuth } from "../../../../middleware/AuthProvider";
+import { pick } from "../libs/gizmos";
+import { URLHandler } from "../libs/handler";
 import { JIYTableStateContext } from "../models/JIYContexts";
 
 /**
@@ -108,6 +117,7 @@ function PageSizeSelector({ pageSize, setPageSize }): JSX.Element {
 function JIYTableTools<T>({
   title,
   path,
+  url,
   prev,
   next,
   total,
@@ -132,11 +142,56 @@ function JIYTableTools<T>({
   setRefreshing,
   setInvertSelection,
   setExcludedItems,
+  handler,
 }: JIYTableStateContext<T>): JSX.Element {
+  const { accessToken } = useAuth();
+
   const [activeItem, setActiveItem] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
+  const [exportItems, setExportItems] = useState([]);
+
+  const fetchData = useCallback(
+    async (reqURL: string) => {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      };
+
+      await axios
+        .get(reqURL, config)
+        .then((res) => {
+          if (res.status === 200) {
+            const { headers: cols, records: rows } = handler(
+              res.data.results,
+              invertSelection
+            );
+            const keys = headers.filter(
+              (colState) => colState.display === "visible"
+            );
+
+            if (invertSelection) {
+              // const diffItems = excludedItems
+              //   .filter((item) => !item.isSelected)
+              //   .map((item) => item.data["id"]);
+              // items = rows.filter((row) => diffItems.includes(row["id"]));
+              // console.log(items);
+              // setExportItems(pick(items, keys));
+            } else {
+              // console.log(excludedItems);
+              // items = excludedItems.filter((item) => item.isSelected);
+              // .map((item) => item.data);
+              // setExportItems(pick(items, keys));
+            }
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+    [headers, invertSelection]
+  );
 
   const handleExport = useCallback(() => {
+    fetchData(URLHandler(url.uri, null, null, null, 1, total, null).url);
     setOpenAlert(!openAlert);
   }, [openAlert]);
 
@@ -185,6 +240,10 @@ function JIYTableTools<T>({
         return null;
     }
   }, [activeItem, pageSize]);
+
+  useEffect(() => {
+    console.log(exportItems);
+  }, [exportItems]);
 
   return (
     <>
@@ -254,7 +313,7 @@ function JIYTableTools<T>({
         />
       </Segment>
 
-      {/* <Modal
+      <Modal
         onClose={() => setOpenAlert(false)}
         onOpen={() => setOpenAlert(true)}
         open={openAlert}
@@ -275,7 +334,8 @@ function JIYTableTools<T>({
                 <Table.Row>
                   <Table.Cell>
                     <Header as="h2" textAlign="center">
-                      {RECORDS_STATE_REF.filter((obj) => obj.isSelected).length}
+                      {/* {records.filter((record) => record.isSelected).length} */}
+                      {exportItems.length}
                     </Header>
                   </Table.Cell>
                   <Table.Cell singleLine>{`${title}.csv`}</Table.Cell>
@@ -290,15 +350,15 @@ function JIYTableTools<T>({
           </Button>
           <div
             className={`ui green button ebs-custom-csv-export ${
-              RECORDS_STATE_REF.filter((obj) => obj.isSelected).length > 0
+              records.filter((record) => record.isSelected).length > 0
                 ? ""
                 : "disabled"
             }`}
           >
             <CSVLink
-              data={RECORDS_STATE_REF.filter((obj) => obj.isSelected).map(
-                (obj) => obj.data
-              )}
+              data={records
+                .filter((record) => record.isSelected)
+                .map((record) => record.data)}
               filename={`${title}.csv`}
             >
               Export
@@ -306,7 +366,6 @@ function JIYTableTools<T>({
           </div>
         </Modal.Actions>
       </Modal>
-    */}
     </>
   );
 }
