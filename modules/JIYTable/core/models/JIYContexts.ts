@@ -63,7 +63,11 @@ export interface JIYTableStateContext<T, R> {
   setRefreshing: Dispatch<SetStateAction<boolean>>;
   setInvertSelection: Dispatch<SetStateAction<boolean>>;
   setExcludedItems: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
-  handler: (results: T[], invertSelection: boolean) => JIYTabularDataContext<R>;
+  // handler: (results: T[], invertSelection: boolean) => JIYTabularDataContext<R>;
+  handler: (
+    results: any[],
+    invertSelection: boolean
+  ) => JIYTabularDataContext<R>;
 }
 
 export interface JIYCellRowContext<T> {
