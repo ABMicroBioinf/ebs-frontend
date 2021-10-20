@@ -23,7 +23,7 @@ import { pick } from "../libs/gizmos";
  * @param param0 - See {@link JIYTableStateContext}
  * @returns - Table Component
  */
-function JIYTable<T>({
+function JIYTable<T, R>({
   title,
   path,
   url,
@@ -53,7 +53,7 @@ function JIYTable<T>({
   setInvertSelection,
   setExcludedItems,
   handler,
-}: JIYTableStateContext<T>): JSX.Element {
+}: JIYTableStateContext<T, R>): JSX.Element {
   const [mouseDown, setMouseDown] = useState(false);
   const [startX, setStartX] = useState(null);
   const [scrollLeft, setScrollLeft] = useState(null);

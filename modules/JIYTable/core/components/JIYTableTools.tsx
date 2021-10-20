@@ -115,7 +115,7 @@ function PageSizeSelector({ pageSize, setPageSize }): JSX.Element {
  * @param param - See {@link EBSTableInstanceStateContext}
  * @returns - Table Tools Component
  */
-function JIYTableTools<T>({
+function JIYTableTools<T, R>({
   title,
   path,
   url,
@@ -144,7 +144,7 @@ function JIYTableTools<T>({
   setInvertSelection,
   setExcludedItems,
   handler,
-}: JIYTableStateContext<T>): JSX.Element {
+}: JIYTableStateContext<T, R>): JSX.Element {
   const { accessToken } = useAuth();
 
   const [activeItem, setActiveItem] = useState("");
