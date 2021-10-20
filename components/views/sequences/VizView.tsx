@@ -16,7 +16,7 @@ import JIYTable from "../../../modules/JIYTable/core/components/JIYTable";
  * @param param0 - See {@link JIYTableStateContext}
  * @returns - Sequences Visualization View Component
  */
-function SequencesVizView<T>({
+function SequencesVizView<T, R>({
   title,
   path,
   url,
@@ -46,7 +46,7 @@ function SequencesVizView<T>({
   setInvertSelection,
   setExcludedItems,
   handler,
-}: JIYTableStateContext<T>): JSX.Element {
+}: JIYTableStateContext<T, R>): JSX.Element {
   return (
     <>
       <JIYTable
