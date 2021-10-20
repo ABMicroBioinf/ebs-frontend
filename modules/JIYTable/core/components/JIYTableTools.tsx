@@ -23,6 +23,7 @@ import {
   Table,
   TableBody,
 } from "semantic-ui-react";
+import TablePlaceholder from "../../../../components/global/TablePlaceholder";
 import { useAuth } from "../../../../middleware/AuthProvider";
 import { pick } from "../libs/gizmos";
 import { URLHandler } from "../libs/handler";
@@ -148,7 +149,7 @@ function JIYTableTools<T>({
 
   const [activeItem, setActiveItem] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
-  const [exportItems, setExportItems] = useState([]);
+  const [exportItems, setExportItems] = useState(null);
 
   const fetchData = useCallback(
     async (reqURL: string) => {
@@ -170,6 +171,9 @@ function JIYTableTools<T>({
               (colState) => colState.display === "visible"
             );
 
+            // 컬럼 적용하기
+            // 선택된 레코드만 내보내기
+            // 조건: 반전선택 / 일반선택
             if (invertSelection) {
               // const diffItems = excludedItems
               //   .filter((item) => !item.isSelected)
@@ -177,23 +181,28 @@ function JIYTableTools<T>({
               // items = rows.filter((row) => diffItems.includes(row["id"]));
               // console.log(items);
               // setExportItems(pick(items, keys));
+              setExportItems(rows);
             } else {
               // console.log(excludedItems);
-              // items = excludedItems.filter((item) => item.isSelected);
-              // .map((item) => item.data);
+              // items = excludedItems
+              //   .filter((item) => item.isSelected)
+              //   .map((item) => item.data);
               // setExportItems(pick(items, keys));
+              setExportItems(excludedItems);
             }
           }
         })
         .catch((err) => console.log(err));
     },
-    [headers, invertSelection]
+    [exportItems, headers, invertSelection, excludedItems]
   );
 
   const handleExport = useCallback(() => {
     fetchData(URLHandler(url.uri, null, null, null, 1, total, null).url);
+    // fetchData(URLHandler(url.uri, null, null, null, 1, 20, null).url);
     setOpenAlert(!openAlert);
-  }, [openAlert]);
+    console.log(excludedItems);
+  }, [openAlert, exportItems, excludedItems]);
 
   const handleItemClick = useCallback(
     (e, { name }) => {
@@ -242,8 +251,8 @@ function JIYTableTools<T>({
   }, [activeItem, pageSize]);
 
   useEffect(() => {
-    console.log(exportItems);
-  }, [exportItems]);
+    setExportItems(null);
+  }, [invertSelection]);
 
   return (
     <>
@@ -320,51 +329,63 @@ function JIYTableTools<T>({
         size="small"
       >
         <Modal.Header>Export as CSV</Modal.Header>
-        <Modal.Content>
-          <Modal.Description>
-            <Header>Selection Details</Header>
-            <Table celled padded>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell singleLine>Rows selected</Table.HeaderCell>
-                  <Table.HeaderCell singleLine>Filename</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-              <TableBody>
-                <Table.Row>
-                  <Table.Cell>
-                    <Header as="h2" textAlign="center">
-                      {/* {records.filter((record) => record.isSelected).length} */}
-                      {exportItems.length}
-                    </Header>
-                  </Table.Cell>
-                  <Table.Cell singleLine>{`${title}.csv`}</Table.Cell>
-                </Table.Row>
-              </TableBody>
-            </Table>
-          </Modal.Description>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button color="red" onClick={() => setOpenAlert(false)}>
-            Cancel
-          </Button>
-          <div
-            className={`ui green button ebs-custom-csv-export ${
-              records.filter((record) => record.isSelected).length > 0
-                ? ""
-                : "disabled"
-            }`}
-          >
-            <CSVLink
-              data={records
-                .filter((record) => record.isSelected)
-                .map((record) => record.data)}
-              filename={`${title}.csv`}
-            >
-              Export
-            </CSVLink>
-          </div>
-        </Modal.Actions>
+        {exportItems ? (
+          <>
+            <Modal.Content>
+              <Modal.Description>
+                <Header>Selection Details</Header>
+                <Table celled padded>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell singleLine>
+                        Rows selected
+                      </Table.HeaderCell>
+                      <Table.HeaderCell singleLine>Filename</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <TableBody>
+                    <Table.Row>
+                      <Table.Cell>
+                        <Header as="h2" textAlign="center">
+                          {/* {records.filter((record) => record.isSelected).length} */}
+                          {exportItems.length}
+                        </Header>
+                      </Table.Cell>
+                      {exportItems.length > 0 ? (
+                        <Table.Cell singleLine>{`${title}.csv`}</Table.Cell>
+                      ) : (
+                        <Table.Cell singleLine>N/A</Table.Cell>
+                      )}
+                    </Table.Row>
+                  </TableBody>
+                </Table>
+              </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions>
+              <Button color="red" onClick={() => setOpenAlert(false)}>
+                Cancel
+              </Button>
+              <div
+                className={`ui green button ebs-custom-csv-export ${
+                  exportItems.filter((item) => item.isSelected).length > 0
+                    ? ""
+                    : "disabled"
+                }`}
+              >
+                <CSVLink
+                  data={exportItems
+                    .filter((item) => item.isSelected)
+                    .map((item) => item.data)}
+                  filename={`${title}.csv`}
+                >
+                  Export
+                </CSVLink>
+              </div>
+            </Modal.Actions>
+          </>
+        ) : (
+          <TablePlaceholder />
+        )}
       </Modal>
     </>
   );

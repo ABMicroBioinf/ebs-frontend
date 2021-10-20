@@ -17,7 +17,7 @@ export const CUSTOM_HEADER_ASSEMBLY = {
   id: {
     name: "id",
     value: "id",
-    alias: "ID",
+    alias: "Sample ID",
     display: "visible",
     primary: true,
   },
@@ -46,21 +46,21 @@ export const CUSTOM_HEADER_ASSEMBLY = {
     name: "title",
     value: "sequence__project__title",
     alias: "Project Title",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   sequence__LibrarySource: {
     name: "LibrarySource",
     value: "sequence__LibrarySource",
     alias: "Library Source",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   sequence__LibraryLayout: {
     name: "LibraryLayout",
     value: "sequence__LibraryLayout",
     alias: "Library Layout",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   sequence__SequencerModel: {
@@ -168,7 +168,7 @@ export const CUSTOM_HEADER_ANNOTATION = {
     name: "id",
     value: "id",
     alias: "ID",
-    display: "visible",
+    display: "none",
     primary: true,
   },
   owner: {
@@ -181,7 +181,7 @@ export const CUSTOM_HEADER_ANNOTATION = {
   assembly: {
     name: "assembly",
     value: "assembly",
-    alias: "Assembly",
+    alias: "Sample ID",
     display: "visible",
     primary: false,
   },
@@ -196,28 +196,28 @@ export const CUSTOM_HEADER_ANNOTATION = {
     name: "title",
     value: "assembly__sequence__project__title",
     alias: "Project Title",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__LibrarySource: {
     name: "LibrarySource",
     value: "assembly__sequence__LibrarySource",
     alias: "Library Source",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__LibraryLayout: {
     name: "LibraryLayout",
     value: "assembly__sequence__LibraryLayout",
     alias: "Library Layout",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__SequencerModel: {
     name: "SequencerModel",
     value: "assembly__sequence__SequencerModel",
     alias: "Sequencer Model",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__CenterName: {
@@ -230,7 +230,7 @@ export const CUSTOM_HEADER_ANNOTATION = {
   seqid: {
     name: "seqid",
     value: "seqid",
-    alias: "Seq ID",
+    alias: "Contig ID",
     display: "visible",
     primary: false,
   },
@@ -244,7 +244,7 @@ export const CUSTOM_HEADER_ANNOTATION = {
   ftype: {
     name: "ftype",
     value: "ftype",
-    alias: "F Type",
+    alias: "Feature Type",
     display: "visible",
     primary: false,
   },
@@ -394,7 +394,7 @@ export const CUSTOM_HEADER_MLST = {
   id: {
     name: "id",
     value: "id",
-    alias: "ID",
+    alias: "Sample ID",
     display: "visible",
     primary: true,
   },
@@ -409,7 +409,7 @@ export const CUSTOM_HEADER_MLST = {
     name: "assembly",
     value: "assembly",
     alias: "Assembly",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__project__id: {
@@ -423,28 +423,28 @@ export const CUSTOM_HEADER_MLST = {
     name: "title",
     value: "assembly__sequence__project__title",
     alias: "Project Title",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__LibrarySource: {
     name: "LibrarySource",
     value: "assembly__sequence__LibrarySource",
     alias: "Library Source",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__LibraryLayout: {
     name: "LibraryLayout",
     value: "assembly__sequence__LibraryLayout",
     alias: "Library Layout",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__SequencerModel: {
     name: "SequencerModel",
     value: "assembly__sequence__SequencerModel",
     alias: "Sequencer Model",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__CenterName: {
@@ -614,7 +614,7 @@ export const CUSTOM_HEADER_RESISTOME = {
   id: {
     name: "id",
     value: "id",
-    alias: "ID",
+    alias: "Sample ID",
     display: "visible",
     primary: true,
   },
@@ -629,7 +629,7 @@ export const CUSTOM_HEADER_RESISTOME = {
     name: "assembly",
     value: "assembly",
     alias: "Assembly",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__project__id: {
@@ -643,28 +643,28 @@ export const CUSTOM_HEADER_RESISTOME = {
     name: "title",
     value: "assembly__sequence__project__title",
     alias: "Project Title",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__LibrarySource: {
     name: "LibrarySource",
     value: "assembly__sequence__LibrarySource",
     alias: "Library Source",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__LibraryLayout: {
     name: "LibraryLayout",
     value: "assembly__sequence__LibraryLayout",
     alias: "Library Layout",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__SequencerModel: {
     name: "SequencerModel",
     value: "assembly__sequence__SequencerModel",
     alias: "Sequencer Model",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__CenterName: {
@@ -684,7 +684,7 @@ export const CUSTOM_HEADER_RESISTOME = {
   num_found: {
     name: "num_found",
     value: "num_found",
-    alias: "Number of found",
+    alias: "# Found",
     display: "visible",
     primary: false,
   },
@@ -706,7 +706,7 @@ export const CUSTOM_HEADER_RESISTOME = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "hidden", //temporary
+    display: "none", //temporary
     primary: false,
   },
   profile__geneName_0: {
@@ -757,7 +757,7 @@ export const CUSTOM_HEADER_VIRULOME = {
   id: {
     name: "id",
     value: "id",
-    alias: "ID",
+    alias: "Sample ID",
     display: "visible",
     primary: true,
   },
@@ -772,7 +772,7 @@ export const CUSTOM_HEADER_VIRULOME = {
     name: "assembly",
     value: "assembly",
     alias: "Assembly",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__project__id: {
@@ -786,28 +786,28 @@ export const CUSTOM_HEADER_VIRULOME = {
     name: "id",
     value: "assembly__sequence__project__title",
     alias: "Project Title",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__LibrarySource: {
     name: "id",
     value: "assembly__sequence__LibrarySource",
     alias: "Library Source",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__LibraryLayout: {
     name: "id",
     value: "assembly__sequence__LibraryLayout",
     alias: "Library Layout",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__SequencerModel: {
     name: "id",
     value: "assembly__sequence__SequencerModel",
     alias: "Sequencer Model",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   assembly__sequence__CenterName: {
@@ -827,7 +827,7 @@ export const CUSTOM_HEADER_VIRULOME = {
   num_found: {
     name: "num_found",
     value: "num_found",
-    alias: "Number of found",
+    alias: "# Found",
     display: "visible",
     primary: false,
   },
@@ -849,7 +849,7 @@ export const CUSTOM_HEADER_VIRULOME = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "hidden", //temporary
+    display: "none", //temporary
     primary: false,
   },
   profile__geneName_0: {
@@ -1782,7 +1782,7 @@ export const CUSTOM_HEADER_PSUMMARY = {
   id: {
     name: "id",
     value: "id",
-    alias: "ID",
+    alias: "Sample ID",
     display: "visible",
     primary: true,
   },
@@ -1811,28 +1811,28 @@ export const CUSTOM_HEADER_PSUMMARY = {
     name: "title",
     value: "project__title",
     alias: "Project Title",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   sequence__LibrarySource: {
     name: "LibrarySource",
     value: "sequence__LibrarySource",
     alias: "Library Source",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   sequence__LibraryLayout: {
     name: "LibraryLayout",
     value: "sequence__LibraryLayout",
     alias: "Library Layout",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   sequence__SequencerModel: {
     name: "SequencerModel",
     value: "sequence__SequencerModel",
     alias: "Sequencer Model",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   sequence__CenterName: {
@@ -1846,14 +1846,14 @@ export const CUSTOM_HEADER_PSUMMARY = {
     name: "pct_reads_mapped",
     value: "pct_reads_mapped",
     alias: "Percent of reads mapped",
-    display: "visible",
+    display: "hidden",
     primary: false,
   },
   num_reads_mapped: {
     name: "num_reads_mapped",
     value: "num_reads_mapped",
     alias: "Number of reads mapped",
-    display: "visible",
+    display: "none",
     primary: false,
   },
   main_lin: {
@@ -1873,14 +1873,14 @@ export const CUSTOM_HEADER_PSUMMARY = {
   num_dr_variants: {
     name: "num_dr_variants",
     value: "num_dr_variants",
-    alias: "Number of drug variants",
+    alias: "# Drug variants",
     display: "visible",
     primary: false,
   },
   num_other_variants: {
     name: "num_other_variants",
     value: "num_other_variants",
-    alias: "Number of other variants",
+    alias: "# Other variants",
     display: "visible",
     primary: false,
   },
@@ -2057,7 +2057,7 @@ export const CUSTOM_HEADER_PSUMMARY = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "hidden", // temporary
+    display: "none", // temporary
     primary: false,
   },
 };

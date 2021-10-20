@@ -47,7 +47,6 @@ function AssemblyView(): JSX.Element {
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
-
   const [invertSelection, setInvertSelection] = useState<boolean>(false);
   const [excludedItems, setExcludedItems] = useState<
     Array<JIYRecordContext<FlatAssembly>>

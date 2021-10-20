@@ -76,6 +76,27 @@ export interface FlatMLST {
   profile__allele_7: string;
 }
 
+export interface StaticFlatMLST {
+  id: string;
+  owner: string;
+  assembly: string;
+  assembly__sequence__project__id: string; //need to check
+  assembly__sequence__project__title: null; //need to check
+  assembly__sequence__LibrarySource: null; //need to check
+  assembly__sequence__LibraryLayout: null; //need to check
+  assembly__sequence__SequencerModel: null; //need to check
+  assembly__sequence__CenterName: null; //need to check
+  seqtype: string;
+  scheme: string;
+  st: number;
+  DateCreated: Date;
+  LastUpdate: Date;
+  Description: string;
+  // Dynamical attributes below
+  // need to figure out
+  etc: string;
+}
+
 export interface Gene {
   geneName: string;
   pctCoverage: number;
@@ -104,6 +125,24 @@ export interface FlatResistome {
   profile__pctCoverage_1: number;
   profile__geneName_2: string;
   profile__pctCoverage_2: number;
+}
+
+export interface StaticFlatResistome {
+  id: string;
+  owner: string;
+  assembly: string;
+  assembly__sequence__project__id: string; //need to check
+  assembly__sequence__project__title: string; //need to check
+  assembly__sequence__LibrarySource: string;
+  assembly__sequence__LibraryLayout: string;
+  assembly__sequence__SequencerModel: string;
+  assembly__sequence__CenterName: string;
+  seqtype: string;
+  num_found: number;
+  DateCreated: Date;
+  LastUpdate: Date;
+  Description: string;
+  etc: string;
 }
 
 export interface FlatVirulome {
@@ -255,6 +294,24 @@ export interface FlatVirulome {
   profile__pctCoverage_65: number;
 }
 
+export interface StaticFlatVirulome {
+  id: string;
+  owner: string;
+  assembly: string;
+  assembly__sequence__project__id: string; //need to check
+  assembly__sequence__project__title: string; //need to check
+  assembly__sequence__LibrarySource: string;
+  assembly__sequence__LibraryLayout: string;
+  assembly__sequence__SequencerModel: string;
+  assembly__sequence__CenterName: string;
+  seqtype: string;
+  num_found: number;
+  DateCreated: Date;
+  LastUpdate: Date;
+  Description: string;
+  etc: string;
+}
+
 export interface TagValue {
   tag: string;
   value: string;
@@ -295,6 +352,34 @@ export interface FlatAnnotation {
   attr__value_3: string;
   attr__tag_4: string;
   attr__value_4: string;
+}
+
+export interface StaticFlatAnnotation {
+  id: string;
+  owner: string;
+  assembly: string;
+  assembly__sequence__project__id: string; // need to check
+  assembly__sequence__project__title: string; // need to check
+  assembly__sequence__LibrarySource: string;
+  assembly__sequence__LibraryLayout: string;
+  assembly__sequence__SequencerModel: string;
+  assembly__sequence__CenterName: string;
+  seqid: string;
+  source: string;
+  ftype: string;
+  start: number;
+  end: number;
+  score: string;
+  strand: string;
+  phase: string;
+  attr: Array<TagValue>;
+  seqtype: string;
+  DateCreated: Date;
+  LastUpdate: Date;
+  Description: string;
+  // Dynamical attributes below
+  // need to figure out
+  etc: string;
 }
 
 export interface FlatPsummary {
