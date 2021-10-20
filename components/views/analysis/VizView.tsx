@@ -16,7 +16,7 @@ import JIYTable from "../../../modules/JIYTable/core/components/JIYTable";
  * @param param0 - See {@link JIYTableStateContext}
  * @returns - Isolate Visualization View Component
  */
-function IsolatesVizView<T>({
+function IsolatesVizView<T, R>({
   title,
   path,
   url,
@@ -46,7 +46,7 @@ function IsolatesVizView<T>({
   setInvertSelection,
   setExcludedItems,
   handler,
-}: JIYTableStateContext<T>): JSX.Element {
+}: JIYTableStateContext<T, R>): JSX.Element {
   return (
     <>
       <JIYTable
