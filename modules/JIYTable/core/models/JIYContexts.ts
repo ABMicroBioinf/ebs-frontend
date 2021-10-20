@@ -34,7 +34,7 @@ export interface JIYTabularDataContext<T> {
   records: Array<JIYRecordContext<T>>;
 }
 
-export interface JIYTableStateContext<T> {
+export interface JIYTableStateContext<T, R> {
   title: string;
   path: string;
   url: JIYURLContext;
@@ -63,7 +63,7 @@ export interface JIYTableStateContext<T> {
   setRefreshing: Dispatch<SetStateAction<boolean>>;
   setInvertSelection: Dispatch<SetStateAction<boolean>>;
   setExcludedItems: Dispatch<SetStateAction<Array<JIYRecordContext<T>>>>;
-  handler: (results: T[], invertSelection: boolean) => JIYTabularDataContext<T>;
+  handler: (results: T[], invertSelection: boolean) => JIYTabularDataContext<R>;
 }
 
 export interface JIYCellRowContext<T> {
