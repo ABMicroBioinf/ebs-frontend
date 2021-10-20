@@ -249,7 +249,10 @@ export function AnnotationDataHandler(
 
       return {
         isSelected: invertSelection,
-        data: { ...staticFlatAnnotation, etc: stringifiedField },
+        data: {
+          ...staticFlatAnnotation,
+          etc: stringifiedField,
+        } as StaticFlatAnnotation,
       };
     }
   );
@@ -330,7 +333,7 @@ export function MLSTDataHandler(
 
       return {
         isSelected: invertSelection,
-        data: { ...StaticFlatMLST, etc: stringifiedField },
+        data: { ...StaticFlatMLST, etc: stringifiedField } as StaticFlatMLST,
       };
     }
   );
@@ -419,7 +422,10 @@ export function ResistomeDataHandler(
 
       return {
         isSelected: invertSelection,
-        data: { ...StaticFlatResistome, etc: stringifiedField },
+        data: {
+          ...StaticFlatResistome,
+          etc: stringifiedField,
+        } as StaticFlatResistome,
       };
     }
   );
@@ -506,7 +512,10 @@ export function VirulomeDataHandler(
 
       return {
         isSelected: invertSelection,
-        data: { ...staticFlatVirulome, etc: stringifiedField },
+        data: {
+          ...staticFlatVirulome,
+          etc: stringifiedField,
+        } as StaticFlatVirulome,
       };
     }
   );
