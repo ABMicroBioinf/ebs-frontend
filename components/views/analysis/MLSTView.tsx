@@ -11,7 +11,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Tab } from "semantic-ui-react";
 import { API_MLST } from "../../../config/apis";
 import { useAuth } from "../../../middleware/AuthProvider";
-import { FlatMLST } from "../../../models/Isolate";
+import { FlatMLST, StaticFlatMLST } from "../../../models/Isolate";
 import {
   JIYHeaderContext,
   JIYOrderingContext,
@@ -43,14 +43,14 @@ function MLSTView(): JSX.Element {
   const [ordering, setOrdering] = useState<JIYOrderingContext>(null);
   const [headers, setHeaders] = useState<Array<JIYHeaderContext>>(null);
   const [records, setRecords] =
-    useState<Array<JIYRecordContext<FlatMLST>>>(null);
+    useState<Array<JIYRecordContext<StaticFlatMLST>>>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
   const [invertSelection, setInvertSelection] = useState<boolean>(false);
   const [excludedItems, setExcludedItems] = useState<
-    Array<JIYRecordContext<FlatMLST>>
+    Array<JIYRecordContext<StaticFlatMLST>>
   >([]);
 
   const fetchData = useCallback(

@@ -11,7 +11,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Tab } from "semantic-ui-react";
 import { API_VIRULOME } from "../../../config/apis";
 import { useAuth } from "../../../middleware/AuthProvider";
-import { FlatVirulome } from "../../../models/Isolate";
+import { FlatVirulome, StaticFlatVirulome } from "../../../models/Isolate";
 import {
   JIYHeaderContext,
   JIYOrderingContext,
@@ -43,13 +43,13 @@ function VirulomeView(): JSX.Element {
   const [ordering, setOrdering] = useState<JIYOrderingContext>(null);
   const [headers, setHeaders] = useState<Array<JIYHeaderContext>>(null);
   const [records, setRecords] =
-    useState<Array<JIYRecordContext<FlatVirulome>>>(null);
+    useState<Array<JIYRecordContext<StaticFlatVirulome>>>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
   const [invertSelection, setInvertSelection] = useState<boolean>(false);
   const [excludedItems, setExcludedItems] = useState<
-    Array<JIYRecordContext<FlatVirulome>>
+    Array<JIYRecordContext<StaticFlatVirulome>>
   >([]);
 
   const fetchData = useCallback(
