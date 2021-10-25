@@ -55,7 +55,8 @@ function ColumnSelector({ headers, setHeaders }): JSX.Element {
     <Grid columns={5}>
       {headers &&
         headers
-          .filter((colState) => colState.display === "visible" || "hidden")
+          // .filter((colState) => colState.display === "visible" || "hidden")
+          .filter((colState) => colState.display !== "none")
           .map((column, index) => (
             <Grid.Column key={index}>
               <input
@@ -66,7 +67,7 @@ function ColumnSelector({ headers, setHeaders }): JSX.Element {
                 defaultChecked={column.display === "visible"}
                 type="checkbox"
               />
-              <label>{column.value}</label>
+              <label>{column.alias ? column.alias : column.value}</label>
             </Grid.Column>
           ))}
     </Grid>

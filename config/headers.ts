@@ -32,7 +32,7 @@ export const CUSTOM_HEADER_ASSEMBLY = {
     name: "sequence",
     value: "sequence",
     alias: "Sequence",
-    display: "hidden",
+    display: "none",
     primary: false,
   },
   sequence__project__id: {
@@ -137,7 +137,7 @@ export const CUSTOM_HEADER_ASSEMBLY = {
     name: "seqtype",
     value: "seqtype",
     alias: "Seqtype",
-    display: "hidden",
+    display: "none",
     primary: false,
   },
   DateCreated: {
@@ -158,7 +158,7 @@ export const CUSTOM_HEADER_ASSEMBLY = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "hidden", // temporary
+    display: "none",
     primary: false,
   },
 };
@@ -287,14 +287,14 @@ export const CUSTOM_HEADER_ANNOTATION = {
     name: "attr",
     value: "attr",
     alias: "Attr",
-    display: "hidden", //temporary
+    display: "hidden",
     primary: false,
   },
   seqtype: {
     name: "seqtype",
     value: "seqtype",
     alias: "Seqtype",
-    display: "hidden",
+    display: "none",
     primary: false,
   },
   DateCreated: {
@@ -315,7 +315,7 @@ export const CUSTOM_HEADER_ANNOTATION = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "hidden", // temporary
+    display: "none",
     primary: false,
   },
   attr__tag_0: {
@@ -458,7 +458,7 @@ export const CUSTOM_HEADER_MLST = {
     name: "seqtype",
     value: "seqtype",
     alias: "Seqtype",
-    display: "hidden",
+    display: "none",
     primary: false,
   },
   scheme: {
@@ -493,7 +493,7 @@ export const CUSTOM_HEADER_MLST = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "hidden", // temporary
+    display: "none",
     primary: false,
   },
   profile__locus_0: {
@@ -678,7 +678,7 @@ export const CUSTOM_HEADER_RESISTOME = {
     name: "seqtype",
     value: "seqtype",
     alias: "Seqtype",
-    display: "hidden",
+    display: "none",
     primary: false,
   },
   num_found: {
@@ -706,7 +706,7 @@ export const CUSTOM_HEADER_RESISTOME = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "none", //temporary
+    display: "none",
     primary: false,
   },
   profile__geneName_0: {
@@ -821,7 +821,7 @@ export const CUSTOM_HEADER_VIRULOME = {
     name: "seqtype",
     value: "seqtype",
     alias: "Seqtype",
-    display: "hidden",
+    display: "none",
     primary: false,
   },
   num_found: {
@@ -849,7 +849,7 @@ export const CUSTOM_HEADER_VIRULOME = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "none", //temporary
+    display: "none",
     primary: false,
   },
   profile__geneName_0: {
@@ -1790,7 +1790,7 @@ export const CUSTOM_HEADER_PSUMMARY = {
     name: "sequence",
     value: "sequence",
     alias: "Sequence",
-    display: "hidden",
+    display: "none",
     primary: false,
   },
   owner: {
@@ -2057,7 +2057,7 @@ export const CUSTOM_HEADER_PSUMMARY = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "none", // temporary
+    display: "none",
     primary: false,
   },
 };
@@ -2088,7 +2088,7 @@ export const CUSTOM_HEADER_SEQUENCE = {
     name: "seqtype",
     value: "seqtype",
     alias: "seqtype",
-    display: "hidden",
+    display: "none",
     primary: false,
   },
   Experiment: {
@@ -2249,7 +2249,7 @@ export const CUSTOM_HEADER_SEQUENCE = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "hidden", // temporary disabled
+    display: "none",
     primary: false,
   },
   RawStats__Reads: {
