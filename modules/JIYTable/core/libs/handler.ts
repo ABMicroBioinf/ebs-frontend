@@ -7,6 +7,7 @@
  */
 
 import { API } from "../../../../config/apis";
+import { DATE_FORMAT } from "../../../../config/etc";
 import {
   CUSTOM_HEADER_ANNOTATION,
   CUSTOM_HEADER_ASSEMBLY,
@@ -114,8 +115,22 @@ export function SequencesDataHandler(
     };
   });
 
+  const customized = results.map((obj) => {
+    return {
+      ...obj,
+      DateCreated: new Date(obj.DateCreated).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+      LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+    } as FlatSequence;
+  });
+
   const standard = schema.map((obj) => obj.value);
-  const rearranged = results.map((obj) =>
+  const rearranged = customized.map((obj) =>
     Object.fromEntries(
       Object.entries(obj).sort(
         (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
@@ -157,14 +172,28 @@ export function AssemblyDataHandler(
     };
   });
 
+  const customized = results.map((obj) => {
+    return {
+      ...obj,
+      DateCreated: new Date(obj.DateCreated).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+      LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+    } as FlatAssembly;
+  });
+
   const standard = schema.map((obj) => obj.value);
-  const rearranged = results.map((obj) =>
-    Object.fromEntries(
+  const rearranged = customized.map((obj) => {
+    return Object.fromEntries(
       Object.entries(obj).sort(
         (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
       )
-    )
-  );
+    );
+  });
 
   const data: Array<JIYRecordContext<FlatAssembly>> = rearranged.map(
     (flatAssembly: FlatAssembly): JIYRecordContext<FlatAssembly> => ({
@@ -212,8 +241,22 @@ export function AnnotationDataHandler(
     primary: false,
   });
 
+  const customized = results.map((obj) => {
+    return {
+      ...obj,
+      DateCreated: new Date(obj.DateCreated).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+      LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+    } as FlatAnnotation;
+  });
+
   const standard = schema.map((obj) => obj.value);
-  const rearranged = results.map((obj) =>
+  const rearranged = customized.map((obj) =>
     Object.fromEntries(
       Object.entries(obj).sort(
         (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
@@ -238,8 +281,9 @@ export function AnnotationDataHandler(
         stringifiedField +=
           dynamicTags[`attr__tag_${i}`] +
           "=" +
-          dynamicValues[`attr__value_${i}`] +
-          ";";
+          dynamicValues[`attr__value_${i}`];
+        stringifiedField +=
+          i === Object.keys(dynamicTags).length - 1 ? "" : ";";
       }
       const staticFlatAnnotation = Object.fromEntries(
         Object.entries(flatAnnotation)
@@ -301,8 +345,22 @@ export function MLSTDataHandler(
     primary: false,
   });
 
+  const customized = results.map((obj) => {
+    return {
+      ...obj,
+      DateCreated: new Date(obj.DateCreated).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+      LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+    } as FlatMLST;
+  });
+
   const standard = schema.map((obj) => obj.value);
-  const rearranged = results.map((obj) =>
+  const rearranged = customized.map((obj) =>
     Object.fromEntries(
       Object.entries(obj).sort(
         (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
@@ -323,7 +381,9 @@ export function MLSTDataHandler(
         stringifiedField +=
           // dynamicLocus[`profile__locus_${i}`] +
           // "=" +
-          dynamicAllele[`profile__allele_${i}`] + ";";
+          dynamicAllele[`profile__allele_${i}`];
+        stringifiedField +=
+          i === Object.keys(dynamicAllele).length - 1 ? "" : ";";
       }
       const StaticFlatMLST = Object.fromEntries(
         Object.entries(flatMLST)
@@ -384,8 +444,22 @@ export function ResistomeDataHandler(
     primary: false,
   });
 
+  const customized = results.map((obj) => {
+    return {
+      ...obj,
+      DateCreated: new Date(obj.DateCreated).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+      LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+    } as FlatResistome;
+  });
+
   const standard = schema.map((obj) => obj.value);
-  const rearranged = results.map((obj) =>
+  const rearranged = customized.map((obj) =>
     Object.fromEntries(
       Object.entries(obj).sort(
         (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
@@ -411,8 +485,9 @@ export function ResistomeDataHandler(
           dynamicGeneName[`profile__geneName_${i}`] +
           "(" +
           dynamicCoverage[`profile__pctCoverage_${i}`] +
-          "%)" +
-          ";";
+          "%)";
+        stringifiedField +=
+          i === Object.keys(dynamicGeneName).length - 1 ? "" : ";";
       }
       const StaticFlatResistome = Object.fromEntries(
         Object.entries(flatResistome)
@@ -474,8 +549,22 @@ export function VirulomeDataHandler(
     primary: false,
   });
 
+  const customized = results.map((obj) => {
+    return {
+      ...obj,
+      DateCreated: new Date(obj.DateCreated).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+      LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+    } as FlatVirulome;
+  });
+
   const standard = schema.map((obj) => obj.value);
-  const rearranged = results.map((obj) =>
+  const rearranged = customized.map((obj) =>
     Object.fromEntries(
       Object.entries(obj).sort(
         (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])
@@ -501,8 +590,9 @@ export function VirulomeDataHandler(
           dynamicGeneName[`profile__geneName_${i}`] +
           "(" +
           dynamicCoverage[`profile__pctCoverage_${i}`] +
-          "%)" +
-          ";";
+          "%)";
+        stringifiedField +=
+          i === Object.keys(dynamicGeneName).length - 1 ? "" : ";";
       }
       const staticFlatVirulome = Object.fromEntries(
         Object.entries(flatVirulome)
@@ -554,8 +644,22 @@ export function ProfileSummaryDataHandler(
     };
   });
 
+  const customized = results.map((obj) => {
+    return {
+      ...obj,
+      DateCreated: new Date(obj.DateCreated).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+      LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
+        undefined,
+        DATE_FORMAT
+      ),
+    } as FlatPsummary;
+  });
+
   const standard = schema.map((obj) => obj.value);
-  const rearranged = results.map((obj) =>
+  const rearranged = customized.map((obj) =>
     Object.fromEntries(
       Object.entries(obj).sort(
         (a, b) => standard.indexOf(a[0]) - standard.indexOf(b[0])

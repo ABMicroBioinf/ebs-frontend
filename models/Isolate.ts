@@ -30,8 +30,8 @@ export interface FlatAssembly {
   max: number;
   avg: number;
   N50: number;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
 }
 
@@ -53,8 +53,8 @@ export interface FlatMLST {
   seqtype: string;
   scheme: string;
   st: number;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
   // Dynamical attributes below
   // need to figure out
@@ -89,8 +89,8 @@ export interface StaticFlatMLST {
   seqtype: string;
   scheme: string;
   st: number;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
   // Dynamical attributes below
   // need to figure out
@@ -116,8 +116,8 @@ export interface FlatResistome {
   assembly__sequence__CenterName: string;
   seqtype: string;
   num_found: number;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
   profile__geneName_0: string;
   profile__pctCoverage_0: number;
@@ -139,8 +139,8 @@ export interface StaticFlatResistome {
   assembly__sequence__CenterName: string;
   seqtype: string;
   num_found: number;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
   etc: string;
 }
@@ -157,8 +157,8 @@ export interface FlatVirulome {
   assembly__sequence__CenterName: string;
   seqtype: string;
   num_found: number;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
   profile__geneName_0: string;
   profile__pctCoverage_0: number;
@@ -306,8 +306,8 @@ export interface StaticFlatVirulome {
   assembly__sequence__CenterName: string;
   seqtype: string;
   num_found: number;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
   etc: string;
 }
@@ -337,8 +337,8 @@ export interface FlatAnnotation {
   phase: string;
   attr: Array<TagValue>;
   seqtype: string;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
   // Dynamical attributes below
   // need to figure out
@@ -374,8 +374,8 @@ export interface StaticFlatAnnotation {
   phase: string;
   attr: Array<TagValue>;
   seqtype: string;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
   // Dynamical attributes below
   // need to figure out
@@ -425,8 +425,8 @@ export interface FlatPsummary {
   clofazimine: string;
   delamanid: string;
 
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
 }
 
@@ -470,7 +470,7 @@ export interface Profile {
   dr_variants: Array<Variant>;
   other_variants: Array<Variant>;
   owner: string;
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
 }

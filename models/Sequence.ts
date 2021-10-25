@@ -44,8 +44,8 @@ export interface FlatSequence {
   taxName_4: string;
   taxFrac_4: number;
   owner: string; // need to check
-  DateCreated: Date;
-  LastUpdate: Date;
+  DateCreated: string;
+  LastUpdate: string;
   Description: string;
   RawStats__Reads: number;
   RawStats__Yield: number;
