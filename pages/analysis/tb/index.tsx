@@ -6,7 +6,7 @@
  * @desc [description]
  */
 import withAuth from "../../../middleware/withAuth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Grid, Icon, Menu, Segment, Tab } from "semantic-ui-react";
 import TopNav from "../../../components/global/TopNav";
@@ -23,7 +23,13 @@ import TBSummaryView from "../../../components/views/analysis/TBSummaryView";
  * @returns - TB Main View Component
  */
 function TBAnalysis() {
+  const [currentTab, setCurrentTab] = useState();
   const [wideView, setWideView] = useState(false);
+
+  const handleTabChange = (e, data) => setCurrentTab(data);
+  // const handleTabChange = (e, activeIndex) => {
+  //   console.log(activeIndex);
+  // };
 
   const panes = [
     {
@@ -63,6 +69,10 @@ function TBAnalysis() {
       },
     },
   ];
+
+  useEffect(() => {
+    console.log(currentTab?.panes.at(currentTab?.activeIndex).menuItem);
+  }, [currentTab]);
 
   return (
     <>
@@ -130,7 +140,8 @@ function TBAnalysis() {
         <Grid padded>
           <Grid.Row>
             <Grid.Column>
-              <TabMenu panes={panes} />
+              {/* <TabMenu */}
+              <Tab panes={panes} onTabChange={handleTabChange} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

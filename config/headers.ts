@@ -287,7 +287,7 @@ export const CUSTOM_HEADER_ANNOTATION = {
     name: "attr",
     value: "attr",
     alias: "Attr",
-    display: "hidden",
+    display: "none",
     primary: false,
   },
   seqtype: {

@@ -12,8 +12,10 @@ import { Tab } from "semantic-ui-react";
  * @param param0 - panes
  * @returns - Tab Component
  */
-function TabMenu({ panes }): JSX.Element {
-  return <Tab panes={panes} />;
+function TabMenu({ panes, activeIndex, onTabChange }): JSX.Element {
+  return (
+    <Tab panes={panes} activeIndex={activeIndex} onTabChange={onTabChange} />
+  );
 }
 
 export default TabMenu;
