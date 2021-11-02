@@ -11,7 +11,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Grid, Tab } from "semantic-ui-react";
 import { API_ANNOTATION } from "../../../config/apis";
 import { useAuth } from "../../../middleware/AuthProvider";
-import { FlatAnnotation, StaticFlatAnnotation } from "../../../models/Isolate";
+import { FlatAnnotationWithAttr } from "../../../models/Isolate";
 import {
   JIYHeaderContext,
   JIYOrderingContext,
@@ -43,14 +43,14 @@ function AnnotationView(): JSX.Element {
   const [ordering, setOrdering] = useState<JIYOrderingContext>(null);
   const [headers, setHeaders] = useState<Array<JIYHeaderContext>>(null);
   const [records, setRecords] =
-    useState<Array<JIYRecordContext<StaticFlatAnnotation>>>(null);
+    useState<Array<JIYRecordContext<FlatAnnotationWithAttr>>>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
   const [invertSelection, setInvertSelection] = useState<boolean>(false);
   const [excludedItems, setExcludedItems] = useState<
-    Array<JIYRecordContext<StaticFlatAnnotation>>
+    Array<JIYRecordContext<FlatAnnotationWithAttr>>
   >([]);
 
   const fetchData = useCallback(

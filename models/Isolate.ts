@@ -40,7 +40,7 @@ export interface Allele {
   allele: string;
 }
 
-export interface FlatMLST {
+export interface FlatMLSTWithProfile {
   id: string;
   owner: string;
   assembly: string;
@@ -58,22 +58,23 @@ export interface FlatMLST {
   Description: string;
   // Dynamical attributes below
   // need to figure out
-  profile__locus_0: string;
-  profile__allele_0: string;
-  profile__locus_1: string;
-  profile__allele_1: string;
-  profile__locus_2: string;
-  profile__allele_2: string;
-  profile__locus_3: string;
-  profile__allele_3: string;
-  profile__locus_4: string;
-  profile__allele_4: string;
-  profile__locus_5: string;
-  profile__allele_5: string;
-  profile__locus_6: string;
-  profile__allele_6: string;
-  profile__locus_7: string;
-  profile__allele_7: string;
+  profile: Array<Allele>;
+  // profile__locus_0: string;
+  // profile__allele_0: string;
+  // profile__locus_1: string;
+  // profile__allele_1: string;
+  // profile__locus_2: string;
+  // profile__allele_2: string;
+  // profile__locus_3: string;
+  // profile__allele_3: string;
+  // profile__locus_4: string;
+  // profile__allele_4: string;
+  // profile__locus_5: string;
+  // profile__allele_5: string;
+  // profile__locus_6: string;
+  // profile__allele_6: string;
+  // profile__locus_7: string;
+  // profile__allele_7: string;
 }
 
 export interface StaticFlatMLST {
@@ -97,14 +98,14 @@ export interface StaticFlatMLST {
   etc: string;
 }
 
-export interface Gene {
+export interface GeneCoverage {
   geneName: string;
   pctCoverage: number;
 }
 
 export interface Virulence {}
 
-export interface FlatResistome {
+export interface FlatResistomeWithProfile {
   id: string;
   owner: string;
   assembly: string;
@@ -119,12 +120,13 @@ export interface FlatResistome {
   DateCreated: string;
   LastUpdate: string;
   Description: string;
-  profile__geneName_0: string;
-  profile__pctCoverage_0: number;
-  profile__geneName_1: string;
-  profile__pctCoverage_1: number;
-  profile__geneName_2: string;
-  profile__pctCoverage_2: number;
+  profile: Array<GeneCoverage>;
+  // profile__geneName_0: string;
+  // profile__pctCoverage_0: number;
+  // profile__geneName_1: string;
+  // profile__pctCoverage_1: number;
+  // profile__geneName_2: string;
+  // profile__pctCoverage_2: number;
 }
 
 export interface StaticFlatResistome {
@@ -186,12 +188,17 @@ export interface StaticFlatVirulome {
   etc: string;
 }
 
-export interface TagValue {
+// export interface TagValue {
+//   tag: string;
+//   value: string;
+// }
+
+export interface Attribute {
   tag: string;
   value: string;
 }
 
-export interface FlatAnnotation {
+export interface FlatAnnotationWithAttr {
   id: string;
   owner: string;
   assembly: string;
@@ -209,24 +216,24 @@ export interface FlatAnnotation {
   score: string;
   strand: string;
   phase: string;
-  attr: Array<TagValue>;
   seqtype: string;
   DateCreated: string;
   LastUpdate: string;
   Description: string;
   // Dynamical attributes below
   // need to figure out
-  attr__tag_0: string;
-  attr__value_0: string;
-  attr__tag_1: string;
-  attr__value_1: string;
-  attr__tag_2: string;
-  attr__value_2: string;
-  attr__tag_3: string;
-  attr__value_3: string;
-  attr__tag_4: string;
-  attr__value_4: string;
+  attr: Array<Attribute>;
 }
+// attr__tag_0: string;
+// attr__value_0: string;
+// attr__tag_1: string;
+// attr__value_1: string;
+// attr__tag_2: string;
+// attr__value_2: string;
+// attr__tag_3: string;
+// attr__value_3: string;
+// attr__tag_4: string;
+// attr__value_4: string;
 
 export interface StaticFlatAnnotation {
   id: string;
@@ -246,7 +253,7 @@ export interface StaticFlatAnnotation {
   score: string;
   strand: string;
   phase: string;
-  attr: Array<TagValue>;
+  attr: Array<Attribute>;
   seqtype: string;
   DateCreated: string;
   LastUpdate: string;
