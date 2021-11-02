@@ -6,13 +6,13 @@
  * @desc [description]
  */
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 
 import { JIYTableStateContext } from "../models/JIYContexts";
 import JIYTableHeader from "./JIYTableHeader";
 import JIYCellRow from "./JIYCellRow";
 
-import { Grid, Item, Ref, Sticky, Table } from "semantic-ui-react";
+import { Grid, Ref, Sticky, Table } from "semantic-ui-react";
 import JIYTableTools from "./JIYTableTools";
 import JIYTableCustomHead from "../plugins/JIYTableCustomHead";
 import { pick } from "../libs/gizmos";
@@ -95,7 +95,6 @@ function JIYTable<T, R>({
                 data: pick(record.data, keys),
               })
             : (rowObj = { ...record, data: pick(record.data, keys) });
-          // const rowObj = { ...record, data: pick(record.data, keys) };
           return (
             <JIYCellRow
               primaryField={headers.find((header) => header.primary)}

@@ -25,7 +25,6 @@ import {
 } from "semantic-ui-react";
 import TablePlaceholder from "../../../../components/global/TablePlaceholder";
 import { useAuth } from "../../../../middleware/AuthProvider";
-import { pick } from "../libs/gizmos";
 import { URLHandler } from "../libs/handler";
 import { JIYTableStateContext } from "../models/JIYContexts";
 
@@ -353,7 +352,13 @@ function JIYTableTools<T, R>({
                         </Header>
                       </Table.Cell>
                       {exportItems.length > 0 ? (
-                        <Table.Cell singleLine>{`${title}.csv`}</Table.Cell>
+                        <Table.Cell singleLine>{`${
+                          title +
+                          "_" +
+                          path.split("/")[1] +
+                          "_" +
+                          new Date().toISOString()
+                        }.csv`}</Table.Cell>
                       ) : (
                         <Table.Cell singleLine>N/A</Table.Cell>
                       )}
@@ -377,7 +382,13 @@ function JIYTableTools<T, R>({
                   data={exportItems
                     .filter((item) => item.isSelected)
                     .map((item) => item.data)}
-                  filename={`${title}.csv`}
+                  filename={`${
+                    title +
+                    "_" +
+                    path.split("/")[1] +
+                    "_" +
+                    new Date().toISOString()
+                  }.csv`}
                 >
                   Export
                 </CSVLink>

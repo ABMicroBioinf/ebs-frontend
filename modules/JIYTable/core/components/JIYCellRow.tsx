@@ -8,11 +8,10 @@
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { Button, Header, Modal, Table, TableBody } from "semantic-ui-react";
+import { Button, Modal, Table, TableBody } from "semantic-ui-react";
 import { pick } from "../libs/gizmos";
 import { JIYCellRowContext } from "../models/JIYContexts";
 import JIYCellHeading from "./JIYCellHeading";
-import hash from "object-hash";
 import TablePlaceholder from "../../../../components/global/TablePlaceholder";
 
 /**
@@ -104,7 +103,6 @@ function JIYCellRow<T>({
                     </Table.Row>
                   </Table.Header>
                   <TableBody>
-                    {/* {innerData.map((data) => <Table.Cell>{data}</Table.Cell>)} */}
                     {innerData.map((data, index) => (
                       <Table.Row key={index}>
                         {Object.values(data).map((value, i) => (

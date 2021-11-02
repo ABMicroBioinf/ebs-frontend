@@ -56,8 +56,6 @@ export interface FlatMLSTWithProfile {
   DateCreated: string;
   LastUpdate: string;
   Description: string;
-  // Dynamical attributes below
-  // need to figure out
   profile: Array<Allele>;
   // profile__locus_0: string;
   // profile__allele_0: string;
@@ -77,33 +75,12 @@ export interface FlatMLSTWithProfile {
   // profile__allele_7: string;
 }
 
-export interface StaticFlatMLST {
-  id: string;
-  owner: string;
-  assembly: string;
-  assembly__sequence__project__id: string; //need to check
-  assembly__sequence__project__title: null; //need to check
-  assembly__sequence__LibrarySource: null; //need to check
-  assembly__sequence__LibraryLayout: null; //need to check
-  assembly__sequence__SequencerModel: null; //need to check
-  assembly__sequence__CenterName: null; //need to check
-  seqtype: string;
-  scheme: string;
-  st: number;
-  DateCreated: string;
-  LastUpdate: string;
-  Description: string;
-  // Dynamical attributes below
-  // need to figure out
-  etc: string;
-}
-
 export interface GeneCoverage {
   geneName: string;
   pctCoverage: number;
 }
 
-export interface Virulence {}
+// export interface Virulence {}
 
 export interface FlatResistomeWithProfile {
   id: string;
@@ -129,29 +106,6 @@ export interface FlatResistomeWithProfile {
   // profile__pctCoverage_2: number;
 }
 
-export interface StaticFlatResistome {
-  id: string;
-  owner: string;
-  assembly: string;
-  assembly__sequence__project__id: string; //need to check
-  assembly__sequence__project__title: string; //need to check
-  assembly__sequence__LibrarySource: string;
-  assembly__sequence__LibraryLayout: string;
-  assembly__sequence__SequencerModel: string;
-  assembly__sequence__CenterName: string;
-  seqtype: string;
-  num_found: number;
-  DateCreated: string;
-  LastUpdate: string;
-  Description: string;
-  etc: string;
-}
-
-export interface GeneCoverage {
-  geneName: string;
-  pctCoverage: number;
-}
-
 export interface FlatVirulomeWithProfile {
   id: string;
   owner: string;
@@ -169,29 +123,6 @@ export interface FlatVirulomeWithProfile {
   Description: string;
   profile: Array<GeneCoverage>;
 }
-
-export interface StaticFlatVirulome {
-  id: string;
-  owner: string;
-  assembly: string;
-  assembly__sequence__project__id: string; //need to check
-  assembly__sequence__project__title: string; //need to check
-  assembly__sequence__LibrarySource: string;
-  assembly__sequence__LibraryLayout: string;
-  assembly__sequence__SequencerModel: string;
-  assembly__sequence__CenterName: string;
-  seqtype: string;
-  num_found: number;
-  DateCreated: string;
-  LastUpdate: string;
-  Description: string;
-  etc: string;
-}
-
-// export interface TagValue {
-//   tag: string;
-//   value: string;
-// }
 
 export interface Attribute {
   tag: string;
@@ -220,8 +151,6 @@ export interface FlatAnnotationWithAttr {
   DateCreated: string;
   LastUpdate: string;
   Description: string;
-  // Dynamical attributes below
-  // need to figure out
   attr: Array<Attribute>;
 }
 // attr__tag_0: string;
@@ -234,34 +163,6 @@ export interface FlatAnnotationWithAttr {
 // attr__value_3: string;
 // attr__tag_4: string;
 // attr__value_4: string;
-
-export interface StaticFlatAnnotation {
-  id: string;
-  owner: string;
-  assembly: string;
-  assembly__sequence__project__id: string; // need to check
-  assembly__sequence__project__title: string; // need to check
-  assembly__sequence__LibrarySource: string;
-  assembly__sequence__LibraryLayout: string;
-  assembly__sequence__SequencerModel: string;
-  assembly__sequence__CenterName: string;
-  seqid: string;
-  source: string;
-  ftype: string;
-  start: number;
-  end: number;
-  score: string;
-  strand: string;
-  phase: string;
-  attr: Array<Attribute>;
-  seqtype: string;
-  DateCreated: string;
-  LastUpdate: string;
-  Description: string;
-  // Dynamical attributes below
-  // need to figure out
-  etc: string;
-}
 
 export interface FlatPsummary {
   id: string;

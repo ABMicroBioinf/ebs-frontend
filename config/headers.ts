@@ -158,7 +158,7 @@ export const CUSTOM_HEADER_ASSEMBLY = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "visible",
+    display: "hidden",
     primary: false,
   },
 };
@@ -308,7 +308,7 @@ export const CUSTOM_HEADER_ANNOTATION = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "none",
+    display: "hidden",
     primary: false,
   },
   attr: {
@@ -493,7 +493,7 @@ export const CUSTOM_HEADER_MLST = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "none",
+    display: "hidden",
     primary: false,
   },
   profile: {
@@ -713,7 +713,7 @@ export const CUSTOM_HEADER_RESISTOME = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "visible",
+    display: "hidden",
     primary: false,
   },
   profile: {
@@ -863,7 +863,7 @@ export const CUSTOM_HEADER_VIRULOME = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "none",
+    display: "hidden",
     primary: false,
   },
   profile: {
@@ -2078,7 +2078,7 @@ export const CUSTOM_HEADER_PSUMMARY = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "none",
+    display: "hidden",
     primary: false,
   },
 };
@@ -2270,7 +2270,7 @@ export const CUSTOM_HEADER_SEQUENCE = {
     name: "Description",
     value: "Description",
     alias: "Description",
-    display: "none",
+    display: "hidden",
     primary: false,
   },
   RawStats__Reads: {

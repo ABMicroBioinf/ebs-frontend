@@ -18,20 +18,12 @@ import {
   CUSTOM_HEADER_VIRULOME,
 } from "../../../../config/headers";
 import {
-  FlatAnnotation,
   FlatAnnotationWithAttr,
   FlatAssembly,
-  FlatMLST,
   FlatMLSTWithProfile,
   FlatPsummary,
-  FlatResistome,
   FlatResistomeWithProfile,
-  FlatVirulome,
   FlatVirulomeWithProfile,
-  StaticFlatAnnotation,
-  StaticFlatMLST,
-  StaticFlatResistome,
-  StaticFlatVirulome,
 } from "../../../../models/Isolate";
 import { FlatSequence } from "../../../../models/Sequence";
 import {
@@ -221,29 +213,17 @@ export function AnnotationDataHandler(
   results: Array<FlatAnnotationWithAttr>,
   invertSelection: boolean
 ): JIYTabularDataContext<FlatAnnotationWithAttr> {
-  // ): JIYTabularDataContext<FlatAnnotation> {
   const schema: Array<JIYHeaderContext> = Object.entries(
     CUSTOM_HEADER_ANNOTATION
-  )
-    // .filter(([k]) => !k.includes("attr__tag"))
-    // .filter(([k]) => !k.includes("attr__value"))
-    .map(([, value]) => {
-      return {
-        name: value.name,
-        value: value.value,
-        alias: value.alias,
-        display: value.display as JIYHeaderDisplay,
-        primary: value.primary,
-      };
-    });
-
-  // schema.push({
-  //   name: "etc",
-  //   value: "etc",
-  //   alias: "Attributes",
-  //   display: "visible" as JIYHeaderDisplay,
-  //   primary: false,
-  // });
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
 
   const customized = results.map((obj) => {
     return {
@@ -272,49 +252,12 @@ export function AnnotationDataHandler(
     (
       flatAnnotationWithAttr: FlatAnnotationWithAttr
     ): JIYRecordContext<FlatAnnotationWithAttr> => {
-      // const dynamicTags = Object.fromEntries(
-      //   Object.entries(flatAnnotationWithAttr).filter(([k]) => k.includes("attr__tag"))
-      // );
-      // const dynamicValues = Object.fromEntries(
-      //   Object.entries(flatAnnotation).filter(([k]) =>
-      //     k.includes("attr__value")
-      //   )
-      // );
-      // let stringifiedField = "";
-      // for (let i = 0; i < Object.keys(dynamicTags).length; i++) {
-      //   stringifiedField +=
-      //     dynamicTags[`attr__tag_${i}`] +
-      //     "=" +
-      //     dynamicValues[`attr__value_${i}`];
-      //   stringifiedField +=
-      //     i === Object.keys(dynamicTags).length - 1 ? "" : ";";
-      // }
-      // const staticFlatAnnotation = Object.fromEntries(
-      //   Object.entries(flatAnnotation)
-      //     .filter(([k]) => !k.includes("attr__tag"))
-      //     .filter(([k]) => !k.includes("attr__value"))
-      // );
-
-      // return {
-      //   isSelected: invertSelection,
-      //   data: {
-      //     ...staticFlatAnnotation,
-      //     etc: stringifiedField,
-      //   } as StaticFlatAnnotation,
-      // };
       return {
         isSelected: invertSelection,
         data: flatAnnotationWithAttr,
       };
     }
   );
-
-  // const data: Array<JIYRecordContext<FlatAnnotation>> = rearranged.map(
-  //   (flatAnnotation: FlatAnnotation): JIYRecordContext<FlatAnnotation> => ({
-  //     isSelected: invertSelection,
-  //     data: flatAnnotation,
-  //   })
-  // );
 
   return {
     headers: schema,
@@ -330,28 +273,18 @@ export function AnnotationDataHandler(
 export function MLSTDataHandler(
   results: Array<FlatMLSTWithProfile>,
   invertSelection: boolean
-  // ): JIYTabularDataContext<FlatMLST> {
 ): JIYTabularDataContext<FlatMLSTWithProfile> {
-  const schema: Array<JIYHeaderContext> = Object.entries(CUSTOM_HEADER_MLST)
-    // .filter(([k]) => !k.includes("profile__locus"))
-    // .filter(([k]) => !k.includes("profile__allele"))
-    .map(([, value]) => {
-      return {
-        name: value.name,
-        value: value.value,
-        alias: value.alias,
-        display: value.display as JIYHeaderDisplay,
-        primary: value.primary,
-      };
-    });
-
-  // schema.push({
-  //   name: "etc",
-  //   value: "etc",
-  //   alias: "Alleles",
-  //   display: "visible" as JIYHeaderDisplay,
-  //   primary: false,
-  // });
+  const schema: Array<JIYHeaderContext> = Object.entries(
+    CUSTOM_HEADER_MLST
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
 
   const customized = results.map((obj) => {
     return {
@@ -376,36 +309,6 @@ export function MLSTDataHandler(
     )
   );
 
-  // const data: Array<JIYRecordContext<StaticFlatMLST>> = rearranged.map(
-  //   (flatMLST: FlatMLST): JIYRecordContext<StaticFlatMLST> => {
-  // const dynamicLocus = Object.fromEntries(
-  //   Object.entries(flatMLST).filter(([k]) => k.includes("profile__locus"))
-  // );
-  //     const dynamicAllele = Object.fromEntries(
-  //       Object.entries(flatMLST).filter(([k]) => k.includes("profile__allele"))
-  //     );
-  //     let stringifiedField = "";
-  //     for (let i = 0; i < Object.keys(dynamicAllele).length; i++) {
-  //       stringifiedField +=
-  //         // dynamicLocus[`profile__locus_${i}`] +
-  //         // "=" +
-  //         dynamicAllele[`profile__allele_${i}`];
-  //       stringifiedField +=
-  //         i === Object.keys(dynamicAllele).length - 1 ? "" : ";";
-  //     }
-  //     const StaticFlatMLST = Object.fromEntries(
-  //       Object.entries(flatMLST)
-  //         .filter(([k]) => !k.includes("profile__locus"))
-  //         .filter(([k]) => !k.includes("profile__allele"))
-  //     );
-
-  //     return {
-  //       isSelected: invertSelection,
-  //       data: { ...StaticFlatMLST, etc: stringifiedField } as StaticFlatMLST,
-  //     };
-  //   }
-  // );
-
   const data: Array<JIYRecordContext<FlatMLSTWithProfile>> = rearranged.map(
     (
       flatMLSTWithProfile: FlatMLSTWithProfile
@@ -429,30 +332,18 @@ export function MLSTDataHandler(
 export function ResistomeDataHandler(
   results: Array<FlatResistomeWithProfile>,
   invertSelection: boolean
-  // ): JIYTabularDataContext<FlatResistome> {
 ): JIYTabularDataContext<FlatResistomeWithProfile> {
   const schema: Array<JIYHeaderContext> = Object.entries(
     CUSTOM_HEADER_RESISTOME
-  )
-    // .filter(([k]) => !k.includes("profile__geneName"))
-    // .filter(([k]) => !k.includes("profile__pctCoverage"))
-    .map(([, value]) => {
-      return {
-        name: value.name,
-        value: value.value,
-        alias: value.alias,
-        display: value.display as JIYHeaderDisplay,
-        primary: value.primary,
-      };
-    });
-
-  // schema.push({
-  //   name: "etc",
-  //   value: "etc",
-  //   alias: "Genes(Coverage%)",
-  //   display: "visible" as JIYHeaderDisplay,
-  //   primary: false,
-  // });
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
 
   const customized = results.map((obj) => {
     return {
@@ -476,44 +367,6 @@ export function ResistomeDataHandler(
       )
     )
   );
-
-  // const data: Array<JIYRecordContext<StaticFlatResistome>> = rearranged.map(
-  //   (flatResistome: FlatResistome): JIYRecordContext<StaticFlatResistome> => {
-  //     const dynamicGeneName = Object.fromEntries(
-  //       Object.entries(flatResistome).filter(([k]) =>
-  //         k.includes("profile__geneName")
-  //       )
-  //     );
-  //     const dynamicCoverage = Object.fromEntries(
-  //       Object.entries(flatResistome).filter(([k]) =>
-  //         k.includes("profile__pctCoverage")
-  //       )
-  //     );
-  //     let stringifiedField = "";
-  //     for (let i = 0; i < Object.keys(dynamicGeneName).length; i++) {
-  //       stringifiedField +=
-  //         dynamicGeneName[`profile__geneName_${i}`] +
-  //         "(" +
-  //         dynamicCoverage[`profile__pctCoverage_${i}`] +
-  //         "%)";
-  //       stringifiedField +=
-  //         i === Object.keys(dynamicGeneName).length - 1 ? "" : ";";
-  //     }
-  //     const StaticFlatResistome = Object.fromEntries(
-  //       Object.entries(flatResistome)
-  //         .filter(([k]) => !k.includes("profile__geneName"))
-  //         .filter(([k]) => !k.includes("profile__pctCoverage"))
-  //     );
-
-  //     return {
-  //       isSelected: invertSelection,
-  //       data: {
-  //         ...StaticFlatResistome,
-  //         etc: stringifiedField,
-  //       } as StaticFlatResistome,
-  //     };
-  //   }
-  // );
 
   const data: Array<JIYRecordContext<FlatResistomeWithProfile>> =
     rearranged.map(
@@ -540,27 +393,17 @@ export function VirulomeDataHandler(
   results: Array<FlatVirulomeWithProfile>,
   invertSelection: boolean
 ): JIYTabularDataContext<FlatVirulomeWithProfile> {
-  // ): JIYTabularDataContext<FlatVirulome> {
-  const schema: Array<JIYHeaderContext> = Object.entries(CUSTOM_HEADER_VIRULOME)
-    // .filter(([k]) => !k.includes("profile__geneName"))
-    // .filter(([k]) => !k.includes("profile__pctCoverage"))
-    .map(([, value]) => {
-      return {
-        name: value.name,
-        value: value.value,
-        alias: value.alias,
-        display: value.display as JIYHeaderDisplay,
-        primary: value.primary,
-      };
-    });
-
-  // schema.push({
-  //   name: "etc",
-  //   value: "etc",
-  //   alias: "Genes(Coverage%)",
-  //   display: "visible" as JIYHeaderDisplay,
-  //   primary: false,
-  // });
+  const schema: Array<JIYHeaderContext> = Object.entries(
+    CUSTOM_HEADER_VIRULOME
+  ).map(([, value]) => {
+    return {
+      name: value.name,
+      value: value.value,
+      alias: value.alias,
+      display: value.display as JIYHeaderDisplay,
+      primary: value.primary,
+    };
+  });
 
   const customized = results.map((obj) => {
     return {
@@ -589,45 +432,12 @@ export function VirulomeDataHandler(
     (
       flatVirulomeWithProfile: FlatVirulomeWithProfile
     ): JIYRecordContext<FlatVirulomeWithProfile> => {
-      // const dynamicGeneName = Object.fromEntries(
-      //   Object.entries(flatVirulome).filter(([k]) =>
-      //     k.includes("profile__geneName")
-      //   )
-      // );
-      // const dynamicCoverage = Object.fromEntries(
-      //   Object.entries(flatVirulome).filter(([k]) =>
-      //     k.includes("profile__pctCoverage")
-      //   )
-      // );
-      // let stringifiedField = "";
-      // for (let i = 0; i < Object.keys(dynamicGeneName).length; i++) {
-      //   stringifiedField +=
-      //     dynamicGeneName[`profile__geneName_${i}`] +
-      //     "(" +
-      //     dynamicCoverage[`profile__pctCoverage_${i}`] +
-      //     "%)";
-      //   stringifiedField +=
-      //     i === Object.keys(dynamicGeneName).length - 1 ? "" : ";";
-      // }
-      // const staticFlatVirulome = Object.fromEntries(
-      //   Object.entries(flatVirulome)
-      //     .filter(([k]) => !k.includes("profile__geneName"))
-      //     .filter(([k]) => !k.includes("profile__pctCoverage"))
-      // );
-
       return {
         isSelected: invertSelection,
         data: flatVirulomeWithProfile,
       };
     }
   );
-
-  // const data: Array<JIYRecordContext<FlatVirulome>> = rearranged.map(
-  //   (flatVirulome: FlatVirulome): JIYRecordContext<FlatVirulome> => ({
-  //     isSelected: invertSelection,
-  //     data: flatVirulome,
-  //   })
-  // );
 
   return {
     headers: schema,
