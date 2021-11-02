@@ -24,6 +24,7 @@ import {
   FlatPsummary,
   FlatResistome,
   FlatVirulome,
+  FlatVirulomeWithProfile,
   StaticFlatAnnotation,
   StaticFlatMLST,
   StaticFlatResistome,
@@ -524,13 +525,13 @@ export function ResistomeDataHandler(
  * @returns - See {@link JIYTabularDataContext}
  */
 export function VirulomeDataHandler(
-  results: Array<FlatVirulome>,
+  results: Array<FlatVirulomeWithProfile>,
   invertSelection: boolean
-): JIYTabularDataContext<StaticFlatVirulome> {
+): JIYTabularDataContext<FlatVirulomeWithProfile> {
   // ): JIYTabularDataContext<FlatVirulome> {
   const schema: Array<JIYHeaderContext> = Object.entries(CUSTOM_HEADER_VIRULOME)
-    .filter(([k]) => !k.includes("profile__geneName"))
-    .filter(([k]) => !k.includes("profile__pctCoverage"))
+    // .filter(([k]) => !k.includes("profile__geneName"))
+    // .filter(([k]) => !k.includes("profile__pctCoverage"))
     .map(([, value]) => {
       return {
         name: value.name,
@@ -541,13 +542,13 @@ export function VirulomeDataHandler(
       };
     });
 
-  schema.push({
-    name: "etc",
-    value: "etc",
-    alias: "Genes(Coverage%)",
-    display: "visible" as JIYHeaderDisplay,
-    primary: false,
-  });
+  // schema.push({
+  //   name: "etc",
+  //   value: "etc",
+  //   alias: "Genes(Coverage%)",
+  //   display: "visible" as JIYHeaderDisplay,
+  //   primary: false,
+  // });
 
   const customized = results.map((obj) => {
     return {
@@ -560,7 +561,7 @@ export function VirulomeDataHandler(
         undefined,
         DATE_FORMAT
       ),
-    } as FlatVirulome;
+    } as FlatVirulomeWithProfile;
   });
 
   const standard = schema.map((obj) => obj.value);
@@ -572,40 +573,39 @@ export function VirulomeDataHandler(
     )
   );
 
-  const data: Array<JIYRecordContext<StaticFlatVirulome>> = rearranged.map(
-    (flatVirulome: FlatVirulome): JIYRecordContext<StaticFlatVirulome> => {
-      const dynamicGeneName = Object.fromEntries(
-        Object.entries(flatVirulome).filter(([k]) =>
-          k.includes("profile__geneName")
-        )
-      );
-      const dynamicCoverage = Object.fromEntries(
-        Object.entries(flatVirulome).filter(([k]) =>
-          k.includes("profile__pctCoverage")
-        )
-      );
-      let stringifiedField = "";
-      for (let i = 0; i < Object.keys(dynamicGeneName).length; i++) {
-        stringifiedField +=
-          dynamicGeneName[`profile__geneName_${i}`] +
-          "(" +
-          dynamicCoverage[`profile__pctCoverage_${i}`] +
-          "%)";
-        stringifiedField +=
-          i === Object.keys(dynamicGeneName).length - 1 ? "" : ";";
-      }
-      const staticFlatVirulome = Object.fromEntries(
-        Object.entries(flatVirulome)
-          .filter(([k]) => !k.includes("profile__geneName"))
-          .filter(([k]) => !k.includes("profile__pctCoverage"))
-      );
+  const data: Array<JIYRecordContext<FlatVirulomeWithProfile>> = rearranged.map(
+    (
+      flatVirulomeWithProfile: FlatVirulomeWithProfile
+    ): JIYRecordContext<FlatVirulomeWithProfile> => {
+      // const dynamicGeneName = Object.fromEntries(
+      //   Object.entries(flatVirulome).filter(([k]) =>
+      //     k.includes("profile__geneName")
+      //   )
+      // );
+      // const dynamicCoverage = Object.fromEntries(
+      //   Object.entries(flatVirulome).filter(([k]) =>
+      //     k.includes("profile__pctCoverage")
+      //   )
+      // );
+      // let stringifiedField = "";
+      // for (let i = 0; i < Object.keys(dynamicGeneName).length; i++) {
+      //   stringifiedField +=
+      //     dynamicGeneName[`profile__geneName_${i}`] +
+      //     "(" +
+      //     dynamicCoverage[`profile__pctCoverage_${i}`] +
+      //     "%)";
+      //   stringifiedField +=
+      //     i === Object.keys(dynamicGeneName).length - 1 ? "" : ";";
+      // }
+      // const staticFlatVirulome = Object.fromEntries(
+      //   Object.entries(flatVirulome)
+      //     .filter(([k]) => !k.includes("profile__geneName"))
+      //     .filter(([k]) => !k.includes("profile__pctCoverage"))
+      // );
 
       return {
         isSelected: invertSelection,
-        data: {
-          ...staticFlatVirulome,
-          etc: stringifiedField,
-        } as StaticFlatVirulome,
+        data: flatVirulomeWithProfile,
       };
     }
   );
