@@ -121,6 +121,10 @@ $sidebar-width: 250px;
   padding-bottom: 1.5em !important;
 }
 
+.ebs-overflow-table-wrapper {
+  overflow-x: auto;
+}
+
 /*
  * Fix (Unsupported at the current version and Browser specific)
 */

@@ -6,6 +6,7 @@
  * @desc [description]
  */
 
+import { Attributes } from "react";
 import { API } from "../../../../config/apis";
 import { DATE_FORMAT } from "../../../../config/etc";
 import {
@@ -225,7 +226,33 @@ export function AnnotationDataHandler(
     };
   });
 
+  const keyset = Array.from(
+    new Set(
+      [].concat(
+        ...results.map((obj) => {
+          return obj.attr.map((o) => o.tag);
+        })
+      )
+    )
+  );
+
+  keyset.forEach((key) =>
+    schema.push({
+      name: key,
+      value: key,
+      alias: key,
+      display: "visible" as JIYHeaderDisplay,
+      primary: false,
+    })
+  );
+
   const customized = results.map((obj) => {
+    keyset.forEach((key) => {
+      obj[key] = obj.attr.find((o) => o.tag === key)
+        ? obj.attr.find((o) => o.tag === key).value
+        : "-";
+    });
+
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(

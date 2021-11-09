@@ -7,7 +7,7 @@
  */
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Modal, Table, TableBody } from "semantic-ui-react";
 import { pick } from "../libs/gizmos";
 import { JIYCellRowContext } from "../models/JIYContexts";
@@ -50,6 +50,30 @@ function JIYCellRow<T>({
     return value;
   };
 
+  const getDetailViewHeader = useCallback(() => {
+    if (innerData.length > 0) {
+      return innerData.map((data, index) => {
+        return (
+          <Table.HeaderCell singleLine key={index}>
+            {Object.values(data)[0]}
+          </Table.HeaderCell>
+        );
+      });
+    } else {
+      return;
+    }
+  }, [innerData]);
+
+  const getDetailViewRows = useCallback(() => {
+    if (innerData.length > 0) {
+      return innerData.map((data, index) => {
+        return <Table.Cell key={index}>{Object.values(data)[1]}</Table.Cell>;
+      });
+    } else {
+      return;
+    }
+  }, [innerData]);
+
   useEffect(() => {
     const keys = headers.filter((colState) => colState.display === "visible");
     setRow(pick(record.data, keys));
@@ -91,25 +115,27 @@ function JIYCellRow<T>({
         {innerData.length > 0 ? (
           <>
             <Modal.Content>
-              <Modal.Description>
+              <Modal.Description className="ebs-overflow-table-wrapper">
                 <Table celled padded>
                   <Table.Header>
                     <Table.Row>
-                      {Object.keys(innerData[0]).map((key, index) => (
+                      {/* {Object.keys(innerData[0]).map((key, index) => (
                         <Table.HeaderCell singleLine key={index}>
                           {key}
                         </Table.HeaderCell>
-                      ))}
+                      ))} */}
+                      {getDetailViewHeader()}
                     </Table.Row>
                   </Table.Header>
                   <TableBody>
-                    {innerData.map((data, index) => (
+                    {/* {innerData.map((data, index) => (
                       <Table.Row key={index}>
                         {Object.values(data).map((value, i) => (
                           <Table.Cell key={i}>{value}</Table.Cell>
                         ))}
                       </Table.Row>
-                    ))}
+                    ))} */}
+                    <Table.Row>{getDetailViewRows()}</Table.Row>
                   </TableBody>
                 </Table>
               </Modal.Description>
