@@ -33,6 +33,12 @@ function TBAnalysis() {
 
   const panes = [
     {
+      menuItem: "Sequence",
+      render: function getContent() {
+        return <></>;
+      },
+    },
+    {
       menuItem: "Assembly",
       render: function getContent() {
         return <AssemblyView />;

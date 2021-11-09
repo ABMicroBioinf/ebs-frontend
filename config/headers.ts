@@ -2109,7 +2109,7 @@ export const CUSTOM_HEADER_SEQUENCE = {
     name: "seqtype",
     value: "seqtype",
     alias: "seqtype",
-    display: "none",
+    display: "visible",
     primary: false,
   },
   Experiment: {
