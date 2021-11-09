@@ -313,7 +313,33 @@ export function MLSTDataHandler(
     };
   });
 
+  const keyset = Array.from(
+    new Set(
+      [].concat(
+        ...results.map((obj) => {
+          return obj.profile.map((o) => o.locus);
+        })
+      )
+    )
+  );
+
+  keyset.forEach((key) =>
+    schema.push({
+      name: key,
+      value: key,
+      alias: key,
+      display: "visible" as JIYHeaderDisplay,
+      primary: false,
+    })
+  );
+
   const customized = results.map((obj) => {
+    keyset.forEach((key) => {
+      obj[key] = obj.profile.find((o) => o.locus === key)
+        ? obj.profile.find((o) => o.locus === key).allele
+        : "-";
+    });
+
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
@@ -372,7 +398,33 @@ export function ResistomeDataHandler(
     };
   });
 
+  const keyset = Array.from(
+    new Set(
+      [].concat(
+        ...results.map((obj) => {
+          return obj.profile.map((o) => o.geneName);
+        })
+      )
+    )
+  );
+
+  keyset.forEach((key) =>
+    schema.push({
+      name: key,
+      value: key,
+      alias: key,
+      display: "visible" as JIYHeaderDisplay,
+      primary: false,
+    })
+  );
+
   const customized = results.map((obj) => {
+    keyset.forEach((key) => {
+      obj[key] = obj.profile.find((o) => o.geneName === key)
+        ? obj.profile.find((o) => o.geneName === key).pctCoverage
+        : "-";
+    });
+
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
@@ -432,7 +484,33 @@ export function VirulomeDataHandler(
     };
   });
 
+  const keyset = Array.from(
+    new Set(
+      [].concat(
+        ...results.map((obj) => {
+          return obj.profile.map((o) => o.geneName);
+        })
+      )
+    )
+  );
+
+  keyset.forEach((key) =>
+    schema.push({
+      name: key,
+      value: key,
+      alias: key,
+      display: "visible" as JIYHeaderDisplay,
+      primary: false,
+    })
+  );
+
   const customized = results.map((obj) => {
+    keyset.forEach((key) => {
+      obj[key] = obj.profile.find((o) => o.geneName === key)
+        ? obj.profile.find((o) => o.geneName === key).pctCoverage
+        : "-";
+    });
+
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
