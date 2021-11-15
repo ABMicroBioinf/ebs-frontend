@@ -57,22 +57,10 @@ export interface FlatMLSTWithProfile {
   LastUpdate: string;
   Description: string;
   profile: Array<Allele>;
-  // profile__locus_0: string;
-  // profile__allele_0: string;
-  // profile__locus_1: string;
-  // profile__allele_1: string;
-  // profile__locus_2: string;
-  // profile__allele_2: string;
-  // profile__locus_3: string;
-  // profile__allele_3: string;
-  // profile__locus_4: string;
-  // profile__allele_4: string;
-  // profile__locus_5: string;
-  // profile__allele_5: string;
-  // profile__locus_6: string;
-  // profile__allele_6: string;
-  // profile__locus_7: string;
-  // profile__allele_7: string;
+
+  objType: string;
+  dynamicColumns: boolean;
+  colorization: boolean;
 }
 
 export interface GeneCoverage {
@@ -98,12 +86,10 @@ export interface FlatResistomeWithProfile {
   LastUpdate: string;
   Description: string;
   profile: Array<GeneCoverage>;
-  // profile__geneName_0: string;
-  // profile__pctCoverage_0: number;
-  // profile__geneName_1: string;
-  // profile__pctCoverage_1: number;
-  // profile__geneName_2: string;
-  // profile__pctCoverage_2: number;
+
+  objType: string;
+  dynamicColumns: boolean;
+  colorization: boolean;
 }
 
 export interface FlatVirulomeWithProfile {
@@ -122,6 +108,10 @@ export interface FlatVirulomeWithProfile {
   LastUpdate: string;
   Description: string;
   profile: Array<GeneCoverage>;
+
+  objType: string;
+  dynamicColumns: boolean;
+  colorization: boolean;
 }
 
 export interface Attribute {
@@ -152,17 +142,11 @@ export interface FlatAnnotationWithAttr {
   LastUpdate: string;
   Description: string;
   attr: Array<Attribute>;
+
+  objType: string;
+  dynamicColumns: boolean;
+  colorization: boolean;
 }
-// attr__tag_0: string;
-// attr__value_0: string;
-// attr__tag_1: string;
-// attr__value_1: string;
-// attr__tag_2: string;
-// attr__value_2: string;
-// attr__tag_3: string;
-// attr__value_3: string;
-// attr__tag_4: string;
-// attr__value_4: string;
 
 export interface FlatPsummary {
   id: string;
@@ -210,6 +194,10 @@ export interface FlatPsummary {
   DateCreated: string;
   LastUpdate: string;
   Description: string;
+
+  objType: string;
+  dynamicColumns: boolean;
+  colorization: boolean;
 }
 
 export interface Lineage {

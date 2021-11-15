@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import TopNav from "../../../components/global/TopNav";
 import { Grid } from "semantic-ui-react";
-import SequencesVizView from "../../../components/views/sequences/VizView";
+import SequencesVizView from "../../../components/views/sequences/SequenceVizView";
 import SequencesSideMenu from "../../../components/views/sequences/SideMenu";
 import { useAuth } from "../../../middleware/AuthProvider";
 import {

@@ -6,14 +6,14 @@
  * @desc [description]
  */
 import { useRouter } from "next/router";
-import withAuth from "../../../middleware/withAuth";
+import withAuth from "../../middleware/withAuth";
 
-import TopNav from "../../../components/global/TopNav";
+import TopNav from "../../components/global/TopNav";
 import { Grid } from "semantic-ui-react";
 import { useCallback, useEffect, useState } from "react";
-import { URLHandler } from "../../../modules/JIYTable/core/libs/handler";
-import { useAuth } from "../../../middleware/AuthProvider";
-import { API_SEQUENCE_DETAIL } from "../../../config/apis";
+import { URLHandler } from "../../modules/JIYTable/core/libs/handler";
+import { useAuth } from "../../middleware/AuthProvider";
+import { API_SEQUENCE_DETAIL } from "../../config/apis";
 import axios from "axios";
 
 /**

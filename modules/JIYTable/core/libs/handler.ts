@@ -113,6 +113,9 @@ export function SequencesDataHandler(
   });
 
   const customized = results.map((obj) => {
+    obj["objType"] = "sequence";
+    obj["dynamicColumns"] = false;
+    obj["colorization"] = false;
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
@@ -170,6 +173,9 @@ export function AssemblyDataHandler(
   });
 
   const customized = results.map((obj) => {
+    obj["objType"] = "assembly";
+    obj["dynamicColumns"] = false;
+    obj["colorization"] = false;
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
@@ -247,6 +253,10 @@ export function AnnotationDataHandler(
   );
 
   const customized = results.map((obj) => {
+    obj["objType"] = "annotation";
+    obj["dynamicColumns"] = true;
+    obj["colorization"] = false;
+
     keyset.forEach((key) => {
       obj[key] = obj.attr.find((o) => o.tag === key)
         ? obj.attr.find((o) => o.tag === key).value
@@ -327,16 +337,21 @@ export function MLSTDataHandler(
     schema.push({
       name: key,
       value: key,
-      alias: key,
+      alias: "Allele",
       display: "visible" as JIYHeaderDisplay,
       primary: false,
     })
   );
 
   const customized = results.map((obj) => {
+    obj["objType"] = "mlst";
+    obj["dynamicColumns"] = true;
+    obj["colorization"] = false;
+
     keyset.forEach((key) => {
+      const value = obj.profile.find((o) => o.locus === key).allele;
       obj[key] = obj.profile.find((o) => o.locus === key)
-        ? obj.profile.find((o) => o.locus === key).allele
+        ? value.split("_")[0] + "(" + value.split("_")[1] + ")"
         : "-";
     });
 
@@ -419,6 +434,10 @@ export function ResistomeDataHandler(
   );
 
   const customized = results.map((obj) => {
+    obj["objType"] = "resistome";
+    obj["dynamicColumns"] = true;
+    obj["colorization"] = true;
+
     keyset.forEach((key) => {
       obj[key] = obj.profile.find((o) => o.geneName === key)
         ? obj.profile.find((o) => o.geneName === key).pctCoverage
@@ -505,6 +524,10 @@ export function VirulomeDataHandler(
   );
 
   const customized = results.map((obj) => {
+    obj["objType"] = "virulome";
+    obj["dynamicColumns"] = true;
+    obj["colorization"] = true;
+
     keyset.forEach((key) => {
       obj[key] = obj.profile.find((o) => o.geneName === key)
         ? obj.profile.find((o) => o.geneName === key).pctCoverage
@@ -572,6 +595,10 @@ export function ProfileSummaryDataHandler(
   });
 
   const customized = results.map((obj) => {
+    obj["objType"] = "Psummary";
+    obj["dynamicColumns"] = false;
+    obj["colorization"] = false;
+
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(

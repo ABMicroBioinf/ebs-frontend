@@ -1,44 +1,90 @@
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
- * @create date 2021-07-15 13:09:14
- * @modify date 2021-07-15 13:09:20
+ * @create date 2021-07-15 00:09:39
+ * @modify date 2021-07-15 13:09:41
  * @desc [description]
  */
-import withAuth from "../../../middleware/withAuth";
+import withAuth from "../../middleware/withAuth";
+import React, { useEffect, useState } from "react";
 
-import TopNav from "../../../components/global/TopNav";
-import React, { useState } from "react";
 import { Grid, Icon, Menu, Segment, Tab } from "semantic-ui-react";
-import TabMenu from "../../../components/global/Tab";
+import TopNav from "../../components/global/TopNav";
+import AssemblyView from "../../components/views/isolates/AssemblyView";
+import AnnotationView from "../../components/views/isolates/AnnotationView";
+import MLSTView from "../../components/views/isolates/MLSTView";
+import ResistomeView from "../../components/views/isolates/ResistomeView";
+import VirulomeView from "../../components/views/isolates/VirulomeView";
+import TBSummaryView from "../../components/views/isolates/TBSummaryView";
+import SequenceView from "../../components/views/isolates/SequenceView";
 
 /**
- * CPOAnalysis
- * @returns - Analysis of CPO page component
+ * TBAnalysis
+ * @returns - TB Main View Component
  */
-function CPOAnalysis(): JSX.Element {
-  const [wideView, setWideView] = useState(false);
+function TBAnalysis() {
+  const handleTabChange = (e, data) => setCurrentTab(data);
+  // const handleTabChange = (e, activeIndex) => {
+  //   console.log(activeIndex);
+  // };
 
   const panes = [
     {
-      menuItem: "Table 1",
+      menuItem: "Sequence",
       render: function getContent() {
-        return <Tab.Pane>CPO Analysis 1</Tab.Pane>;
+        return <SequenceView />;
       },
     },
     {
-      menuItem: "Table 2",
+      menuItem: "Assembly",
       render: function getContent() {
-        return <Tab.Pane>CPO Analysis 2</Tab.Pane>;
+        return <AssemblyView />;
       },
     },
     {
-      menuItem: "...",
+      menuItem: "Annotation",
       render: function getContent() {
-        return <Tab.Pane>...</Tab.Pane>;
+        return <AnnotationView />;
+      },
+    },
+    {
+      menuItem: "MLST",
+      render: function getContent() {
+        return <MLSTView />;
+      },
+    },
+    {
+      menuItem: "Resistome",
+      render: function getContent() {
+        return <ResistomeView />;
+      },
+    },
+    {
+      menuItem: "Virulome",
+      render: function getContent() {
+        return <VirulomeView />;
+      },
+    },
+    {
+      menuItem: "TBProfile",
+      render: function getContent() {
+        return <TBSummaryView />;
       },
     },
   ];
+
+  const [currentTab, setCurrentTab] = useState({
+    grid: { paneWidth: 12, tabWidth: 4 },
+    menu: { attached: true, tabular: true },
+    onTabChange: handleTabChange,
+    panes: panes,
+    renderActiveOnly: true,
+  });
+  const [wideView, setWideView] = useState(false);
+
+  // useEffect(() => {
+  // console.log(currentTab?.panes.at(currentTab?.activeIndex).menuItem);
+  // }, [currentTab]);
 
   return (
     <>
@@ -106,7 +152,8 @@ function CPOAnalysis(): JSX.Element {
         <Grid padded>
           <Grid.Row>
             <Grid.Column>
-              <TabMenu panes={panes} />
+              {/* <TabMenu */}
+              <Tab panes={panes} onTabChange={handleTabChange} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -115,4 +162,4 @@ function CPOAnalysis(): JSX.Element {
   );
 }
 
-export default withAuth(CPOAnalysis);
+export default withAuth(TBAnalysis);

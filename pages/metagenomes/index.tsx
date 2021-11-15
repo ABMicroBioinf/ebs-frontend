@@ -1,44 +1,23 @@
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
- * @create date 2021-07-15 13:10:04
- * @modify date 2021-07-15 13:10:11
+ * @create date 2021-08-09 08:26:21
+ * @modify date 2021-08-09 08:26:21
  * @desc [description]
  */
-import withAuth from "../../../middleware/withAuth";
+import withAuth from "../../middleware/withAuth";
+import React, { useEffect, useState } from "react";
 
-import TopNav from "../../../components/global/TopNav";
-import React, { useState } from "react";
-import { Grid, Icon, Menu, Segment, Tab } from "semantic-ui-react";
-import TabMenu from "../../../components/global/Tab";
+import TopNav from "../../components/global/TopNav";
 
-/**
- * MetagenomeAnalysis
- * @returns - Analysis of Metagenome page component
- */
-function MetagenomeAnalysis(): JSX.Element {
+import { Grid, Icon, Menu, Segment } from "semantic-ui-react";
+
+function CoreAnalysis() {
   const [wideView, setWideView] = useState(false);
 
-  const panes = [
-    {
-      menuItem: "Table 1",
-      render: function getContent() {
-        return <Tab.Pane>Metagenome Analysis 1</Tab.Pane>;
-      },
-    },
-    {
-      menuItem: "Table 2",
-      render: function getContent() {
-        return <Tab.Pane>Metagenome Analysis 2</Tab.Pane>;
-      },
-    },
-    {
-      menuItem: "...",
-      render: function getContent() {
-        return <Tab.Pane>...</Tab.Pane>;
-      },
-    },
-  ];
+  useEffect(() => {
+    console.log("core");
+  }, []);
 
   return (
     <>
@@ -105,9 +84,7 @@ function MetagenomeAnalysis(): JSX.Element {
       >
         <Grid padded>
           <Grid.Row>
-            <Grid.Column>
-              <TabMenu panes={panes} />
-            </Grid.Column>
+            <Grid.Column>Metagenomes</Grid.Column>
           </Grid.Row>
         </Grid>
       </div>
@@ -115,4 +92,4 @@ function MetagenomeAnalysis(): JSX.Element {
   );
 }
 
-export default withAuth(MetagenomeAnalysis);
+export default withAuth(CoreAnalysis);
