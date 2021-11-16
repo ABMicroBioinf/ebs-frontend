@@ -25,6 +25,8 @@ export interface JIYHeaderContext {
 }
 
 export interface JIYRecordContext<T> {
+  objType: string;
+  dynamicColumns: boolean;
   isSelected: boolean;
   data: T;
 }

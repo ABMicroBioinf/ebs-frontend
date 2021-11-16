@@ -6,9 +6,8 @@
  * @desc [description]
  */
 
-import { Attributes } from "react";
 import { API } from "../../../../config/apis";
-import { DATE_FORMAT } from "../../../../config/etc";
+import { DATE_FORMAT, VIRULOME_LEGEND_POINT } from "../../../../config/etc";
 import {
   CUSTOM_HEADER_ANNOTATION,
   CUSTOM_HEADER_ASSEMBLY,
@@ -113,17 +112,14 @@ export function SequencesDataHandler(
   });
 
   const customized = results.map((obj) => {
-    obj["objType"] = "sequence";
-    obj["dynamicColumns"] = false;
-    obj["colorization"] = false;
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
       LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
     } as FlatSequence;
@@ -140,6 +136,8 @@ export function SequencesDataHandler(
 
   const data: Array<JIYRecordContext<FlatSequence>> = rearranged.map(
     (flatSequences: FlatSequence): JIYRecordContext<FlatSequence> => ({
+      objType: "sequence",
+      dynamicColumns: false,
       isSelected: invertSelection,
       data: flatSequences,
     })
@@ -173,17 +171,14 @@ export function AssemblyDataHandler(
   });
 
   const customized = results.map((obj) => {
-    obj["objType"] = "assembly";
-    obj["dynamicColumns"] = false;
-    obj["colorization"] = false;
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
       LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
     } as FlatAssembly;
@@ -200,6 +195,8 @@ export function AssemblyDataHandler(
 
   const data: Array<JIYRecordContext<FlatAssembly>> = rearranged.map(
     (flatAssembly: FlatAssembly): JIYRecordContext<FlatAssembly> => ({
+      objType: "assembly",
+      dynamicColumns: false,
       isSelected: invertSelection,
       data: flatAssembly,
     })
@@ -253,10 +250,6 @@ export function AnnotationDataHandler(
   );
 
   const customized = results.map((obj) => {
-    obj["objType"] = "annotation";
-    obj["dynamicColumns"] = true;
-    obj["colorization"] = false;
-
     keyset.forEach((key) => {
       obj[key] = obj.attr.find((o) => o.tag === key)
         ? obj.attr.find((o) => o.tag === key).value
@@ -266,11 +259,11 @@ export function AnnotationDataHandler(
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
       LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
     } as FlatAnnotationWithAttr;
@@ -290,6 +283,8 @@ export function AnnotationDataHandler(
       flatAnnotationWithAttr: FlatAnnotationWithAttr
     ): JIYRecordContext<FlatAnnotationWithAttr> => {
       return {
+        objType: "annotation",
+        dynamicColumns: true,
         isSelected: invertSelection,
         data: flatAnnotationWithAttr,
       };
@@ -344,10 +339,6 @@ export function MLSTDataHandler(
   );
 
   const customized = results.map((obj) => {
-    obj["objType"] = "mlst";
-    obj["dynamicColumns"] = true;
-    obj["colorization"] = false;
-
     keyset.forEach((key) => {
       const value = obj.profile.find((o) => o.locus === key).allele;
       obj[key] = obj.profile.find((o) => o.locus === key)
@@ -358,11 +349,11 @@ export function MLSTDataHandler(
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
       LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
     } as FlatMLSTWithProfile;
@@ -381,6 +372,8 @@ export function MLSTDataHandler(
     (
       flatMLSTWithProfile: FlatMLSTWithProfile
     ): JIYRecordContext<FlatMLSTWithProfile> => ({
+      objType: "mlst",
+      dynamicColumns: true,
       isSelected: invertSelection,
       data: flatMLSTWithProfile,
     })
@@ -434,10 +427,6 @@ export function ResistomeDataHandler(
   );
 
   const customized = results.map((obj) => {
-    obj["objType"] = "resistome";
-    obj["dynamicColumns"] = true;
-    obj["colorization"] = true;
-
     keyset.forEach((key) => {
       obj[key] = obj.profile.find((o) => o.geneName === key)
         ? obj.profile.find((o) => o.geneName === key).pctCoverage
@@ -447,11 +436,11 @@ export function ResistomeDataHandler(
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
       LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
     } as FlatResistomeWithProfile;
@@ -471,6 +460,8 @@ export function ResistomeDataHandler(
       (
         FlatResistomeWithProfile: FlatResistomeWithProfile
       ): JIYRecordContext<FlatResistomeWithProfile> => ({
+        objType: "resistome",
+        dynamicColumns: true,
         isSelected: invertSelection,
         data: FlatResistomeWithProfile,
       })
@@ -524,24 +515,29 @@ export function VirulomeDataHandler(
   );
 
   const customized = results.map((obj) => {
-    obj["objType"] = "virulome";
-    obj["dynamicColumns"] = true;
-    obj["colorization"] = true;
-
     keyset.forEach((key) => {
-      obj[key] = obj.profile.find((o) => o.geneName === key)
-        ? obj.profile.find((o) => o.geneName === key).pctCoverage
+      const v = obj.profile.find((o) => o.geneName === key);
+      obj[key] = v
+        ? {
+            value: v.pctCoverage,
+            style:
+              v.pctCoverage === -1
+                ? "ebs-virulome-absent"
+                : v.pctCoverage >= VIRULOME_LEGEND_POINT
+                ? "ebs-virulome-ge"
+                : "ebs-virulome-lt",
+          }
         : "-";
     });
 
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
       LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
     } as FlatVirulomeWithProfile;
@@ -561,6 +557,8 @@ export function VirulomeDataHandler(
       flatVirulomeWithProfile: FlatVirulomeWithProfile
     ): JIYRecordContext<FlatVirulomeWithProfile> => {
       return {
+        objType: "virulome",
+        dynamicColumns: true,
         isSelected: invertSelection,
         data: flatVirulomeWithProfile,
       };
@@ -595,18 +593,14 @@ export function ProfileSummaryDataHandler(
   });
 
   const customized = results.map((obj) => {
-    obj["objType"] = "Psummary";
-    obj["dynamicColumns"] = false;
-    obj["colorization"] = false;
-
     return {
       ...obj,
       DateCreated: new Date(obj.DateCreated).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
       LastUpdate: new Date(obj.LastUpdate).toLocaleDateString(
-        undefined,
+        "en-US",
         DATE_FORMAT
       ),
     } as FlatPsummary;
@@ -623,6 +617,8 @@ export function ProfileSummaryDataHandler(
 
   const data: Array<JIYRecordContext<FlatPsummary>> = rearranged.map(
     (flatPsummary: FlatPsummary): JIYRecordContext<FlatPsummary> => ({
+      objType: "psummary",
+      dynamicColumns: false,
       isSelected: invertSelection,
       data: flatPsummary,
     })

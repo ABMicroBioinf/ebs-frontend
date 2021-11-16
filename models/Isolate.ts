@@ -57,10 +57,6 @@ export interface FlatMLSTWithProfile {
   LastUpdate: string;
   Description: string;
   profile: Array<Allele>;
-
-  objType: string;
-  dynamicColumns: boolean;
-  colorization: boolean;
 }
 
 export interface GeneCoverage {
@@ -86,10 +82,6 @@ export interface FlatResistomeWithProfile {
   LastUpdate: string;
   Description: string;
   profile: Array<GeneCoverage>;
-
-  objType: string;
-  dynamicColumns: boolean;
-  colorization: boolean;
 }
 
 export interface FlatVirulomeWithProfile {
@@ -108,10 +100,6 @@ export interface FlatVirulomeWithProfile {
   LastUpdate: string;
   Description: string;
   profile: Array<GeneCoverage>;
-
-  objType: string;
-  dynamicColumns: boolean;
-  colorization: boolean;
 }
 
 export interface Attribute {
@@ -142,10 +130,6 @@ export interface FlatAnnotationWithAttr {
   LastUpdate: string;
   Description: string;
   attr: Array<Attribute>;
-
-  objType: string;
-  dynamicColumns: boolean;
-  colorization: boolean;
 }
 
 export interface FlatPsummary {
@@ -194,10 +178,6 @@ export interface FlatPsummary {
   DateCreated: string;
   LastUpdate: string;
   Description: string;
-
-  objType: string;
-  dynamicColumns: boolean;
-  colorization: boolean;
 }
 
 export interface Lineage {

@@ -6,13 +6,11 @@
  * @desc [description]
  */
 
-import Link from "next/link";
-import React, { useCallback, useEffect, useState } from "react";
-import { Button, Modal, Table, TableBody } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import { Table } from "semantic-ui-react";
 import { pick } from "../libs/gizmos";
 import { JIYCellRowContext } from "../models/JIYContexts";
 import JIYCellHeading from "./JIYCellHeading";
-import TablePlaceholder from "../../../../components/global/TablePlaceholder";
 
 /**
  * JIYCellRow
@@ -33,46 +31,15 @@ function JIYCellRow<T>({
   setExcludedItems,
 }: JIYCellRowContext<T>): JSX.Element {
   const [row, setRow] = useState(record.data);
-  const [detailView, setDetailView] = useState(false);
-  const [innerData, setInnerData] = useState([]);
-
-  const handleDetailView = (e) => {
-    setDetailView(!detailView);
-  };
 
   const getValue = (key, value) => {
-    if (primaryField.value === key) {
-      return <Link href={`${path}/${value}`}>{value}</Link>;
-    }
-    if (Array.isArray(value)) {
-      return <Button onClick={handleDetailView}>{"See Details"}</Button>;
-    }
+    // if (primaryField.value === key) {
+    //   return <Link href={`${path}/${value}`}>{value}</Link>;
+    // } else {
+    //   return value;
+    // }
     return value;
   };
-
-  const getDetailViewHeader = useCallback(() => {
-    if (innerData.length > 0) {
-      return innerData.map((data, index) => {
-        return (
-          <Table.HeaderCell singleLine key={index}>
-            {Object.values(data)[0]}
-          </Table.HeaderCell>
-        );
-      });
-    } else {
-      return;
-    }
-  }, [innerData]);
-
-  const getDetailViewRows = useCallback(() => {
-    if (innerData.length > 0) {
-      return innerData.map((data, index) => {
-        return <Table.Cell key={index}>{Object.values(data)[1]}</Table.Cell>;
-      });
-    } else {
-      return;
-    }
-  }, [innerData]);
 
   useEffect(() => {
     const keys = headers.filter((colState) => colState.display === "visible");
@@ -80,77 +47,37 @@ function JIYCellRow<T>({
   }, [headers]);
 
   useEffect(() => {
-    const data = Object.values(row).find((value) => Array.isArray(value));
-    data && setInnerData(data);
+    console.log(record);
   }, []);
 
   return (
-    <>
-      <Table.Row>
-        <Table.Cell>
-          <JIYCellHeading
-            invertSelection={invertSelection}
-            excludedItems={excludedItems}
-            record={record}
-            records={records}
-            index={index}
-            setRecords={setRecords}
-            setInvertSelection={setInvertSelection}
-            setExcludedItems={setExcludedItems}
-          />
-        </Table.Cell>
-        {row &&
-          Object.entries(row).map(([key, value], index) => (
-            <Table.Cell key={index}>{getValue(key, value)}</Table.Cell>
-          ))}
-      </Table.Row>
-
-      <Modal
-        onClose={() => setDetailView(false)}
-        onOpen={() => setDetailView(true)}
-        open={detailView}
-        size="large"
-      >
-        <Modal.Header>Detail View</Modal.Header>
-        {innerData.length > 0 ? (
-          <>
-            <Modal.Content>
-              <Modal.Description className="ebs-overflow-table-wrapper">
-                <Table celled padded>
-                  <Table.Header>
-                    <Table.Row>
-                      {/* {Object.keys(innerData[0]).map((key, index) => (
-                        <Table.HeaderCell singleLine key={index}>
-                          {key}
-                        </Table.HeaderCell>
-                      ))} */}
-                      {getDetailViewHeader()}
-                    </Table.Row>
-                  </Table.Header>
-                  <TableBody>
-                    {/* {innerData.map((data, index) => (
-                      <Table.Row key={index}>
-                        {Object.values(data).map((value, i) => (
-                          <Table.Cell key={i}>{value}</Table.Cell>
-                        ))}
-                      </Table.Row>
-                    ))} */}
-                    <Table.Row>{getDetailViewRows()}</Table.Row>
-                  </TableBody>
-                </Table>
-              </Modal.Description>
-            </Modal.Content>
-            <Modal.Actions>
-              <Button color="red" onClick={() => setDetailView(false)}>
-                Close
-              </Button>
-            </Modal.Actions>
-          </>
-        ) : (
-          <TablePlaceholder />
-        )}
-      </Modal>
-    </>
+    <Table.Row>
+      <Table.Cell>
+        <JIYCellHeading
+          invertSelection={invertSelection}
+          excludedItems={excludedItems}
+          record={record}
+          records={records}
+          index={index}
+          setRecords={setRecords}
+          setInvertSelection={setInvertSelection}
+          setExcludedItems={setExcludedItems}
+        />
+      </Table.Cell>
+      {row &&
+        Object.entries(row).map(([key, value], index) => {
+          if (typeof value === "object" && value !== null) {
+            return (
+              <Table.Cell className={value.style} key={index}>
+                {getValue(key, value.value)}
+              </Table.Cell>
+            );
+            return null;
+          } else {
+            return <Table.Cell key={index}>{getValue(key, value)}</Table.Cell>;
+          }
+        })}
+    </Table.Row>
   );
 }
 

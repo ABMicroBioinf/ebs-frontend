@@ -125,6 +125,13 @@ $sidebar-width: 250px;
   overflow-x: auto;
 }
 
+.ebs-virulome-absent {
+  background-color: rgb(233, 165, 165);
+}
+.ebs-virulome-lt {
+  background-color: rgb(238, 240, 112);
+}
+
 /*
  * Fix (Unsupported at the current version and Browser specific)
 */
