@@ -46,10 +46,6 @@ function JIYCellRow<T>({
     setRow(pick(record.data, keys));
   }, [headers]);
 
-  useEffect(() => {
-    console.log(record);
-  }, []);
-
   return (
     <Table.Row>
       <Table.Cell>

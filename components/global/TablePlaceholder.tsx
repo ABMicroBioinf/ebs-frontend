@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { Dimmer, Loader, Segment } from "semantic-ui-react";
+import { Placeholder } from "semantic-ui-react";
 
 /**
  * TablePlaceholder
@@ -15,13 +15,32 @@ import { Dimmer, Loader, Segment } from "semantic-ui-react";
  */
 function TablePlaceholder(): JSX.Element {
   return (
-    <>
-      <Segment className="ebs-loader">
-        <Dimmer active inverted>
-          <Loader inverted>Preparing Data</Loader>
-        </Dimmer>
-      </Segment>
-    </>
+    <Placeholder>
+      <Placeholder.Line length="full" />
+      <Placeholder.Line length="full" />
+      <Placeholder.Line length="full" />
+      <Placeholder.Line length="full" />
+      <Placeholder.Line length="very long" />
+      <Placeholder.Line length="very long" />
+      <Placeholder.Line length="very long" />
+      <Placeholder.Line length="very long" />
+      <Placeholder.Line length="long" />
+      <Placeholder.Line length="long" />
+      <Placeholder.Line length="long" />
+      <Placeholder.Line length="long" />
+      <Placeholder.Line length="medium" />
+      <Placeholder.Line length="medium" />
+      <Placeholder.Line length="medium" />
+      <Placeholder.Line length="medium" />
+      <Placeholder.Line length="short" />
+      <Placeholder.Line length="short" />
+      <Placeholder.Line length="short" />
+      <Placeholder.Line length="short" />
+      <Placeholder.Line length="very short" />
+      <Placeholder.Line length="very short" />
+      <Placeholder.Line length="very short" />
+      <Placeholder.Line length="very short" />
+    </Placeholder>
   );
 }
 

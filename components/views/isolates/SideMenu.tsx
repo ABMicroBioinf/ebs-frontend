@@ -1,38 +1,62 @@
 /**
  * @author Jongil Yoon
  * @email jiysait@gmail.com
- * @create date 2021-07-15 00:34:13
- * @modify date 2021-07-15 13:20:56
+ * @create date 2021-07-15 13:19:59
+ * @modify date 2021-07-15 13:20:05
  * @desc [description]
  */
-import _ from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
-import SemanticDatepicker from "react-semantic-ui-datepickers";
+
+import axios from "axios";
 import {
   Accordion,
-  Checkbox,
-  Grid,
-  Header,
-  Icon,
-  Label,
   Menu,
+  Label,
+  Checkbox,
   Segment,
+  Grid,
+  Icon,
+  Header,
 } from "semantic-ui-react";
+
+import {
+  API,
+  API_ANNOTATION_METADATA,
+  API_ASSEMBLY_METADATA,
+  API_MLST_METADATA,
+  API_RESISTOME_METADATA,
+  API_SEQUENCE_METADATA,
+  API_TB_SUMMARY_METADATA,
+  API_VIRULOME_METADATA,
+} from "../../../config/apis";
 import { useAuth } from "../../../middleware/AuthProvider";
 import { VizViewContext } from "../../../modules/JIYTable/core/models/JIYContexts";
+import SemanticDatepicker from "react-semantic-ui-datepickers";
+
+const ApiDict = [
+  { tabName: "Sequence", endPoint: API_SEQUENCE_METADATA },
+  { tabName: "Assembly", endPoint: API_ASSEMBLY_METADATA },
+  { tabName: "Annotation", endPoint: API_ANNOTATION_METADATA },
+  { tabName: "MLST", endPoint: API_MLST_METADATA },
+  { tabName: "Resistome", endPoint: API_RESISTOME_METADATA },
+  { tabName: "Virulome", endPoint: API_VIRULOME_METADATA },
+  { tabName: "TBProfile", endPoint: API_TB_SUMMARY_METADATA },
+];
 
 /**
- * AnalysisSideMen
+ * SideMenu
  * @param param - See {@link VizViewContext}
- * @returns - Analysis Side Menu Component
+ * @returns - SideMenu Component
  */
-function AnalysisSideMenu({
+function SideMenu({
+  currentTab,
   module,
   query,
   wideView,
   setQuery,
   setWideView,
-}: VizViewContext): JSX.Element {
+  // }: VizViewContext): JSX.Element {
+}): JSX.Element {
   const { accessToken } = useAuth();
 
   const [queryset, setQueryset] = useState([]);
@@ -157,26 +181,32 @@ function AnalysisSideMenu({
       },
     };
 
-    // await axios
-    //   .get(API + API_SEQUENCE_METADATA + "?seqtype=" + module, config)
-    //   .then((res) => {
-    //     setFilters(res.data);
-    //   })
-    //   .catch((err) => console.log(err));
-  }, []);
+    const endPoint = ApiDict.find((d) => d.tabName === currentTab).endPoint;
+
+    await axios
+      // .get(API + API_SEQUENCE_METADATA + "?seqtype=" + module, config)
+      .get(API + endPoint + "?seqtype=TB", config)
+      .then((res) => {
+        setFilters(res.data);
+      })
+      .catch((err) => {
+        setFilters(null);
+        console.log(err);
+      });
+  }, [currentTab]);
 
   useEffect(() => {
     fetchFilters();
-  }, []);
+  }, [currentTab]);
 
-  useEffect(() => {
-    setQuery(
-      queryset
-        .filter((obj) => obj.keywords.length > 0)
-        .map((obj) => obj.field + "=" + obj.keywords.join(","))
-        .join("&")
-    );
-  }, [queryset]);
+  // useEffect(() => {
+  //   setQuery(
+  //     queryset
+  //       .filter((obj) => obj.keywords.length > 0)
+  //       .map((obj) => obj.field + "=" + obj.keywords.join(","))
+  //       .join("&")
+  //   );
+  // }, [queryset]);
 
   return wideView ? (
     <Grid
@@ -197,7 +227,7 @@ function AnalysisSideMenu({
   ) : (
     <>
       <Segment className="ebs-borderless ebs-shadowless">
-        <Header>{module} Filter</Header>
+        <Header>{currentTab} Filters</Header>
       </Segment>
       <div className="ebs-scrollable-inner">
         <Accordion className="ebs-borderless" fluid as={Menu} vertical>
@@ -224,4 +254,4 @@ function AnalysisSideMenu({
   );
 }
 
-export default AnalysisSideMenu;
+export default SideMenu;

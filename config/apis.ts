@@ -19,9 +19,15 @@ export const API_SEQUENCE_METADATA = "/api/seq/sequence/metadata";
 
 // Isolate
 export const API_ASSEMBLY = "/api/isolate/gbase/assembly";
+export const API_ASSEMBLY_METADATA = "/api/isolate/gbase/assembly/metadata";
 export const API_ANNOTATION = "/api/isolate/gbase/annot";
+export const API_ANNOTATION_METADATA = "/api/isolate/gbase/annot/metadata";
 export const API_MLST = "/api/isolate/gbase/mlst";
+export const API_MLST_METADATA = "/api/isolate/gbase/mlst/metadata";
 export const API_RESISTOME = "/api/isolate/gbase/resistome";
+export const API_RESISTOME_METADATA = "/api/isolate/gbase/resistome/metadata";
 export const API_VIRULOME = "/api/isolate/gbase/virulome";
+export const API_VIRULOME_METADATA = "/api/isolate/gbase/virulome/metadata";
 export const API_TB_SUMMARY = "/api/isolate/tb/summary";
+export const API_TB_SUMMARY_METADATA = "/api/isolate/tb/summary/metadata";
 export const API_TB_PROFILE = "/api/isolate/tb/profile";

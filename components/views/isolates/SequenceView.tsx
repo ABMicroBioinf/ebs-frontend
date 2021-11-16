@@ -22,6 +22,7 @@ import {
   SequencesDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
 import { FlatSequence } from "../../../models/Sequence";
+import TablePlaceholder from "../../global/TablePlaceholder";
 
 /**
  * SequenceView
@@ -105,7 +106,7 @@ function SequenceView(): JSX.Element {
       <Grid padded>
         <Grid.Row>
           <Grid.Column>
-            {headers && records && (
+            {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
                 path={"/analysis/tb"}
@@ -137,6 +138,8 @@ function SequenceView(): JSX.Element {
                 setExcludedItems={setExcludedItems}
                 handler={handler}
               />
+            ) : (
+              <TablePlaceholder />
             )}
           </Grid.Column>
         </Grid.Row>

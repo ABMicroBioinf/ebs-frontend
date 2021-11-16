@@ -17,16 +17,14 @@ import ResistomeView from "../../components/views/isolates/ResistomeView";
 import VirulomeView from "../../components/views/isolates/VirulomeView";
 import TBSummaryView from "../../components/views/isolates/TBSummaryView";
 import SequenceView from "../../components/views/isolates/SequenceView";
+import SideMenu from "../../components/views/isolates/SideMenu";
 
 /**
- * TBAnalysis
- * @returns - TB Main View Component
+ * Isolates
+ * @returns - Isolates Main View Component
  */
-function TBAnalysis() {
+function Isolates() {
   const handleTabChange = (e, data) => setCurrentTab(data);
-  // const handleTabChange = (e, activeIndex) => {
-  //   console.log(activeIndex);
-  // };
 
   const panes = [
     {
@@ -74,6 +72,7 @@ function TBAnalysis() {
   ];
 
   const [currentTab, setCurrentTab] = useState({
+    activeIndex: 0,
     grid: { paneWidth: 12, tabWidth: 4 },
     menu: { attached: true, tabular: true },
     onTabChange: handleTabChange,
@@ -81,10 +80,6 @@ function TBAnalysis() {
     renderActiveOnly: true,
   });
   const [wideView, setWideView] = useState(false);
-
-  // useEffect(() => {
-  // console.log(currentTab?.panes.at(currentTab?.activeIndex).menuItem);
-  // }, [currentTab]);
 
   return (
     <>
@@ -96,50 +91,12 @@ function TBAnalysis() {
             : "ebs-left-side-content-frame"
         }`}
       >
-        {wideView ? (
-          <Grid
-            verticalAlign="middle"
-            centered
-            padded
-            className="ebs-left-side-as-button-frame"
-            onClick={() => {
-              setWideView(!wideView);
-            }}
-          >
-            <Grid.Row>
-              <Grid.Column className="ebs-paddingless">
-                <Icon name="angle double right" />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        ) : (
-          <>
-            {/* <Segment className="ebs-borderless ebs-shadowless"></Segment> */}
-            <div className="ebs-scrollable-inner">
-              {/* <Accordion
-                className="ebs-borderless ebs-shadowless"
-                fluid
-                as={Menu}
-                vertical
-              ></Accordion> */}
-            </div>
-            <Segment className="ebs-borderless ebs-shadowless">
-              <Menu.Item
-                onClick={() => {
-                  setWideView(!wideView);
-                }}
-              >
-                <Grid columns={2}>
-                  <Grid.Row>
-                    <Grid.Column>Wide View</Grid.Column>
-                    <Grid.Column textAlign="right">
-                      <Icon name="angle double left" />
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
-              </Menu.Item>
-            </Segment>
-          </>
+        {currentTab && (
+          <SideMenu
+            currentTab={currentTab.panes[currentTab.activeIndex].menuItem}
+            wideView={wideView}
+            setWideView={setWideView}
+          />
         )}
       </div>
       <div
@@ -152,7 +109,6 @@ function TBAnalysis() {
         <Grid padded>
           <Grid.Row>
             <Grid.Column>
-              {/* <TabMenu */}
               <Tab panes={panes} onTabChange={handleTabChange} />
             </Grid.Column>
           </Grid.Row>
@@ -162,4 +118,4 @@ function TBAnalysis() {
   );
 }
 
-export default withAuth(TBAnalysis);
+export default withAuth(Isolates);
