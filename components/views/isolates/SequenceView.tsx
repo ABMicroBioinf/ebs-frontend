@@ -15,6 +15,7 @@ import {
   JIYHeaderContext,
   JIYOrderingContext,
   JIYRecordContext,
+  JIYSharedStateLayoutContext,
 } from "../../../modules/JIYTable/core/models/JIYContexts";
 import IsolatesVizView from "./VizView";
 import {
@@ -28,7 +29,12 @@ import TablePlaceholder from "../../global/TablePlaceholder";
  * SequenceView
  * @returns - SequenceView Component
  */
-function SequenceView(): JSX.Element {
+function SequenceView({
+  query,
+  search,
+  setQuery,
+  setSearch,
+}: JIYSharedStateLayoutContext): JSX.Element {
   const MODULE = "";
   const URL = URLHandler(API_SEQUENCE);
 
@@ -39,8 +45,8 @@ function SequenceView(): JSX.Element {
   const [total, setTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(20);
-  const [query, setQuery] = useState<string>("");
-  const [search, setSearch] = useState<string>("");
+  // const [query, setQuery] = useState<string>("");
+  // const [search, setSearch] = useState<string>("");
   const [ordering, setOrdering] = useState<JIYOrderingContext>(null);
   const [headers, setHeaders] = useState<Array<JIYHeaderContext>>(null);
   const [records, setRecords] =
@@ -100,6 +106,10 @@ function SequenceView(): JSX.Element {
       setRefreshing(false);
     }
   }, [isRefreshing]);
+
+  // useEffect(() => {
+  //   console.log(query);
+  // }, [query, search]);
 
   return (
     <Tab.Pane>

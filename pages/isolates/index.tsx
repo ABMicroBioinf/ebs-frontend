@@ -26,51 +26,101 @@ import SideMenu from "../../components/views/isolates/SideMenu";
 function Isolates() {
   const handleTabChange = (e, data) => setCurrentTab(data);
 
-  const panes = [
+  const [query, setQuery] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+  const [panes, setPanes] = useState([
     {
       menuItem: "Sequence",
       render: function getContent() {
-        return <SequenceView />;
+        return (
+          <SequenceView
+            query={query}
+            search={search}
+            setQuery={setQuery}
+            setSearch={setSearch}
+          />
+        );
       },
     },
     {
       menuItem: "Assembly",
       render: function getContent() {
-        return <AssemblyView />;
+        return (
+          <AssemblyView
+            query={query}
+            search={search}
+            setQuery={setQuery}
+            setSearch={setSearch}
+          />
+        );
       },
     },
     {
       menuItem: "Annotation",
       render: function getContent() {
-        return <AnnotationView />;
+        return (
+          <AnnotationView
+            query={query}
+            search={search}
+            setQuery={setQuery}
+            setSearch={setSearch}
+          />
+        );
       },
     },
     {
       menuItem: "MLST",
       render: function getContent() {
-        return <MLSTView />;
+        return (
+          <MLSTView
+            query={query}
+            search={search}
+            setQuery={setQuery}
+            setSearch={setSearch}
+          />
+        );
       },
     },
     {
       menuItem: "Resistome",
       render: function getContent() {
-        return <ResistomeView />;
+        return (
+          <ResistomeView
+            query={query}
+            search={search}
+            setQuery={setQuery}
+            setSearch={setSearch}
+          />
+        );
       },
     },
     {
       menuItem: "Virulome",
       render: function getContent() {
-        return <VirulomeView />;
+        return (
+          <VirulomeView
+            query={query}
+            search={search}
+            setQuery={setQuery}
+            setSearch={setSearch}
+          />
+        );
       },
     },
     {
       menuItem: "TBProfile",
       render: function getContent() {
-        return <TBSummaryView />;
+        return (
+          <TBSummaryView
+            query={query}
+            search={search}
+            setQuery={setQuery}
+            setSearch={setSearch}
+          />
+        );
       },
     },
-  ];
-
+  ]);
   const [currentTab, setCurrentTab] = useState({
     activeIndex: 0,
     grid: { paneWidth: 12, tabWidth: 4 },
@@ -80,6 +130,102 @@ function Isolates() {
     renderActiveOnly: true,
   });
   const [wideView, setWideView] = useState(false);
+
+  useEffect(() => {
+    setPanes([
+      {
+        menuItem: "Sequence",
+        render: function getContent() {
+          return (
+            <SequenceView
+              query={query}
+              search={search}
+              setQuery={setQuery}
+              setSearch={setSearch}
+            />
+          );
+        },
+      },
+      {
+        menuItem: "Assembly",
+        render: function getContent() {
+          return (
+            <AssemblyView
+              query={query}
+              search={search}
+              setQuery={setQuery}
+              setSearch={setSearch}
+            />
+          );
+        },
+      },
+      {
+        menuItem: "Annotation",
+        render: function getContent() {
+          return (
+            <AnnotationView
+              query={query}
+              search={search}
+              setQuery={setQuery}
+              setSearch={setSearch}
+            />
+          );
+        },
+      },
+      {
+        menuItem: "MLST",
+        render: function getContent() {
+          return (
+            <MLSTView
+              query={query}
+              search={search}
+              setQuery={setQuery}
+              setSearch={setSearch}
+            />
+          );
+        },
+      },
+      {
+        menuItem: "Resistome",
+        render: function getContent() {
+          return (
+            <ResistomeView
+              query={query}
+              search={search}
+              setQuery={setQuery}
+              setSearch={setSearch}
+            />
+          );
+        },
+      },
+      {
+        menuItem: "Virulome",
+        render: function getContent() {
+          return (
+            <VirulomeView
+              query={query}
+              search={search}
+              setQuery={setQuery}
+              setSearch={setSearch}
+            />
+          );
+        },
+      },
+      {
+        menuItem: "TBProfile",
+        render: function getContent() {
+          return (
+            <TBSummaryView
+              query={query}
+              search={search}
+              setQuery={setQuery}
+              setSearch={setSearch}
+            />
+          );
+        },
+      },
+    ]);
+  }, [query, search]);
 
   return (
     <>
@@ -94,8 +240,10 @@ function Isolates() {
         {currentTab && (
           <SideMenu
             currentTab={currentTab.panes[currentTab.activeIndex].menuItem}
+            query={query}
             wideView={wideView}
             setWideView={setWideView}
+            setQuery={setQuery}
           />
         )}
       </div>

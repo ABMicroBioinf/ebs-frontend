@@ -16,6 +16,7 @@ import {
   JIYHeaderContext,
   JIYOrderingContext,
   JIYRecordContext,
+  JIYSharedStateLayoutContext,
 } from "../../../modules/JIYTable/core/models/JIYContexts";
 import IsolatesVizView from "./VizView";
 import {
@@ -27,7 +28,12 @@ import {
  * AnnotationView
  * @returns - AnnotationView Component
  */
-function AnnotationView(): JSX.Element {
+function AnnotationView({
+  query,
+  search,
+  setQuery,
+  setSearch,
+}: JIYSharedStateLayoutContext): JSX.Element {
   const MODULE = "TB";
   const URL = URLHandler(API_ANNOTATION);
 
@@ -38,8 +44,8 @@ function AnnotationView(): JSX.Element {
   const [total, setTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(20);
-  const [query, setQuery] = useState<string>("");
-  const [search, setSearch] = useState<string>("");
+  // const [query, setQuery] = useState<string>("");
+  // const [search, setSearch] = useState<string>("");
   const [ordering, setOrdering] = useState<JIYOrderingContext>(null);
   const [headers, setHeaders] = useState<Array<JIYHeaderContext>>(null);
   const [records, setRecords] =

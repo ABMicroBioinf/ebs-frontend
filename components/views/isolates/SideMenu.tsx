@@ -30,8 +30,8 @@ import {
   API_VIRULOME_METADATA,
 } from "../../../config/apis";
 import { useAuth } from "../../../middleware/AuthProvider";
-import { VizViewContext } from "../../../modules/JIYTable/core/models/JIYContexts";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
+import { JIYInteractiveSideMenuContext } from "../../../modules/JIYTable/core/models/JIYContexts";
 
 const ApiDict = [
   { tabName: "Sequence", endPoint: API_SEQUENCE_METADATA },
@@ -50,13 +50,11 @@ const ApiDict = [
  */
 function SideMenu({
   currentTab,
-  module,
   query,
   wideView,
   setQuery,
   setWideView,
-  // }: VizViewContext): JSX.Element {
-}): JSX.Element {
+}: JIYInteractiveSideMenuContext): JSX.Element {
   const { accessToken } = useAuth();
 
   const [queryset, setQueryset] = useState([]);
@@ -199,14 +197,14 @@ function SideMenu({
     fetchFilters();
   }, [currentTab]);
 
-  // useEffect(() => {
-  //   setQuery(
-  //     queryset
-  //       .filter((obj) => obj.keywords.length > 0)
-  //       .map((obj) => obj.field + "=" + obj.keywords.join(","))
-  //       .join("&")
-  //   );
-  // }, [queryset]);
+  useEffect(() => {
+    setQuery(
+      queryset
+        .filter((obj) => obj.keywords.length > 0)
+        .map((obj) => obj.field + "=" + obj.keywords.join(","))
+        .join("&")
+    );
+  }, [queryset]);
 
   return wideView ? (
     <Grid

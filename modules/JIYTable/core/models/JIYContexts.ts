@@ -134,3 +134,18 @@ export interface VizViewContext {
   setQuery: Dispatch<SetStateAction<string>>;
   setWideView: Dispatch<SetStateAction<boolean>>;
 }
+
+export interface JIYInteractiveSideMenuContext {
+  currentTab: string;
+  query: string;
+  wideView: boolean;
+  setQuery: Dispatch<SetStateAction<string>>;
+  setWideView: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface JIYSharedStateLayoutContext {
+  query: string;
+  search: string;
+  setQuery: Dispatch<SetStateAction<string>>;
+  setSearch: Dispatch<SetStateAction<string>>;
+}
