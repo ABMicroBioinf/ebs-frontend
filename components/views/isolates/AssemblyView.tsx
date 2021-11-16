@@ -23,6 +23,7 @@ import {
   URLHandler,
   AssemblyDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
+import TablePlaceholder from "../../global/TablePlaceholder";
 
 /**
  * AssemblyView
@@ -110,7 +111,7 @@ function AssemblyView({
       <Grid padded>
         <Grid.Row>
           <Grid.Column>
-            {headers && records && (
+            {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
                 path={"/analysis/tb"}
@@ -142,6 +143,8 @@ function AssemblyView({
                 setExcludedItems={setExcludedItems}
                 handler={handler}
               />
+            ) : (
+              <TablePlaceholder />
             )}
           </Grid.Column>
         </Grid.Row>

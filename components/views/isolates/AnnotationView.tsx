@@ -23,6 +23,7 @@ import {
   URLHandler,
   AnnotationDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
+import TablePlaceholder from "../../global/TablePlaceholder";
 
 /**
  * AnnotationView
@@ -111,7 +112,7 @@ function AnnotationView({
       <Grid padded>
         <Grid.Row>
           <Grid.Column>
-            {headers && records && (
+            {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
                 path={"/analysis/tb"}
@@ -143,6 +144,8 @@ function AnnotationView({
                 setExcludedItems={setExcludedItems}
                 handler={handler}
               />
+            ) : (
+              <TablePlaceholder />
             )}
           </Grid.Column>
         </Grid.Row>

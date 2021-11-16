@@ -185,10 +185,11 @@ function SideMenu({
       // .get(API + API_SEQUENCE_METADATA + "?seqtype=" + module, config)
       .get(API + endPoint + "?seqtype=TB", config)
       .then((res) => {
+        console.log(res.data);
         setFilters(res.data);
       })
       .catch((err) => {
-        setFilters(null);
+        setFilters({ menu: [{ menu: "No filter data found", total: "N/A" }] });
         console.log(err);
       });
   }, [currentTab]);

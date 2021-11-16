@@ -95,7 +95,8 @@ $sidebar-width: 250px;
   z-index: 1;
 }
 .ebs-table-draggable-wrapper {
-  overflow-x: hidden;
+  // overflow-x: hidden;
+  overflow-x: auto;
   float: left;
 }
 .ebs-table-draggable-inner {
@@ -126,10 +127,10 @@ $sidebar-width: 250px;
 }
 
 .ebs-virulome-absent {
-  background-color: rgb(233, 165, 165);
+  background-color: #ff9898;
 }
 .ebs-virulome-lt {
-  background-color: rgb(238, 240, 112);
+  background-color: #fdff89;
 }
 
 /*

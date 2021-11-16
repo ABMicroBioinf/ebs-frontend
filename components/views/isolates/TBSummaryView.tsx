@@ -23,6 +23,7 @@ import {
   URLHandler,
   ProfileSummaryDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
+import TablePlaceholder from "../../global/TablePlaceholder";
 
 /**
  * TBSummaryView
@@ -111,7 +112,7 @@ function TBSummaryView({
       <Grid padded>
         <Grid.Row>
           <Grid.Column>
-            {headers && records && (
+            {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
                 path={"/analysis/tb"}
@@ -143,6 +144,8 @@ function TBSummaryView({
                 setExcludedItems={setExcludedItems}
                 handler={handler}
               />
+            ) : (
+              <TablePlaceholder />
             )}
           </Grid.Column>
         </Grid.Row>

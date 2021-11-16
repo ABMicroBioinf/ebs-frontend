@@ -91,6 +91,7 @@ function JIYTable<T, R>({
           );
           excludedItem
             ? (rowObj = {
+                ...record,
                 isSelected: excludedItem.isSelected,
                 data: pick(record.data, keys),
               })

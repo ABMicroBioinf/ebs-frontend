@@ -23,6 +23,7 @@ import {
   URLHandler,
   MLSTDataHandler as handler,
 } from "../../../modules/JIYTable/core/libs/handler";
+import TablePlaceholder from "../../global/TablePlaceholder";
 
 /**
  * MLSTView
@@ -111,7 +112,7 @@ function MLSTView({
       <Grid padded>
         <Grid.Row>
           <Grid.Column>
-            {headers && records && (
+            {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
                 path={"/analysis/tb"}
@@ -143,6 +144,8 @@ function MLSTView({
                 setExcludedItems={setExcludedItems}
                 handler={handler}
               />
+            ) : (
+              <TablePlaceholder />
             )}
           </Grid.Column>
         </Grid.Row>
