@@ -35,7 +35,7 @@ function SequenceView({
   setQuery,
   setSearch,
 }: JIYSharedStateLayoutContext): JSX.Element {
-  const MODULE = "";
+  const MODULE = "TB";
   const URL = URLHandler(API_SEQUENCE);
 
   const { accessToken } = useAuth();

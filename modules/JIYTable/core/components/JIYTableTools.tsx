@@ -25,6 +25,7 @@ import {
 } from "semantic-ui-react";
 import TablePlaceholder from "../../../../components/global/TablePlaceholder";
 import { useAuth } from "../../../../middleware/AuthProvider";
+import { pick } from "../libs/gizmos";
 import { URLHandler } from "../libs/handler";
 import { JIYTableStateContext } from "../models/JIYContexts";
 
@@ -175,34 +176,34 @@ function JIYTableTools<T, R>({
             // 선택된 레코드만 내보내기
             // 조건: 반전선택 / 일반선택
             if (invertSelection) {
-              // const diffItems = excludedItems
-              //   .filter((item) => !item.isSelected)
-              //   .map((item) => item.data["id"]);
-              // items = rows.filter((row) => diffItems.includes(row["id"]));
-              // console.log(items);
-              // setExportItems(pick(items, keys));
-              setExportItems(rows);
+              const disabledList = excludedItems
+                .filter((item) => !item.isSelected) // double check
+                .map((item) => item.data["id"]);
+              const diffItems = rows
+                .filter((row) => !disabledList.includes(row.data["id"]))
+                .map((item) => ({ ...item, data: pick(item.data, keys) }));
+              setExportItems(diffItems);
             } else {
-              // console.log(excludedItems);
-              // items = excludedItems
-              //   .filter((item) => item.isSelected)
-              //   .map((item) => item.data);
-              // setExportItems(pick(items, keys));
-              setExportItems(excludedItems);
+              const items = excludedItems
+                .filter((item) => item.isSelected)
+                .map((item) => ({ ...item, data: pick(item.data, keys) }));
+              // setExportItems(excludedItems);
+              setExportItems(items);
             }
           }
         })
         .catch((err) => console.log(err));
     },
-    [exportItems, headers, invertSelection, excludedItems]
+    [headers, openAlert, exportItems, excludedItems, invertSelection]
   );
 
   const handleExport = useCallback(() => {
-    fetchData(URLHandler(url.uri, null, null, null, 1, total, null).url);
+    // fetchData(URLHandler(url.uri, null, null, null, 1, total, null).url);
+    fetchData(URLHandler(url.uri, null, "TB", null, 1, total, null).url);
     // fetchData(URLHandler(url.uri, null, null, null, 1, 20, null).url);
     setOpenAlert(!openAlert);
-    console.log(excludedItems);
-  }, [openAlert, exportItems, excludedItems]);
+    // console.log(excludedItems);
+  }, [headers, openAlert, exportItems, excludedItems, invertSelection]);
 
   const handleItemClick = useCallback(
     (e, { name }) => {
@@ -248,7 +249,11 @@ function JIYTableTools<T, R>({
       default:
         return null;
     }
-  }, [activeItem, pageSize]);
+  }, [headers, activeItem, pageSize]);
+
+  const getExportItemCount = useCallback(() => {
+    return exportItems.length;
+  }, [exportItems]);
 
   useEffect(() => {
     setExportItems(null);
@@ -348,7 +353,7 @@ function JIYTableTools<T, R>({
                       <Table.Cell>
                         <Header as="h2" textAlign="center">
                           {/* {records.filter((record) => record.isSelected).length} */}
-                          {exportItems.length}
+                          {getExportItemCount()}
                         </Header>
                       </Table.Cell>
                       {exportItems.length > 0 ? (

@@ -17,6 +17,8 @@ import {
   Grid,
   Icon,
   Header,
+  Dropdown,
+  DropdownMenu,
 } from "semantic-ui-react";
 
 import {
@@ -172,6 +174,11 @@ function SideMenu({
     });
   };
 
+  const getFilterOn = () => {
+    console.log(filters);
+    return <Dropdown.Item text={"hello"} />;
+  };
+
   const fetchFilters = useCallback(async () => {
     const config = {
       headers: {
@@ -227,6 +234,11 @@ function SideMenu({
     <>
       <Segment className="ebs-borderless ebs-shadowless">
         <Header>{currentTab} Filters</Header>
+      </Segment>
+      <Segment className="ebs-borderless ebs-shadowless">
+        <Dropdown text="Filter on">
+          <DropdownMenu>{getFilterOn()}</DropdownMenu>
+        </Dropdown>
       </Segment>
       <div className="ebs-scrollable-inner">
         <Accordion className="ebs-borderless" fluid as={Menu} vertical>

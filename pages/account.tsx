@@ -21,6 +21,7 @@ import {
   Segment,
   Button,
 } from "semantic-ui-react";
+import { API, API_ACCOUNT_DELETE } from "../config/apis";
 
 /**
  * Account
@@ -67,7 +68,7 @@ function Account(): JSX.Element {
     };
 
     await axios
-      .delete("http://localhost:8000/api/account/delete", config)
+      .delete(API + API_ACCOUNT_DELETE, config)
       .then((res) => {
         if (res.status === 200) {
           router.push("/logout");
