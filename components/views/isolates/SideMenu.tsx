@@ -19,6 +19,8 @@ import {
   Header,
   Dropdown,
   DropdownMenu,
+  Button,
+  Modal,
 } from "semantic-ui-react";
 
 import {
@@ -34,6 +36,7 @@ import {
 import { useAuth } from "../../../middleware/AuthProvider";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import { JIYInteractiveSideMenuContext } from "../../../modules/JIYTable/core/models/JIYContexts";
+import { DATE_FORMAT } from "../../../config/etc";
 
 const ApiDict = [
   { tabName: "Sequence", endPoint: API_SEQUENCE_METADATA },
@@ -63,6 +66,12 @@ function SideMenu({
   const [filters, setFilters] = useState(null);
   const [activeIndex, setActiveIndex] = useState({});
   const [currentRange, setNewRange] = useState([]);
+  const [openDateSelector, setOpenDateSelector] = useState(false);
+  const [currentDateSelector, setCurrentDateSelector] = useState(null);
+  const [dateCreatedMin, setDateCreatedMin] = useState(null);
+  const [dateCreatedMax, setDateCreatedMax] = useState(null);
+  const [lastUpdateMin, setLastUpdateMin] = useState(null);
+  const [lastUpdateMax, setLastUpdateMax] = useState(null);
 
   const handleClick = (e, data) => {
     const { index, active } = data;
@@ -96,9 +105,20 @@ function SideMenu({
 
   const handleDateChange = (event, data) => setNewRange(data.value);
 
+  const handleDateSelector = useCallback((e, data) => {
+    const col = Object.keys(data.value)[0].split("__")[0];
+    setCurrentDateSelector(col);
+    if (col === "DateCreated") {
+      setDateCreatedMin(new Date(data.value[col + "__min"]));
+      setDateCreatedMax(new Date(data.value[col + "__max"]));
+    } else {
+      setLastUpdateMin(new Date(data.value[col + "__min"]));
+      setLastUpdateMax(new Date(data.value[col + "__max"]));
+    }
+    setOpenDateSelector(!openDateSelector);
+  }, []);
+
   const getSubMenuItem = (parent, obj) => {
-    // Please consider redesign the structure of response
-    // following is temporary
     const DATE_FIELDS = [
       "DateCreated__min",
       "DateCreated__max",
@@ -110,14 +130,16 @@ function SideMenu({
       return (
         <Grid className="ebs-filters-submenu">
           {obj.map((sub, index) => {
-            // console.log(sub[parent]);
+            // console.log(sub);
+            // console.log(currentTab.toLowerCase() + "__" + parent);
+            const prefix = currentTab === "Sequence" ? "" : "sequence__";
             return (
               <Grid.Row key={index}>
                 <Grid.Column>
                   <Checkbox
-                    label={sub[parent]}
-                    name={sub[parent]}
-                    value={parent + "." + sub[parent]}
+                    label={sub[prefix + parent]}
+                    name={sub[prefix + parent]}
+                    value={prefix + parent + "." + sub[prefix + parent]}
                     onChange={handleChange}
                   />
                 </Grid.Column>
@@ -132,19 +154,40 @@ function SideMenu({
     } else {
       if (DATE_FIELDS.includes(Object.keys(obj)[0])) {
         const col = Object.keys(obj)[0].split("__")[0];
-        console.log(obj[col + "__min"]);
-        console.log(obj[col + "__max"]);
+        // setCurrentDateSelector(col);
+        // if (col === "DateCreated") {
+        //   setDateCreatedMin(obj[col + "__min"]);
+        //   setDateCreatedMax(obj[col + "__max"]);
+        // } else {
+        //   setLastUpdateMin(obj[col + "__min"]);
+        //   setLastUpdateMax(obj[col + "__max"]);
+        // }
         return (
           <Grid className="ebs-filters-submenu">
             <Grid.Row>
-              <SemanticDatepicker
-                inline={true}
-                minDate={obj[col + "__min"]}
-                maxDate={obj[col + "__max"]}
-                showToday={false}
-                onChange={handleDateChange}
-                type="range"
-              />
+              <Button.Group>
+                <Button
+                  className="ebs-button-in-left-pane"
+                  onClick={handleDateSelector}
+                  value={obj}
+                >
+                  {new Date(obj[col + "__min"]).toLocaleDateString(
+                    "en-US",
+                    DATE_FORMAT
+                  )}
+                </Button>
+                <Button.Or text="to"></Button.Or>
+                <Button
+                  className="ebs-button-in-left-pane"
+                  onClick={handleDateSelector}
+                  value={obj}
+                >
+                  {new Date(obj[col + "__max"]).toLocaleDateString(
+                    "en-US",
+                    DATE_FORMAT
+                  )}
+                </Button>
+              </Button.Group>
             </Grid.Row>
           </Grid>
         );
@@ -235,11 +278,11 @@ function SideMenu({
       <Segment className="ebs-borderless ebs-shadowless">
         <Header>{currentTab} Filters</Header>
       </Segment>
-      <Segment className="ebs-borderless ebs-shadowless">
+      {/* <Segment className="ebs-borderless ebs-shadowless">
         <Dropdown text="Filter on">
           <DropdownMenu>{getFilterOn()}</DropdownMenu>
         </Dropdown>
-      </Segment>
+      </Segment> */}
       <div className="ebs-scrollable-inner">
         <Accordion className="ebs-borderless" fluid as={Menu} vertical>
           {filters && getFilterMenu()}
@@ -261,6 +304,40 @@ function SideMenu({
           </Grid>
         </Menu.Item>
       </Segment>
+      <Modal
+        onClose={() => setOpenDateSelector(false)}
+        onOpen={() => setOpenDateSelector(true)}
+        open={openDateSelector}
+        size="small"
+      >
+        <Modal.Header>Date Select</Modal.Header>
+        <Modal.Content>
+          <SemanticDatepicker
+            inline={true}
+            minDate={
+              currentDateSelector === "DateCreated"
+                ? dateCreatedMin
+                : lastUpdateMin
+            }
+            maxDate={
+              currentDateSelector === "DateCreated"
+                ? dateCreatedMax
+                : lastUpdateMax
+            }
+            showToday={false}
+            onChange={handleDateChange}
+            type="range"
+          />
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="green" onClick={() => setOpenDateSelector(false)}>
+            Apply
+          </Button>
+          <Button color="red" onClick={() => setOpenDateSelector(false)}>
+            Cancel
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </>
   );
 }
