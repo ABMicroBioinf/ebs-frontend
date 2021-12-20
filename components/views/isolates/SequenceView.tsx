@@ -36,6 +36,7 @@ function SequenceView({
   setSearch,
 }: JIYSharedStateLayoutContext): JSX.Element {
   const MODULE = "TB";
+  const PATH = "Isolates,Sequence";
   const URL = URLHandler(API_SEQUENCE);
 
   const { accessToken } = useAuth();
@@ -119,7 +120,7 @@ function SequenceView({
             {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
-                path={"/analysis/tb"}
+                path={PATH}
                 url={URL}
                 prev={prev}
                 next={next}

@@ -36,6 +36,7 @@ function TBSummaryView({
   setSearch,
 }: JIYSharedStateLayoutContext): JSX.Element {
   const MODULE = "TB";
+  const PATH = "Isolates,TBProfile";
   const URL = URLHandler(API_TB_SUMMARY);
 
   const { accessToken } = useAuth();
@@ -115,7 +116,7 @@ function TBSummaryView({
             {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
-                path={"/analysis/tb"}
+                path={PATH}
                 url={URL}
                 prev={prev}
                 next={next}

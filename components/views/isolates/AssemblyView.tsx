@@ -36,6 +36,7 @@ function AssemblyView({
   setSearch,
 }: JIYSharedStateLayoutContext): JSX.Element {
   const MODULE = "TB";
+  const PATH = "Isolates,Assembly";
   const URL = URLHandler(API_ASSEMBLY);
 
   const { accessToken } = useAuth();
@@ -114,7 +115,7 @@ function AssemblyView({
             {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
-                path={"/analysis/tb"}
+                path={PATH}
                 url={URL}
                 prev={prev}
                 next={next}

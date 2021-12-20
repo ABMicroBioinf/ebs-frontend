@@ -36,6 +36,7 @@ function VirulomeView({
   setSearch,
 }: JIYSharedStateLayoutContext): JSX.Element {
   const MODULE = "TB";
+  const PATH = "Isolates,Virulome";
   const URL = URLHandler(API_VIRULOME);
 
   const { accessToken } = useAuth();
@@ -114,7 +115,7 @@ function VirulomeView({
             {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
-                path={"/analysis/tb"}
+                path={PATH}
                 url={URL}
                 prev={prev}
                 next={next}

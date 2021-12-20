@@ -131,8 +131,20 @@ function SideMenu({
         <Grid className="ebs-filters-submenu">
           {obj.map((sub, index) => {
             // console.log(sub);
+            // console.log(parent);
             // console.log(currentTab.toLowerCase() + "__" + parent);
-            const prefix = currentTab === "Sequence" ? "" : "sequence__";
+            // const prefix =
+            //   currentTab === "Sequence" ? "" : "assembly__sequence__";
+            let prefix = "";
+            if (parent === "project__id") {
+              if (currentTab !== "Sequence") {
+                if (currentTab === "Assembly") {
+                  prefix = "sequence__";
+                } else {
+                  prefix = "assembly__sequence__";
+                }
+              }
+            }
             return (
               <Grid.Row key={index}>
                 <Grid.Column>

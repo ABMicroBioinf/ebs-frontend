@@ -36,6 +36,7 @@ function ResistomeView({
   setSearch,
 }: JIYSharedStateLayoutContext): JSX.Element {
   const MODULE = "TB";
+  const PATH = "Isolates,Resistome";
   const URL = URLHandler(API_RESISTOME);
 
   const { accessToken } = useAuth();
@@ -115,7 +116,7 @@ function ResistomeView({
             {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
-                path={"/analysis/tb"}
+                path={PATH}
                 url={URL}
                 prev={prev}
                 next={next}

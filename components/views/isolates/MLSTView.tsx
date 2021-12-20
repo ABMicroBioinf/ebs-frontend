@@ -36,6 +36,7 @@ function MLSTView({
   setSearch,
 }: JIYSharedStateLayoutContext): JSX.Element {
   const MODULE = "TB";
+  const PATH = "Isolates,MLST";
   const URL = URLHandler(API_MLST);
 
   const { accessToken } = useAuth();
@@ -115,7 +116,7 @@ function MLSTView({
             {headers && records ? (
               <IsolatesVizView
                 title={MODULE}
-                path={"/analysis/tb"}
+                path={PATH}
                 url={URL}
                 prev={prev}
                 next={next}
